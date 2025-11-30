@@ -9,6 +9,9 @@ switch \- switch between QS flavours
 .br
 .B switch
 [\fB--help\fR]
+.br
+.B switch
+[\fB--list\fR]
 
 .SH DESCRIPTION
 \fBswitch\fR is a small utility for Hyprland users that switches between
@@ -18,11 +21,21 @@ different QS flavours. A flavour is a configuration profile used by the
 When run without arguments, \fBswitch\fR cycles to the next flavour
 in its internal list.
 
-When a flavour is provided as an argument, it switches directly to that
-flavour.
+.SH CONFIGURATION
+\fBswitch\fR reads its configuration from
+.I ~/.config/qswitch/config.json
+.br
+The configuration includes a list of flavours and their associated keybind files.
+.br
+Keybind files are stored in
+.I ~/.config/qswitch/keybinds/
+and are sourced into Hyprland's configuration when switching flavours.
 
 .SH FLAVOURS
-The following flavours are available:
+The available flavours are configurable via the configuration file
+.I ~/.config/qswitch/config.json
+.br
+By default, the following flavours are available:
 
 .IP \[bu] 2
 ii
@@ -35,11 +48,23 @@ noctalia
 .TP
 .BR \-\-help ", " -h
 Show this help page.
+.TP
+.BR \-\-list
+List available flavours.
 
 .SH FILES
 .TP
 .I ~/.switch_state
 Stores the last active flavour for cycling.
+.TP
+.I ~/.config/qswitch/config.json
+Configuration file containing available flavours and keybind settings.
+.TP
+.I ~/.config/qswitch/keybinds/
+Directory containing flavour-specific keybind files.
+.TP
+.I ~/.config/hypr/custom/keybinds.conf
+Generated file sourcing the active flavour's keybinds.
 
 .SH EXAMPLES
 .TP
@@ -52,7 +77,7 @@ Cycle to the next flavour:
 switch
 
 .SH AUTHOR
-Written by you with ChatGPT assistance.
+Written by Manpreet Singh
 
 .SH SEE ALSO
 qs(1), hyprctl(1)

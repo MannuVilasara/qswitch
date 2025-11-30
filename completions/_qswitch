@@ -1,6 +1,0 @@
-#compdef qswitch
-
-_arguments \
-  '1:flavour:(ii caelestia noctalia)' \
-  '--help[Show help]' \
-  '-h[Show help]'

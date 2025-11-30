@@ -12,9 +12,9 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 # -------------------------------
 add_custom_command(
     OUTPUT ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/qswitch
-    COMMAND ${GO_EXECUTABLE} build -o ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/qswitch main.go
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    DEPENDS ${CMAKE_SOURCE_DIR}/main.go
+    COMMAND ${GO_EXECUTABLE} build -o ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/qswitch .
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/cmd/qswitch
+    DEPENDS ${CMAKE_SOURCE_DIR}/cmd/qswitch/main.go
     COMMENT "Building qswitch Go binary"
 )
 
@@ -51,17 +51,15 @@ install(
 )
 
 # -------------------------------
-# Bash completions
+# QuickSwitchPanel QML
 # -------------------------------
 install(
-    FILES ${CMAKE_SOURCE_DIR}/completions/qswitch.bash
-    DESTINATION share/bash-completion/completions
+    FILES ${CMAKE_SOURCE_DIR}/quickshell/QuickSwitchPanel.qml
+    DESTINATION /etc/xdg/quickshell/qswitch/
+    PERMISSIONS
+        OWNER_READ OWNER_WRITE
+        GROUP_READ
+        WORLD_READ
 )
 
-# -------------------------------
-# Zsh completions
-# -------------------------------
-install(
-    FILES ${CMAKE_SOURCE_DIR}/completions/_qswitch
-    DESTINATION share/zsh/site-functions
-)
+install(CODE "execute_process(COMMAND chown -R root:root /etc/xdg/quickshell/qswitch/)")
