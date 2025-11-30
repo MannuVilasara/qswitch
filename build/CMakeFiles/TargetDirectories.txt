@@ -1,0 +1,6 @@
+/home/mannu/switch/build/CMakeFiles/qswitch.dir
+/home/mannu/switch/build/CMakeFiles/edit_cache.dir
+/home/mannu/switch/build/CMakeFiles/rebuild_cache.dir
+/home/mannu/switch/build/CMakeFiles/list_install_components.dir
+/home/mannu/switch/build/CMakeFiles/install.dir
+/home/mannu/switch/build/CMakeFiles/install/local.dir

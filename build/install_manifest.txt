@@ -1,0 +1,5 @@
+/usr/local/bin/qswitch
+/usr/local/share/man/man1/qswitch.1
+/usr/local/share/fish/vendor_completions.d/qswitch.fish
+/usr/local/share/bash-completion/completions/qswitch.bash
+/usr/local/share/zsh/site-functions/_qswitch

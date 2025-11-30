@@ -1,0 +1,58 @@
+
+.TH SWITCH 1 "December 2025" "switch 1.0" "User Commands"
+.SH NAME
+switch \- switch between QS flavours
+
+.SH SYNOPSIS
+.B switch
+[\fIflavour\fR]
+.br
+.B switch
+[\fB--help\fR]
+
+.SH DESCRIPTION
+\fBswitch\fR is a small utility for Hyprland users that switches between
+different QS flavours. A flavour is a configuration profile used by the
+\fBqs\fR compositor helper.
+
+When run without arguments, \fBswitch\fR cycles to the next flavour
+in its internal list.
+
+When a flavour is provided as an argument, it switches directly to that
+flavour.
+
+.SH FLAVOURS
+The following flavours are available:
+
+.IP \[bu] 2
+ii
+.IP \[bu] 2
+caelestia
+.IP \[bu] 2
+noctalia
+
+.SH OPTIONS
+.TP
+.BR \-\-help ", " -h
+Show this help page.
+
+.SH FILES
+.TP
+.I ~/.switch_state
+Stores the last active flavour for cycling.
+
+.SH EXAMPLES
+.TP
+Switch directly to a flavour:
+.br
+switch ii
+.TP
+Cycle to the next flavour:
+.br
+switch
+
+.SH AUTHOR
+Written by you with ChatGPT assistance.
+
+.SH SEE ALSO
+qs(1), hyprctl(1)
