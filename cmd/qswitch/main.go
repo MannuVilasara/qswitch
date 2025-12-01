@@ -14,6 +14,7 @@ var stateFile = os.Getenv("HOME") + "/.switch_state"
 type Config struct {
 	Flavours []string          `json:"flavours"`
 	Keybinds map[string]string `json:"keybinds"`
+	Unbinds  bool              `json:"unbinds"`
 }
 
 var defaultConfig = Config{
@@ -23,6 +24,7 @@ var defaultConfig = Config{
 		"caelestia": "caelestia.conf",
 		"noctalia":  "noctalia.conf",
 	},
+	Unbinds: false,
 }
 
 func loadConfig() Config {
@@ -82,13 +84,28 @@ func applyFlavour(flavour string, config Config) {
 	hyprDir := filepath.Join(os.Getenv("HOME"), ".config", "hypr", "custom")
 	os.MkdirAll(hyprDir, 0755)
 	keybindsFile := filepath.Join(hyprDir, "keybinds.conf")
-	var content string
-	if config.Keybinds[flavour] == "default" {
-		content = "# Default"
-	} else {
-		content = "source=" + filepath.Join(os.Getenv("HOME"), ".config", "qswitch", "keybinds", config.Keybinds[flavour])
+
+	var contentParts []string
+
+	// Check for unbinds if enabled
+	if config.Unbinds && config.Keybinds[flavour] != "default" {
+		unbindsPath := filepath.Join(os.Getenv("HOME"), ".config", "qswitch", "keybinds", "unbinds.conf")
+		if _, err := os.Stat(unbindsPath); err == nil {
+			contentParts = append(contentParts, "source="+unbindsPath)
+		}
 	}
-	content += "\nbind=Super+Alt, P, exec, qs -p /etc/xdg/quickshell/qswitch/QuickSwitchPanel.qml"
+
+	// Add flavour keybinds
+	if config.Keybinds[flavour] == "default" {
+		contentParts = append(contentParts, "# Default")
+	} else {
+		contentParts = append(contentParts, "source="+filepath.Join(os.Getenv("HOME"), ".config", "qswitch", "keybinds", config.Keybinds[flavour]))
+	}
+
+	// Add QuickSwitchPanel keybind
+	contentParts = append(contentParts, "bind=Super+Alt, P, exec, qs -p /etc/xdg/quickshell/qswitch/QuickSwitchPanel.qml")
+
+	content := strings.Join(contentParts, "\n")
 	os.WriteFile(keybindsFile, []byte(content), 0644)
 }
 
