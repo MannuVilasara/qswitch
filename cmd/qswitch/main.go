@@ -154,6 +154,22 @@ func main() {
 		return
 	}
 
+	if len(args) == 1 && args[0] == "--current" {
+		fmt.Println(readState())
+		return
+	}
+
+	if len(args) == 2 && args[0] == "apply" && args[1] == "--current" {
+		current := readState()
+		if isValidFlavour(current, config) {
+			applyFlavour(current, config)
+			fmt.Println("Applied current flavour:", current)
+		} else {
+			fmt.Println("No valid current flavour set.")
+		}
+		return
+	}
+
 	if len(args) == 0 {
 		cycle(config)
 		return
