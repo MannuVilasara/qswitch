@@ -4,27 +4,39 @@ import QtQuick.Controls
 import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
+import QtQuick.Effects
 
 // pragma ComponentBehavior: Bound
 
 Scope {
     id: root
 
-    // --- THEME CONFIGURATION ---
-    property color cBackground: "#1e1e2e" // Darker, bluer background
-    property color cSurface: "#313244"    // Slightly lighter surface
-    property color cAccent: "#cba6f7"     // Mauve/Purple accent
+    // --- CATPPUCCIN MOCHA THEME ---
+    property color cBase: "#1e1e2e"
+    property color cMantle: "#181825"
+    property color cCrust: "#11111b"
+    property color cSurface0: "#313244"
+    property color cSurface1: "#45475a"
+    property color cSurface2: "#585b70"
+    property color cOverlay0: "#6c7086"
     property color cText: "#cdd6f4"
-    property color cSubText: "#a6adc8"
-    property color cBorder: "#45475a"
+    property color cSubtext0: "#a6adc8"
+    property color cSubtext1: "#bac2de"
+    property color cLavender: "#b4befe"
+    property color cMauve: "#cba6f7"
+    property color cPink: "#f5c2e7"
+    property color cRosewater: "#f5e0dc"
 
-    // Default colors for flavours
+    // Default colors for flavours (can be extended)
     property var flavourColors: {
-        "ii": "#a5b4fc",
-        "caelestia": "#6ee7b7",
-        "noctalia": "#f9a8d4"
+        "ii": "#89b4fa",        // Blue
+        "caelestia": "#a6e3a1", // Green
+        "noctalia": "#f5c2e7",  // Pink
+        "aurora": "#fab387",    // Peach
+        "midnight": "#cba6f7",  // Mauve
+        "ocean": "#94e2d5"      // Teal
     }
-    property color defaultFlavourColor: "#cba6f7"
+    property color defaultFlavourColor: "#b4befe"
 
     // 1. Process Handler (Logic Unchanged)
     Process {
@@ -109,11 +121,13 @@ Scope {
         WlrLayershell.keyboardFocus: WlrLayershell.Exclusive
         WlrLayershell.layer: WlrLayershell.Overlay
 
-        // Dim Background
+        // Dim Background with blur-like gradient
         Rectangle {
             anchors.fill: parent
-            color: "#000000"
-            opacity: 0.3
+            gradient: Gradient {
+                GradientStop { position: 0.0; color: Qt.alpha(root.cCrust, 0.7) }
+                GradientStop { position: 1.0; color: Qt.alpha(root.cCrust, 0.85) }
+            }
             z: -2
         }
 
@@ -126,45 +140,111 @@ Scope {
         // 4. The Launcher Visuals
         Rectangle {
             id: menuRoot
-            width: 420 // Slightly wider
-            height: 460
+            width: 500
+            height: 480
             anchors.centerIn: parent
 
-            color: root.cBackground
-            radius: 16
-            border.color: root.cBorder
+            color: root.cBase
+            radius: 20
+            border.color: Qt.alpha(root.cSurface1, 0.5)
             border.width: 1
             clip: true
+
+            // Subtle inner glow effect
+            Rectangle {
+                anchors.fill: parent
+                anchors.margins: 1
+                radius: 19
+                color: "transparent"
+                border.color: Qt.alpha(root.cLavender, 0.05)
+                border.width: 1
+            }
 
             // Enhanced Entry Animation
             ParallelAnimation {
                 running: true
-                NumberAnimation { target: menuRoot; property: "scale"; from: 0.9; to: 1.0; duration: 250; easing.type: Easing.OutExpo }
-                NumberAnimation { target: menuRoot; property: "opacity"; from: 0; to: 1.0; duration: 200 }
+                NumberAnimation { target: menuRoot; property: "scale"; from: 0.92; to: 1.0; duration: 300; easing.type: Easing.OutBack; easing.overshoot: 1.2 }
+                NumberAnimation { target: menuRoot; property: "opacity"; from: 0; to: 1.0; duration: 250; easing.type: Easing.OutQuart }
             }
 
             ColumnLayout {
                 anchors.fill: parent
-                anchors.margins: 16
-                spacing: 16
+                anchors.margins: 24
+                spacing: 20
 
-                // Header
+                // Header with gradient accent
                 RowLayout {
                     Layout.fillWidth: true
-                    Layout.preferredHeight: 32
+                    Layout.preferredHeight: 48
+                    spacing: 14
                     
-                    Text {
-                        text: "QuickSwitch"
-                        color: root.cSubText
-                        font.pixelSize: 13
-                        font.bold: true
-                        font.letterSpacing: 1.2
+                    // Logo/Icon area
+                    Rectangle {
+                        Layout.preferredWidth: 42
+                        Layout.preferredHeight: 42
+                        radius: 12
+                        gradient: Gradient {
+                            orientation: Gradient.Horizontal
+                            GradientStop { position: 0.0; color: root.cMauve }
+                            GradientStop { position: 1.0; color: root.cPink }
+                        }
+                        
+                        Text {
+                            anchors.centerIn: parent
+                            text: "⚡"
+                            font.pixelSize: 20
+                        }
+                    }
+                    
+                    Column {
+                        spacing: 4
                         Layout.alignment: Qt.AlignVCenter
+                        
+                        Text {
+                            text: "QuickSwitch"
+                            color: root.cText
+                            font.pixelSize: 18
+                            font.bold: true
+                            font.letterSpacing: 0.5
+                        }
+                        Text {
+                            text: "Select a theme to apply"
+                            color: root.cSubtext0
+                            font.pixelSize: 12
+                        }
                     }
 
-                    Item { Layout.fillWidth: true } // Spacer
+                    Item { Layout.fillWidth: true }
 
-                    // Decorative window controls or status could go here
+                    // Close hint
+                    Rectangle {
+                        Layout.preferredWidth: 32
+                        Layout.preferredHeight: 32
+                        radius: 8
+                        color: root.cSurface0
+                        
+                        Text {
+                            anchors.centerIn: parent
+                            text: "⎋"
+                            color: root.cSubtext0
+                            font.pixelSize: 16
+                        }
+                        
+                        MouseArea {
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            onClicked: Qt.quit()
+                            onEntered: parent.color = root.cSurface1
+                            onExited: parent.color = root.cSurface0
+                        }
+                    }
+                }
+
+                // Divider
+                Rectangle {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 1
+                    color: root.cSurface0
                 }
 
                 // --- FLAVOUR LIST ---
@@ -172,109 +252,161 @@ Scope {
                     id: flavorList
                     Layout.fillWidth: true
                     Layout.fillHeight: true
+                    Layout.minimumHeight: 200
                     clip: true
-                    spacing: 6
+                    spacing: 10
                     currentIndex: 0 
 
                     model: displayModel
 
-                    // Scrollbar for when you add many themes
                     ScrollBar.vertical: ScrollBar {
-                        width: 4
+                        width: 6
                         policy: ScrollBar.AsNeeded
                         contentItem: Rectangle {
-                            implicitWidth: 4
-                            radius: 2
-                            color: root.cSubText
-                            opacity: 0.5
+                            implicitWidth: 6
+                            radius: 3
+                            color: root.cSurface2
+                            opacity: 0.6
+                        }
+                        background: Rectangle {
+                            implicitWidth: 6
+                            radius: 3
+                            color: root.cSurface0
+                            opacity: 0.3
                         }
                     }
 
-                    // Smooth list reordering animations
                     add: Transition {
-                        NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 200 }
-                        NumberAnimation { property: "x"; from: -20; to: 0; duration: 200; easing.type: Easing.OutQuad }
+                        ParallelAnimation {
+                            NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 250; easing.type: Easing.OutQuart }
+                            NumberAnimation { property: "x"; from: -30; to: 0; duration: 300; easing.type: Easing.OutBack }
+                        }
                     }
                     displaced: Transition {
-                        NumberAnimation { properties: "y"; duration: 150; easing.type: Easing.OutQuad }
+                        NumberAnimation { properties: "y"; duration: 200; easing.type: Easing.OutQuart }
                     }
 
                     delegate: Rectangle {
                         id: listDelegate
                         width: ListView.view.width
-                        height: 64
-                        radius: 12
+                        height: 72
+                        radius: 14
                         
                         property bool isSelected: ListView.isCurrentItem
                         property bool isHovered: mouseArea.containsMouse
+                        property color itemColor: model.color
 
-                        // Smooth background color transition
-                        color: isSelected ? root.cSurface : (isHovered ? Qt.lighter(root.cSurface, 1.5) : "transparent")
-                        
-                        Behavior on color {
-                            ColorAnimation { duration: 150 }
+                        color: {
+                            if (isSelected) return Qt.alpha(itemColor, 0.15)
+                            if (isHovered) return Qt.alpha(root.cSurface0, 0.6)
+                            return "transparent"
                         }
+                        
+                        Behavior on color { ColorAnimation { duration: 180; easing.type: Easing.OutQuart } }
 
-                        // Subtle border for selected item
-                        border.color: isSelected ? Qt.alpha(root.cAccent, 0.3) : "transparent"
-                        border.width: 1
+                        border.color: isSelected ? Qt.alpha(itemColor, 0.4) : "transparent"
+                        border.width: isSelected ? 2 : 0
+                        
+                        Behavior on border.width { NumberAnimation { duration: 150 } }
+
+                        // Glow effect for selected item
+                        Rectangle {
+                            visible: listDelegate.isSelected
+                            anchors.fill: parent
+                            anchors.margins: -2
+                            radius: 16
+                            color: "transparent"
+                            border.color: Qt.alpha(listDelegate.itemColor, 0.2)
+                            border.width: 4
+                            z: -1
+                            
+                            Behavior on opacity { NumberAnimation { duration: 200 } }
+                        }
 
                         RowLayout {
                             anchors.fill: parent
-                            anchors.margins: 12
+                            anchors.leftMargin: 16
+                            anchors.rightMargin: 16
                             spacing: 16
 
-                            // Icon / Color Indicator
+                            // Gradient color indicator
                             Rectangle {
-                                Layout.preferredWidth: 40
-                                Layout.preferredHeight: 40
-                                radius: 20
-                                color: "transparent"
-                                border.color: model.color 
-                                border.width: 2
-                                
-                                // Removed malformed layer effect that was hiding the icon
-                                // layer.enabled: listDelegate.isSelected ...
+                                Layout.preferredWidth: 48
+                                Layout.preferredHeight: 48
+                                radius: 12
+                                color: Qt.alpha(model.color, 0.15)
+                                border.color: Qt.alpha(model.color, 0.3)
+                                border.width: 1
 
                                 Rectangle {
                                     anchors.centerIn: parent
-                                    width: listDelegate.isSelected ? 20 : 16
+                                    width: listDelegate.isSelected ? 28 : 24
                                     height: width
-                                    radius: width / 2
-                                    color: model.color 
-                                    opacity: listDelegate.isSelected ? 1.0 : 0.7
-
+                                    radius: 8
+                                    
+                                    gradient: Gradient {
+                                        orientation: Gradient.Vertical
+                                        GradientStop { position: 0.0; color: Qt.lighter(model.color, 1.2) }
+                                        GradientStop { position: 1.0; color: model.color }
+                                    }
+                                    
                                     Behavior on width { NumberAnimation { duration: 200; easing.type: Easing.OutBack } }
-                                    Behavior on opacity { NumberAnimation { duration: 200 } }
+                                    
+                                    // Pulse animation for selected
+                                    SequentialAnimation on scale {
+                                        running: listDelegate.isSelected
+                                        loops: Animation.Infinite
+                                        NumberAnimation { to: 1.1; duration: 800; easing.type: Easing.InOutQuad }
+                                        NumberAnimation { to: 1.0; duration: 800; easing.type: Easing.InOutQuad }
+                                    }
                                 }
                             }
 
                             // Text Info
                             ColumnLayout {
                                 Layout.fillWidth: true
-                                spacing: 2
+                                Layout.alignment: Qt.AlignVCenter
+                                spacing: 6
+                                
                                 Text {
                                     text: model.name
-                                    color: listDelegate.isSelected ? "#ffffff" : root.cText
+                                    color: listDelegate.isSelected ? root.cText : root.cSubtext1
                                     font.pixelSize: 16
                                     font.bold: true
+                                    font.letterSpacing: 0.3
+                                    
+                                    Behavior on color { ColorAnimation { duration: 150 } }
                                 }
                                 Text {
                                     text: model.desc
-                                    color: root.cSubText
+                                    color: root.cSubtext0
                                     font.pixelSize: 13
-                                    opacity: 0.8
+                                    opacity: listDelegate.isSelected ? 0.9 : 0.7
+                                    
+                                    Behavior on opacity { NumberAnimation { duration: 150 } }
                                 }
                             }
 
-                            // Selection Indicator Arrow
-                            Text {
-                                text: "↵"
-                                color: root.cSubText
-                                font.pixelSize: 18
-                                opacity: listDelegate.isSelected ? 0.5 : 0
+                            // Selection indicator with animation
+                            Rectangle {
+                                Layout.preferredWidth: 36
+                                Layout.preferredHeight: 36
+                                radius: 10
+                                color: listDelegate.isSelected ? Qt.alpha(listDelegate.itemColor, 0.2) : "transparent"
+                                opacity: listDelegate.isSelected || listDelegate.isHovered ? 1 : 0
+                                
                                 Behavior on opacity { NumberAnimation { duration: 150 } }
-                                Layout.rightMargin: 8
+                                Behavior on color { ColorAnimation { duration: 150 } }
+                                
+                                Text {
+                                    anchors.centerIn: parent
+                                    text: "→"
+                                    color: listDelegate.isSelected ? listDelegate.itemColor : root.cSubtext0
+                                    font.pixelSize: 18
+                                    font.bold: true
+                                    
+                                    Behavior on color { ColorAnimation { duration: 150 } }
+                                }
                             }
                         }
 
@@ -282,6 +414,7 @@ Scope {
                             id: mouseArea
                             anchors.fill: parent
                             hoverEnabled: true
+                            cursorShape: Qt.PointingHandCursor
                             onClicked: {
                                 flavorList.currentIndex = index
                                 root.setFlavour(model.flavourId)
@@ -294,14 +427,14 @@ Scope {
                 Rectangle {
                     Layout.fillWidth: true
                     Layout.preferredHeight: 52
-                    color: Qt.darker(root.cBackground, 1.2)
+                    color: root.cMantle
                     radius: 14
                     
-                    // Focus Ring
-                    border.color: searchField.activeFocus ? root.cAccent : root.cBorder
+                    border.color: searchField.activeFocus ? root.cLavender : root.cSurface0
                     border.width: searchField.activeFocus ? 2 : 1
                     
-                    Behavior on border.color { ColorAnimation { duration: 150 } }
+                    Behavior on border.color { ColorAnimation { duration: 200 } }
+                    Behavior on border.width { NumberAnimation { duration: 150 } }
 
                     RowLayout {
                         anchors.fill: parent
@@ -310,24 +443,28 @@ Scope {
                         spacing: 12
 
                         Text {
-                            text: "🔍"
-                            color: searchField.activeFocus ? root.cAccent : root.cSubText
-                            font.pixelSize: 16
-                            Behavior on color { ColorAnimation { duration: 150 } }
+                            text: "⌕"
+                            color: searchField.activeFocus ? root.cLavender : root.cOverlay0
+                            font.pixelSize: 20
+                            font.bold: true
+                            
+                            Behavior on color { ColorAnimation { duration: 200 } }
                         }
 
                         TextField {
                             id: searchField
                             Layout.fillWidth: true
+                            Layout.alignment: Qt.AlignVCenter
                             background: null
                             color: root.cText
                             font.pixelSize: 15
-                            selectedTextColor: root.cBackground
-                            selectionColor: root.cAccent
-                            placeholderText: 'Type to search themes...'
-                            placeholderTextColor: Qt.alpha(root.cSubText, 0.5)
+                            selectedTextColor: root.cBase
+                            selectionColor: root.cLavender
+                            placeholderText: 'Search themes...'
+                            placeholderTextColor: root.cOverlay0
                             focus: true 
-                            topPadding: 0; bottomPadding: 0 // Vertically center text better
+                            topPadding: 0
+                            bottomPadding: 0
 
                             onTextChanged: root.updateFilter()
 
@@ -335,7 +472,6 @@ Scope {
                                 Qt.callLater(function() { forceActiveFocus() })
                             }
 
-                            // Keyboard Navigation Logic (Unchanged)
                             Keys.onDownPressed: {
                                 flavorList.currentIndex = Math.min(flavorList.currentIndex + 1, flavorList.count - 1)
                             }
@@ -350,6 +486,49 @@ Scope {
                                 if (displayModel.count > 0) {
                                     var item = displayModel.get(flavorList.currentIndex)
                                     if (item) root.setFlavour(item.flavourId)
+                                }
+                            }
+                        }
+                        
+                        // Keyboard shortcut hints
+                        Row {
+                            spacing: 8
+                            visible: !searchField.text
+                            
+                            Rectangle {
+                                width: 26
+                                height: 26
+                                radius: 6
+                                color: root.cSurface0
+                                Text {
+                                    anchors.centerIn: parent
+                                    text: "↑"
+                                    color: root.cSubtext0
+                                    font.pixelSize: 13
+                                }
+                            }
+                            Rectangle {
+                                width: 26
+                                height: 26
+                                radius: 6
+                                color: root.cSurface0
+                                Text {
+                                    anchors.centerIn: parent
+                                    text: "↓"
+                                    color: root.cSubtext0
+                                    font.pixelSize: 13
+                                }
+                            }
+                            Rectangle {
+                                width: 26
+                                height: 26
+                                radius: 6
+                                color: root.cSurface0
+                                Text {
+                                    anchors.centerIn: parent
+                                    text: "↵"
+                                    color: root.cSubtext0
+                                    font.pixelSize: 13
                                 }
                             }
                         }
