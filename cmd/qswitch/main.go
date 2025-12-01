@@ -10,6 +10,7 @@ import (
 )
 
 var stateFile = os.Getenv("HOME") + "/.switch_state"
+var panelPidFile = os.Getenv("HOME") + "/.qswitch_panel_pid"
 
 type Config struct {
 	Flavours []string          `json:"flavours"`
@@ -103,7 +104,7 @@ func applyFlavour(flavour string, config Config) {
 	}
 
 	// Add QuickSwitchPanel keybind
-	contentParts = append(contentParts, "bind=Super+Alt, P, exec, qs -p /etc/xdg/quickshell/qswitch/QuickSwitchPanel.qml")
+	contentParts = append(contentParts, "bind=Super+Alt, P, exec, qswitch --panel")
 
 	content := strings.Join(contentParts, "\n")
 	os.WriteFile(keybindsFile, []byte(content), 0644)
@@ -118,6 +119,30 @@ func readState() string {
 }
 
 func writeState(f string) { os.WriteFile(stateFile, []byte(f), 0644) }
+
+// togglePanel opens the panel if not running, closes it if running
+func togglePanel() {
+	// Check if panel is already running by reading PID file
+	pidData, err := os.ReadFile(panelPidFile)
+	if err == nil {
+		pid := strings.TrimSpace(string(pidData))
+		// Check if process is still running
+		checkCmd := exec.Command("kill", "-0", pid)
+		if checkCmd.Run() == nil {
+			// Process is running, kill it
+			exec.Command("kill", pid).Run()
+			os.Remove(panelPidFile)
+			return
+		}
+	}
+
+	// Panel not running, start it
+	cmd := exec.Command("qs", "-p", "/etc/xdg/quickshell/qswitch/QuickSwitchPanel.qml")
+	cmd.Start()
+	if cmd.Process != nil {
+		os.WriteFile(panelPidFile, []byte(fmt.Sprintf("%d", cmd.Process.Pid)), 0644)
+	}
+}
 
 func cycle(config Config) {
 	current := readState()
@@ -176,6 +201,11 @@ func main() {
 		return
 	}
 
+	if len(args) == 1 && args[0] == "--panel" {
+		togglePanel()
+		return
+	}
+
 	if len(args) == 2 && args[0] == "apply" && args[1] == "--current" {
 		current := readState()
 		if isValidFlavour(current, config) {
@@ -196,6 +226,13 @@ func main() {
 	if !isValidFlavour(flavour, config) {
 		fmt.Println("Unknown flavour:", flavour)
 		fmt.Println("Run 'switch --help' to list flavours.")
+		return
+	}
+
+	// Check if the flavour is already running
+	current := readState()
+	if current == flavour {
+		fmt.Println("Already running:", flavour)
 		return
 	}
 

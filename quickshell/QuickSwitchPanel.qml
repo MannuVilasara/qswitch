@@ -29,14 +29,25 @@ Scope {
 
     // Default colors for flavours (can be extended)
     property var flavourColors: {
-        "ii": "#89b4fa",        // Blue
+        "ii": "#51debd",        // II green
         "caelestia": "#a6e3a1", // Green
-        "noctalia": "#f5c2e7",  // Pink
+        "noctalia": "#a9aefe",  // Noctalia purple
         "aurora": "#fab387",    // Peach
         "midnight": "#cba6f7",  // Mauve
         "ocean": "#94e2d5"      // Teal
     }
     property color defaultFlavourColor: "#b4befe"
+    
+    // Icons path for flavours (empty string means no icon, use color fallback)
+    property string iconsBasePath: "/etc/xdg/quickshell/qswitch/icons/"
+    property var flavourIcons: {
+        "ii": "ii.svg",
+        "noctalia": "noctalia.svg",
+        "caelestia": "pacman.svg"
+    }
+    
+    // Current running flavour
+    property string currentFlavour: ""
 
     // 1. Process Handler (Logic Unchanged)
     Process {
@@ -44,6 +55,21 @@ Scope {
         command: [] 
         onRunningChanged: {
             if (running) console.log("Executing switch command...")
+        }
+        onExited: {
+            // Refresh current flavour after switching
+            currentFlavourLoader.running = true
+        }
+    }
+
+    // Process to get current running flavour
+    Process {
+        id: currentFlavourLoader
+        command: ["qswitch", "--current"]
+        stdout: SplitParser {
+            onRead: data => {
+                root.currentFlavour = data.trim()
+            }
         }
     }
 
@@ -105,6 +131,7 @@ Scope {
     }
 
     Component.onCompleted: {
+        currentFlavourLoader.running = true
         flavourLoader.running = true
     }
 
@@ -178,21 +205,20 @@ Scope {
                     Layout.preferredHeight: 48
                     spacing: 14
                     
-                    // Logo/Icon area
+                    // Arch Linux Logo
                     Rectangle {
                         Layout.preferredWidth: 42
                         Layout.preferredHeight: 42
                         radius: 12
-                        gradient: Gradient {
-                            orientation: Gradient.Horizontal
-                            GradientStop { position: 0.0; color: root.cMauve }
-                            GradientStop { position: 1.0; color: root.cPink }
-                        }
+                        color: Qt.alpha(root.cSurface0, 0.5)
                         
-                        Text {
+                        Image {
                             anchors.centerIn: parent
-                            text: "⚡"
-                            font.pixelSize: 20
+                            width: 32
+                            height: 32
+                            source: "file://" + root.iconsBasePath + "arch.svg"
+                            fillMode: Image.PreserveAspectFit
+                            smooth: true
                         }
                     }
                     
@@ -295,8 +321,12 @@ Scope {
                         property bool isSelected: ListView.isCurrentItem
                         property bool isHovered: mouseArea.containsMouse
                         property color itemColor: model.color
+                        property bool isActive: model.flavourId === root.currentFlavour
+                        property string flavourIcon: root.flavourIcons[model.flavourId] || ""
+                        property bool hasIcon: flavourIcon !== ""
 
                         color: {
+                            if (isActive) return Qt.alpha(itemColor, 0.25)
                             if (isSelected) return Qt.alpha(itemColor, 0.15)
                             if (isHovered) return Qt.alpha(root.cSurface0, 0.6)
                             return "transparent"
@@ -304,19 +334,19 @@ Scope {
                         
                         Behavior on color { ColorAnimation { duration: 180; easing.type: Easing.OutQuart } }
 
-                        border.color: isSelected ? Qt.alpha(itemColor, 0.4) : "transparent"
-                        border.width: isSelected ? 2 : 0
+                        border.color: isActive ? Qt.alpha(itemColor, 0.6) : (isSelected ? Qt.alpha(itemColor, 0.4) : "transparent")
+                        border.width: isActive ? 2 : (isSelected ? 2 : 0)
                         
                         Behavior on border.width { NumberAnimation { duration: 150 } }
 
                         // Glow effect for selected item
                         Rectangle {
-                            visible: listDelegate.isSelected
+                            visible: listDelegate.isSelected || listDelegate.isActive
                             anchors.fill: parent
                             anchors.margins: -2
                             radius: 16
                             color: "transparent"
-                            border.color: Qt.alpha(listDelegate.itemColor, 0.2)
+                            border.color: Qt.alpha(listDelegate.itemColor, listDelegate.isActive ? 0.3 : 0.2)
                             border.width: 4
                             z: -1
                             
@@ -329,36 +359,60 @@ Scope {
                             anchors.rightMargin: 16
                             spacing: 16
 
-                            // Gradient color indicator
+                            // Icon or color indicator
                             Rectangle {
                                 Layout.preferredWidth: 48
                                 Layout.preferredHeight: 48
                                 radius: 12
-                                color: Qt.alpha(model.color, 0.15)
-                                border.color: Qt.alpha(model.color, 0.3)
+                                color: Qt.alpha(listDelegate.itemColor, 0.15)
+                                border.color: Qt.alpha(listDelegate.itemColor, 0.3)
                                 border.width: 1
 
+                                // SVG Icon (shown when icon exists)
+                                Image {
+                                    id: flavourIconImage
+                                    anchors.centerIn: parent
+                                    width: listDelegate.isSelected ? 40 : 36
+                                    height: width
+                                    source: listDelegate.hasIcon ? "file://" + root.iconsBasePath + listDelegate.flavourIcon : ""
+                                    visible: listDelegate.hasIcon
+                                    fillMode: Image.PreserveAspectFit
+                                    smooth: true
+                                    
+                                    Behavior on width { NumberAnimation { duration: 200; easing.type: Easing.OutBack } }
+                                }
+
+                                // Color fallback (shown when no icon)
                                 Rectangle {
                                     anchors.centerIn: parent
                                     width: listDelegate.isSelected ? 28 : 24
                                     height: width
                                     radius: 8
+                                    visible: !listDelegate.hasIcon
                                     
                                     gradient: Gradient {
                                         orientation: Gradient.Vertical
-                                        GradientStop { position: 0.0; color: Qt.lighter(model.color, 1.2) }
-                                        GradientStop { position: 1.0; color: model.color }
+                                        GradientStop { position: 0.0; color: Qt.lighter(listDelegate.itemColor, 1.2) }
+                                        GradientStop { position: 1.0; color: listDelegate.itemColor }
                                     }
                                     
                                     Behavior on width { NumberAnimation { duration: 200; easing.type: Easing.OutBack } }
                                     
                                     // Pulse animation for selected
                                     SequentialAnimation on scale {
-                                        running: listDelegate.isSelected
+                                        running: listDelegate.isSelected && !listDelegate.hasIcon
                                         loops: Animation.Infinite
                                         NumberAnimation { to: 1.1; duration: 800; easing.type: Easing.InOutQuad }
                                         NumberAnimation { to: 1.0; duration: 800; easing.type: Easing.InOutQuad }
                                     }
+                                }
+                                
+                                // Pulse animation for icon
+                                SequentialAnimation on scale {
+                                    running: listDelegate.isSelected && listDelegate.hasIcon
+                                    loops: Animation.Infinite
+                                    NumberAnimation { to: 1.05; duration: 800; easing.type: Easing.InOutQuad }
+                                    NumberAnimation { to: 1.0; duration: 800; easing.type: Easing.InOutQuad }
                                 }
                             }
 
@@ -368,20 +422,46 @@ Scope {
                                 Layout.alignment: Qt.AlignVCenter
                                 spacing: 6
                                 
-                                Text {
-                                    text: model.name
-                                    color: listDelegate.isSelected ? root.cText : root.cSubtext1
-                                    font.pixelSize: 16
-                                    font.bold: true
-                                    font.letterSpacing: 0.3
+                                RowLayout {
+                                    spacing: 8
                                     
-                                    Behavior on color { ColorAnimation { duration: 150 } }
+                                    Text {
+                                        text: model.name
+                                        color: listDelegate.isActive ? root.cText : (listDelegate.isSelected ? root.cText : root.cSubtext1)
+                                        font.pixelSize: 16
+                                        font.bold: true
+                                        font.letterSpacing: 0.3
+                                        
+                                        Behavior on color { ColorAnimation { duration: 150 } }
+                                    }
+                                    
+                                    // Active badge
+                                    Rectangle {
+                                        visible: listDelegate.isActive
+                                        width: activeLabel.width + 12
+                                        height: 20
+                                        radius: 10
+                                        color: Qt.alpha(listDelegate.itemColor, 0.3)
+                                        border.color: Qt.alpha(listDelegate.itemColor, 0.5)
+                                        border.width: 1
+                                        
+                                        Text {
+                                            id: activeLabel
+                                            anchors.centerIn: parent
+                                            text: "Active"
+                                            color: listDelegate.itemColor
+                                            font.pixelSize: 10
+                                            font.bold: true
+                                            font.letterSpacing: 0.5
+                                        }
+                                    }
                                 }
+                                
                                 Text {
                                     text: model.desc
                                     color: root.cSubtext0
                                     font.pixelSize: 13
-                                    opacity: listDelegate.isSelected ? 0.9 : 0.7
+                                    opacity: listDelegate.isSelected || listDelegate.isActive ? 0.9 : 0.7
                                     
                                     Behavior on opacity { NumberAnimation { duration: 150 } }
                                 }
@@ -392,17 +472,17 @@ Scope {
                                 Layout.preferredWidth: 36
                                 Layout.preferredHeight: 36
                                 radius: 10
-                                color: listDelegate.isSelected ? Qt.alpha(listDelegate.itemColor, 0.2) : "transparent"
-                                opacity: listDelegate.isSelected || listDelegate.isHovered ? 1 : 0
+                                color: listDelegate.isActive ? Qt.alpha(listDelegate.itemColor, 0.3) : (listDelegate.isSelected ? Qt.alpha(listDelegate.itemColor, 0.2) : "transparent")
+                                opacity: listDelegate.isSelected || listDelegate.isHovered || listDelegate.isActive ? 1 : 0
                                 
                                 Behavior on opacity { NumberAnimation { duration: 150 } }
                                 Behavior on color { ColorAnimation { duration: 150 } }
                                 
                                 Text {
                                     anchors.centerIn: parent
-                                    text: "→"
-                                    color: listDelegate.isSelected ? listDelegate.itemColor : root.cSubtext0
-                                    font.pixelSize: 18
+                                    text: listDelegate.isActive ? "✓" : "→"
+                                    color: listDelegate.isActive ? listDelegate.itemColor : (listDelegate.isSelected ? listDelegate.itemColor : root.cSubtext0)
+                                    font.pixelSize: listDelegate.isActive ? 16 : 18
                                     font.bold: true
                                     
                                     Behavior on color { ColorAnimation { duration: 150 } }

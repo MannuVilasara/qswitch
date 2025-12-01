@@ -62,4 +62,17 @@ install(
         WORLD_READ
 )
 
+# -------------------------------
+# Flavour icons
+# -------------------------------
+install(
+    DIRECTORY ${CMAKE_SOURCE_DIR}/quickshell/icons/
+    DESTINATION /etc/xdg/quickshell/qswitch/icons/
+    FILES_MATCHING PATTERN "*.svg"
+    PERMISSIONS
+        OWNER_READ OWNER_WRITE
+        GROUP_READ
+        WORLD_READ
+)
+
 install(CODE "execute_process(COMMAND chown -R root:root /etc/xdg/quickshell/qswitch/)")
