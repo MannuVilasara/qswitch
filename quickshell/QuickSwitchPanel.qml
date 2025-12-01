@@ -10,7 +10,15 @@ import Quickshell.Wayland
 Scope {
     id: root
 
-    // 1. Process Handler
+    // --- THEME CONFIGURATION ---
+    property color cBackground: "#1e1e2e" // Darker, bluer background
+    property color cSurface: "#313244"    // Slightly lighter surface
+    property color cAccent: "#cba6f7"     // Mauve/Purple accent
+    property color cText: "#cdd6f4"
+    property color cSubText: "#a6adc8"
+    property color cBorder: "#45475a"
+
+    // 1. Process Handler (Logic Unchanged)
     Process {
         id: switcher
         command: [] 
@@ -25,20 +33,18 @@ Scope {
         // Qt.quit() 
     }
 
-    // --- FILTER LOGIC ---
+    // --- FILTER LOGIC (Logic Unchanged) ---
     function updateFilter() {
         var searchTerm = searchField.text.toLowerCase()
         displayModel.clear()
 
         for (var i = 0; i < masterModel.count; i++) {
             var item = masterModel.get(i)
-            // Simple includes check for name or desc
             if (searchTerm === "" || item.name.toLowerCase().includes(searchTerm) || item.desc.toLowerCase().includes(searchTerm)) {
                 displayModel.append(item)
             }
         }
         
-        // Always select the top item when filtering changes
         if (displayModel.count > 0) {
             flavorList.currentIndex = 0
         }
@@ -61,12 +67,23 @@ Scope {
     // 3. Window Setup
     PanelWindow {
         anchors {
-            top: true; bottom: true
-            left: true; right: true
+            top: true
+            bottom: true
+            left: true
+            right: true
         }
         color: "transparent"
 
         WlrLayershell.keyboardFocus: WlrLayershell.Exclusive
+        WlrLayershell.layer: WlrLayershell.Overlay
+
+        // Dim Background
+        Rectangle {
+            anchors.fill: parent
+            color: "#000000"
+            opacity: 0.3
+            z: -2
+        }
 
         MouseArea {
             anchors.fill: parent
@@ -77,51 +94,45 @@ Scope {
         // 4. The Launcher Visuals
         Rectangle {
             id: menuRoot
-            width: 400
-            height: 450
-            x: parent ? Math.round((parent.width - width) / 2) : 0
-            y: parent ? Math.round((parent.height - height) / 2) : 0
+            width: 420 // Slightly wider
+            height: 460
+            anchors.centerIn: parent
 
-            color: "#1e1e1e"
+            color: root.cBackground
             radius: 16
-            border.color: "#333333"
+            border.color: root.cBorder
             border.width: 1
             clip: true
 
+            // Enhanced Entry Animation
             ParallelAnimation {
                 running: true
-                NumberAnimation { target: menuRoot; property: "scale"; from: 0.95; to: 1.0; duration: 200; easing.type: Easing.OutBack }
-                NumberAnimation { target: menuRoot; property: "opacity"; from: 0; to: 1.0; duration: 150 }
+                NumberAnimation { target: menuRoot; property: "scale"; from: 0.9; to: 1.0; duration: 250; easing.type: Easing.OutExpo }
+                NumberAnimation { target: menuRoot; property: "opacity"; from: 0; to: 1.0; duration: 200 }
             }
 
             ColumnLayout {
                 anchors.fill: parent
-                anchors.margins: 12
-                spacing: 12
+                anchors.margins: 16
+                spacing: 16
 
                 // Header
-                Rectangle {
-                    id: headerBar
+                RowLayout {
                     Layout.fillWidth: true
-                    Layout.preferredHeight: 36
-                    color: "transparent"
-
+                    Layout.preferredHeight: 32
+                    
                     Text {
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.left: parent.left
-                        anchors.leftMargin: 8
                         text: "QuickSwitch"
-                        color: "#e6e1e1"
-                        font.pixelSize: 14
+                        color: root.cSubText
+                        font.pixelSize: 13
+                        font.bold: true
+                        font.letterSpacing: 1.2
+                        Layout.alignment: Qt.AlignVCenter
                     }
 
-                    MouseArea {
-                        anchors.fill: parent
-                        drag.target: menuRoot
-                        drag.axis: Drag.XAndYAxis
-                        hoverEnabled: true
-                        cursorShape: Qt.OpenHandCursor
-                    }
+                    Item { Layout.fillWidth: true } // Spacer
+
+                    // Decorative window controls or status could go here
                 }
 
                 // --- FLAVOUR LIST ---
@@ -130,60 +141,108 @@ Scope {
                     Layout.fillWidth: true
                     Layout.fillHeight: true
                     clip: true
-                    spacing: 4
+                    spacing: 6
                     currentIndex: 0 
 
                     model: displayModel
 
-                    // FIX: Rectangle is now the root delegate item
-                    // This ensures ListView.isCurrentItem attaches correctly
+                    // Scrollbar for when you add many themes
+                    ScrollBar.vertical: ScrollBar {
+                        width: 4
+                        policy: ScrollBar.AsNeeded
+                        contentItem: Rectangle {
+                            implicitWidth: 4
+                            radius: 2
+                            color: root.cSubText
+                            opacity: 0.5
+                        }
+                    }
+
+                    // Smooth list reordering animations
+                    add: Transition {
+                        NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 200 }
+                        NumberAnimation { property: "x"; from: -20; to: 0; duration: 200; easing.type: Easing.OutQuad }
+                    }
+                    displaced: Transition {
+                        NumberAnimation { properties: "y"; duration: 150; easing.type: Easing.OutQuad }
+                    }
+
                     delegate: Rectangle {
+                        id: listDelegate
                         width: ListView.view.width
-                        height: 60
-                        radius: 10
+                        height: 64
+                        radius: 12
                         
-                        // HIGHLIGHT LOGIC
-                        color: ListView.isCurrentItem ? "#2a2a35" : (mouseArea.containsMouse ? "#333333" : "transparent")
-                        border.color: ListView.isCurrentItem ? "#6366f1" : "transparent"
-                        border.width: ListView.isCurrentItem ? 1 : 0
+                        property bool isSelected: ListView.isCurrentItem
+                        property bool isHovered: mouseArea.containsMouse
+
+                        // Smooth background color transition
+                        color: isSelected ? root.cSurface : (isHovered ? Qt.lighter(root.cSurface, 1.5) : "transparent")
+                        
+                        Behavior on color {
+                            ColorAnimation { duration: 150 }
+                        }
+
+                        // Subtle border for selected item
+                        border.color: isSelected ? Qt.alpha(root.cAccent, 0.3) : "transparent"
+                        border.width: 1
 
                         RowLayout {
                             anchors.fill: parent
-                            anchors.margins: 10
-                            spacing: 15
+                            anchors.margins: 12
+                            spacing: 16
 
-                            // Icon
+                            // Icon / Color Indicator
                             Rectangle {
-                                Layout.preferredWidth: 36
-                                Layout.preferredHeight: 36
-                                radius: 18
+                                Layout.preferredWidth: 40
+                                Layout.preferredHeight: 40
+                                radius: 20
                                 color: "transparent"
-                                border.color: model.color // Access model role
+                                border.color: model.color 
                                 border.width: 2
+                                
+                                // Removed malformed layer effect that was hiding the icon
+                                // layer.enabled: listDelegate.isSelected ...
 
                                 Rectangle {
                                     anchors.centerIn: parent
-                                    implicitWidth: 16; implicitHeight: 16; radius: 8
-                                    color: model.color // Access model role
-                                    opacity: 0.8
+                                    width: listDelegate.isSelected ? 20 : 16
+                                    height: width
+                                    radius: width / 2
+                                    color: model.color 
+                                    opacity: listDelegate.isSelected ? 1.0 : 0.7
+
+                                    Behavior on width { NumberAnimation { duration: 200; easing.type: Easing.OutBack } }
+                                    Behavior on opacity { NumberAnimation { duration: 200 } }
                                 }
                             }
 
-                            // Text
+                            // Text Info
                             ColumnLayout {
                                 Layout.fillWidth: true
                                 spacing: 2
                                 Text {
                                     text: model.name
-                                    color: "#ffffff"
-                                    font.pixelSize: 15
+                                    color: listDelegate.isSelected ? "#ffffff" : root.cText
+                                    font.pixelSize: 16
                                     font.bold: true
                                 }
                                 Text {
                                     text: model.desc
-                                    color: "#888888"
-                                    font.pixelSize: 12
+                                    color: root.cSubText
+                                    font.pixelSize: 13
+                                    opacity: 0.8
                                 }
+                            }
+
+                            // Selection Indicator Arrow
+                            Text {
+                                text: "↵"
+                                color: root.cSubText
+                                font.pixelSize: 18
+                                opacity: listDelegate.isSelected ? 0.5 : 0
+                                Behavior on opacity { NumberAnimation { duration: 150 } }
+                                Layout.rightMargin: 8
                             }
                         }
 
@@ -199,36 +258,44 @@ Scope {
                     }
                 }
 
-                // --- SEARCH BAR (Bottom) ---
+                // --- SEARCH BAR ---
                 Rectangle {
                     Layout.fillWidth: true
-                    Layout.preferredHeight: 50
-                    color: "#252525"
-                    radius: 25
-                    border.color: searchField.activeFocus ? "#555555" : "transparent"
-                    border.width: 1
+                    Layout.preferredHeight: 52
+                    color: Qt.darker(root.cBackground, 1.2)
+                    radius: 14
+                    
+                    // Focus Ring
+                    border.color: searchField.activeFocus ? root.cAccent : root.cBorder
+                    border.width: searchField.activeFocus ? 2 : 1
+                    
+                    Behavior on border.color { ColorAnimation { duration: 150 } }
 
                     RowLayout {
                         anchors.fill: parent
-                        anchors.leftMargin: 15
-                        anchors.rightMargin: 15
-                        spacing: 10
+                        anchors.leftMargin: 16
+                        anchors.rightMargin: 16
+                        spacing: 12
 
                         Text {
                             text: "🔍"
-                            color: "#666666"
+                            color: searchField.activeFocus ? root.cAccent : root.cSubText
                             font.pixelSize: 16
+                            Behavior on color { ColorAnimation { duration: 150 } }
                         }
 
                         TextField {
                             id: searchField
                             Layout.fillWidth: true
                             background: null
-                            color: "white"
-                            font.pixelSize: 14
-                            placeholderText: 'Type to filter...'
-                            placeholderTextColor: "#555555"
+                            color: root.cText
+                            font.pixelSize: 15
+                            selectedTextColor: root.cBackground
+                            selectionColor: root.cAccent
+                            placeholderText: 'Type to search themes...'
+                            placeholderTextColor: Qt.alpha(root.cSubText, 0.5)
                             focus: true 
+                            topPadding: 0; bottomPadding: 0 // Vertically center text better
 
                             onTextChanged: root.updateFilter()
 
@@ -236,6 +303,7 @@ Scope {
                                 Qt.callLater(function() { forceActiveFocus() })
                             }
 
+                            // Keyboard Navigation Logic (Unchanged)
                             Keys.onDownPressed: {
                                 flavorList.currentIndex = Math.min(flavorList.currentIndex + 1, flavorList.count - 1)
                             }
