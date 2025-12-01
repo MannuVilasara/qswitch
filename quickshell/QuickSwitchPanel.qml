@@ -18,12 +18,44 @@ Scope {
     property color cSubText: "#a6adc8"
     property color cBorder: "#45475a"
 
+    // Default colors for flavours
+    property var flavourColors: {
+        "ii": "#a5b4fc",
+        "caelestia": "#6ee7b7",
+        "noctalia": "#f9a8d4"
+    }
+    property color defaultFlavourColor: "#cba6f7"
+
     // 1. Process Handler (Logic Unchanged)
     Process {
         id: switcher
         command: [] 
         onRunningChanged: {
             if (running) console.log("Executing switch command...")
+        }
+    }
+
+    // Process to get flavours from config
+    Process {
+        id: flavourLoader
+        command: ["qswitch", "--list"]
+        stdout: SplitParser {
+            onRead: data => {
+                var flavourId = data.trim()
+                if (flavourId !== "") {
+                    var color = root.flavourColors[flavourId] || root.defaultFlavourColor
+                    var name = flavourId.charAt(0).toUpperCase() + flavourId.slice(1)
+                    masterModel.append({
+                        "name": name,
+                        "flavourId": flavourId,
+                        "color": color,
+                        "desc": name + " Theme"
+                    })
+                }
+            }
+        }
+        onExited: {
+            root.updateFilter()
         }
     }
 
@@ -53,16 +85,16 @@ Scope {
     // 2. Data Models
     ListModel {
         id: masterModel
-        ListElement { name: "II"; flavourId: "ii"; color: "#a5b4fc"; desc: "Soft Indigo Theme" }
-        ListElement { name: "Caelestia"; flavourId: "caelestia"; color: "#6ee7b7"; desc: "Ethereal Emerald Theme" }
-        ListElement { name: "Noctalia"; flavourId: "noctalia"; color: "#f9a8d4"; desc: "Deep Pink Night Theme" }
+        // Will be populated dynamically from config
     }
 
     ListModel {
         id: displayModel
     }
 
-    Component.onCompleted: updateFilter()
+    Component.onCompleted: {
+        flavourLoader.running = true
+    }
 
     // 3. Window Setup
     PanelWindow {
