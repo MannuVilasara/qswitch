@@ -12,8 +12,8 @@ import (
 var stateFile = os.Getenv("HOME") + "/.switch_state"
 
 type Config struct {
-	Flavours  []string            `json:"flavours"`
-	Keybinds  map[string]string   `json:"keybinds"`
+	Flavours []string          `json:"flavours"`
+	Keybinds map[string]string `json:"keybinds"`
 }
 
 var defaultConfig = Config{
