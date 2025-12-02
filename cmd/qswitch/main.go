@@ -61,8 +61,8 @@ func loadConfig() Config {
 
 func help(config Config) {
 	fmt.Println(`Usage:
-  switch <flavour>       Switch to a specific flavour
-  switch                 Cycle to the next flavour
+  qswitch <flavour>       Switch to a specific flavour
+  qswitch                 Cycle to the next flavour
 
 Available flavours:`)
 	for _, f := range config.Flavours {
@@ -71,7 +71,10 @@ Available flavours:`)
 	fmt.Println(`
 Options:
   --help, -h             Show this help message
-  --list                 List available flavours`)
+  --list                 List available flavours
+  --current              Show current flavour
+  --panel                Toggle panel
+  apply --current        Apply current flavour configuration`)
 }
 
 func applyFlavour(flavour string, config Config) {

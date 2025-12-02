@@ -1,24 +1,33 @@
 
-.TH SWITCH 1 "December 2025" "switch 1.0" "User Commands"
+.TH QSWITCH 1 "December 2025" "qswitch 1.0" "User Commands"
 .SH NAME
-switch \- switch between QS flavours
+qswitch \- switch between QS flavours
 
 .SH SYNOPSIS
-.B switch
+.B qswitch
 [\fIflavour\fR]
 .br
-.B switch
+.B qswitch
 [\fB--help\fR]
 .br
-.B switch
+.B qswitch
 [\fB--list\fR]
+.br
+.B qswitch
+[\fB--current\fR]
+.br
+.B qswitch
+[\fB--panel\fR]
+.br
+.B qswitch
+\fBapply --current\fR
 
 .SH DESCRIPTION
-\fBswitch\fR is a small utility for Hyprland users that switches between
+\fBqswitch\fR is a small utility for Hyprland users that switches between
 different QS flavours. A flavour is a configuration profile used by the
 \fBqs\fR compositor helper.
 
-When run without arguments, \fBswitch\fR cycles to the next flavour
+When run without arguments, \fBqswitch\fR cycles to the next flavour
 in its internal list.
 
 .SH CONFIGURATION
@@ -51,6 +60,15 @@ Show this help page.
 .TP
 .BR \-\-list
 List available flavours.
+.TP
+.BR \-\-current
+Show the currently active flavour.
+.TP
+.BR \-\-panel
+Toggle the QuickSwitch panel.
+.TP
+.B apply --current
+Re-apply the configuration for the current flavour.
 
 .SH FILES
 .TP
