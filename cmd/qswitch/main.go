@@ -123,6 +123,27 @@ func readState() string {
 
 func writeState(f string) { os.WriteFile(stateFile, []byte(f), 0644) }
 
+// isFlavourInstalled checks if a flavour configuration exists
+// A flavour is installed if it has a directory in /etc/xdg/quickshell/ 
+// or if it's "ii" (treated as installed by default, uses ~/.config/quickshell)
+func isFlavourInstalled(flavour string) bool {
+	// "ii" is the default shell, always considered installed if default config exists
+	if flavour == "ii" {
+		defaultPath := filepath.Join(os.Getenv("HOME"), ".config", "quickshell")
+		if _, err := os.Stat(defaultPath); err == nil {
+			return true
+		}
+	}
+	
+	// Check in /etc/xdg/quickshell/<flavour>
+	systemPath := filepath.Join("/etc/xdg/quickshell", flavour)
+	if _, err := os.Stat(systemPath); err == nil {
+		return true
+	}
+	
+	return false
+}
+
 // togglePanel opens the panel if not running, closes it if running
 func togglePanel() {
 	// Check if panel is already running by reading PID file
@@ -150,16 +171,49 @@ func togglePanel() {
 func cycle(config Config) {
 	current := readState()
 
-	if current == "" {
-		writeState(config.Flavours[0])
-		applyFlavour(config.Flavours[0], config)
-		fmt.Println("Switched to", config.Flavours[0])
+	// Find the first installed flavour for fallback
+	firstInstalled := ""
+	for _, f := range config.Flavours {
+		if isFlavourInstalled(f) {
+			firstInstalled = f
+			break
+		}
+	}
+
+	if firstInstalled == "" {
+		fmt.Println("No installed flavours found.")
 		return
 	}
 
+	if current == "" {
+		writeState(firstInstalled)
+		applyFlavour(firstInstalled, config)
+		fmt.Println("Switched to", firstInstalled)
+		return
+	}
+
+	// Find current index and cycle to next installed flavour
+	currentIdx := -1
 	for i, f := range config.Flavours {
 		if f == current {
-			next := config.Flavours[(i+1)%len(config.Flavours)]
+			currentIdx = i
+			break
+		}
+	}
+
+	if currentIdx == -1 {
+		// Current not found, use first installed
+		writeState(firstInstalled)
+		applyFlavour(firstInstalled, config)
+		fmt.Println("Switched to", firstInstalled)
+		return
+	}
+
+	// Find next installed flavour
+	for i := 1; i <= len(config.Flavours); i++ {
+		nextIdx := (currentIdx + i) % len(config.Flavours)
+		next := config.Flavours[nextIdx]
+		if isFlavourInstalled(next) {
 			writeState(next)
 			applyFlavour(next, config)
 			fmt.Println("Switched to", next)
@@ -167,10 +221,7 @@ func cycle(config Config) {
 		}
 	}
 
-	// fallback
-	writeState(config.Flavours[0])
-	applyFlavour(config.Flavours[0], config)
-	fmt.Println("Switched to", config.Flavours[0])
+	fmt.Println("No other installed flavours to switch to.")
 }
 
 func isValidFlavour(name string, config Config) bool {
@@ -196,6 +247,23 @@ func main() {
 		for _, f := range config.Flavours {
 			fmt.Println(f)
 		}
+		return
+	}
+
+	if len(args) == 1 && args[0] == "--list-status" {
+		type FlavourStatus struct {
+			Name      string `json:"name"`
+			Installed bool   `json:"installed"`
+		}
+		var statuses []FlavourStatus
+		for _, f := range config.Flavours {
+			statuses = append(statuses, FlavourStatus{
+				Name:      f,
+				Installed: isFlavourInstalled(f),
+			})
+		}
+		jsonData, _ := json.Marshal(statuses)
+		fmt.Println(string(jsonData))
 		return
 	}
 
@@ -228,7 +296,14 @@ func main() {
 	flavour := args[0]
 	if !isValidFlavour(flavour, config) {
 		fmt.Println("Unknown flavour:", flavour)
-		fmt.Println("Run 'switch --help' to list flavours.")
+		fmt.Println("Run 'qswitch --help' to list flavours.")
+		return
+	}
+
+	// Check if the flavour is installed
+	if !isFlavourInstalled(flavour) {
+		fmt.Println("Flavour not installed:", flavour)
+		fmt.Println("Install it to /etc/xdg/quickshell/" + flavour + " first.")
 		return
 	}
 

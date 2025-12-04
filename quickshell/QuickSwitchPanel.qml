@@ -48,6 +48,9 @@ Scope {
     
     // Current running flavour
     property string currentFlavour: ""
+    
+    // Map of flavour install status
+    property var flavourInstallStatus: ({})
 
     // 1. Process Handler (Logic Unchanged)
     Process {
@@ -73,22 +76,37 @@ Scope {
         }
     }
 
-    // Process to get flavours from config
+    // Process to get flavours from config with install status
     Process {
         id: flavourLoader
-        command: ["qswitch", "--list"]
+        command: ["qswitch", "--list-status"]
         stdout: SplitParser {
             onRead: data => {
-                var flavourId = data.trim()
-                if (flavourId !== "") {
-                    var color = root.flavourColors[flavourId] || root.defaultFlavourColor
-                    var name = flavourId.charAt(0).toUpperCase() + flavourId.slice(1)
-                    masterModel.append({
-                        "name": name,
-                        "flavourId": flavourId,
-                        "color": color,
-                        "desc": name + " Theme"
-                    })
+                var trimmed = data.trim()
+                if (trimmed !== "" && trimmed.startsWith("[")) {
+                    try {
+                        var flavours = JSON.parse(trimmed)
+                        for (var i = 0; i < flavours.length; i++) {
+                            var f = flavours[i]
+                            var flavourId = f.name
+                            var installed = f.installed
+                            var color = root.flavourColors[flavourId] || root.defaultFlavourColor
+                            var name = flavourId.charAt(0).toUpperCase() + flavourId.slice(1)
+                            
+                            // Store install status
+                            root.flavourInstallStatus[flavourId] = installed
+                            
+                            masterModel.append({
+                                "name": name,
+                                "flavourId": flavourId,
+                                "color": color,
+                                "desc": name + " Theme",
+                                "installed": installed
+                            })
+                        }
+                    } catch (e) {
+                        console.log("Failed to parse flavour status JSON:", e)
+                    }
                 }
             }
         }
@@ -324,8 +342,10 @@ Scope {
                         property bool isActive: model.flavourId === root.currentFlavour
                         property string flavourIcon: root.flavourIcons[model.flavourId] || ""
                         property bool hasIcon: flavourIcon !== ""
+                        property bool isInstalled: model.installed !== undefined ? model.installed : true
 
                         color: {
+                            if (!isInstalled) return Qt.alpha("#f38ba8", 0.1)  // Red tint for not installed
                             if (isActive) return Qt.alpha(itemColor, 0.25)
                             if (isSelected) return Qt.alpha(itemColor, 0.15)
                             if (isHovered) return Qt.alpha(root.cSurface0, 0.6)
@@ -437,7 +457,7 @@ Scope {
                                     
                                     // Active badge
                                     Rectangle {
-                                        visible: listDelegate.isActive
+                                        visible: listDelegate.isActive && listDelegate.isInstalled
                                         width: activeLabel.width + 12
                                         height: 20
                                         radius: 10
@@ -450,6 +470,27 @@ Scope {
                                             anchors.centerIn: parent
                                             text: "Active"
                                             color: listDelegate.itemColor
+                                            font.pixelSize: 10
+                                            font.bold: true
+                                            font.letterSpacing: 0.5
+                                        }
+                                    }
+                                    
+                                    // Not Installed badge (red)
+                                    Rectangle {
+                                        visible: !listDelegate.isInstalled
+                                        width: notInstalledLabel.width + 12
+                                        height: 20
+                                        radius: 10
+                                        color: Qt.alpha("#f38ba8", 0.3)
+                                        border.color: Qt.alpha("#f38ba8", 0.5)
+                                        border.width: 1
+                                        
+                                        Text {
+                                            id: notInstalledLabel
+                                            anchors.centerIn: parent
+                                            text: "Not Installed"
+                                            color: "#f38ba8"
                                             font.pixelSize: 10
                                             font.bold: true
                                             font.letterSpacing: 0.5
@@ -494,8 +535,9 @@ Scope {
                             id: mouseArea
                             anchors.fill: parent
                             hoverEnabled: true
-                            cursorShape: Qt.PointingHandCursor
+                            cursorShape: listDelegate.isInstalled ? Qt.PointingHandCursor : Qt.ForbiddenCursor
                             onClicked: {
+                                if (!listDelegate.isInstalled) return
                                 flavorList.currentIndex = index
                                 root.setFlavour(model.flavourId)
                             }
