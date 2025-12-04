@@ -344,7 +344,16 @@ func main() {
 		return
 	}
 
-	if len(args) == 2 && args[0] == "apply" && args[1] == "--current" {
+	if len(args) > 0 && args[0] == "apply"{
+		if len(args) != 2 {
+			fmt.Println("Invalid usage of apply. Use 'qswitch apply --current'.")
+			return
+		}
+		if args[1] != "--current" {
+			fmt.Println("Unknown option:", args[1])
+			fmt.Println("Use 'qswitch apply --current' to apply the current flavour (only supported as of now).")
+			return
+		}
 		current := readState()
 		if isValidFlavour(current, config) {
 			applyFlavour(current, config)
