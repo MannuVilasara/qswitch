@@ -138,15 +138,15 @@ func checkFirstRun() bool {
 func showSetupMessage() {
 	fmt.Println(`⚠️  qswitch Setup Required
 
-It looks like you don't have 'ii' (end-4 dots) installed as your default shell.
+	It looks like you don't have 'ii' (end-4 dots) installed as your default shell.
 
-This tool requires proper setup to work correctly.
+	This tool requires proper setup to work correctly.
 
-📧 Please contact @dev_mannu on Discord to get help setting it up completely.
-   Do NOT run random commands without proper guidance.
+	📧 Please contact @dev_mannu on Discord to get help setting it up completely.
+   	Do NOT run random commands without proper guidance.
 
-💡 If you know what you're doing, you can bypass this check with:
-   qswitch --itrustmyself <command>
+	💡 If you know what you're doing, you can bypass this check with:
+   	qswitch --itrustmyself <command>
 
    Example: qswitch --itrustmyself caelestia`)
 }
@@ -259,6 +259,23 @@ func isValidFlavour(name string, config Config) bool {
 	return false
 }
 
+func setup() {
+	hyprDir := filepath.Join(os.Getenv("HOME"), ".config", "hypr", "custom")
+	os.MkdirAll(hyprDir, 0755)
+	keybindsFile := filepath.Join(hyprDir, "keybinds.conf")
+	content := "bind=Super+Alt, P, exec, qswitch --panel"
+	os.WriteFile(keybindsFile, []byte(content), 0644)
+	hyprlandFile := filepath.Join(os.Getenv("HOME"), ".config", "hypr", "hyprland.conf")
+	f, err := os.OpenFile(hyprlandFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		fmt.Println("Error opening hyprland.conf:", err)
+		return
+	}
+	defer f.Close()
+	f.WriteString("\nsource=custom/keybinds.conf\n")
+	fmt.Println("Setup completed")
+}
+
 func main() {
 	config := loadConfig()
 
@@ -335,6 +352,11 @@ func main() {
 		} else {
 			fmt.Println("No valid current flavour set.")
 		}
+		return
+	}
+
+	if len(args) == 1 && args[0] == "exp-setup" {
+		setup()
 		return
 	}
 
