@@ -96,6 +96,20 @@ The tool generates `~/.config/hypr/custom/keybinds.conf` with the appropriate so
 - `qswitch <flavour>`: Switch to a specific flavour
 - `qswitch --help`: Show help
 - `qswitch --list`: List available flavours
+- `qswitch --current`: Show current flavour
+- `qswitch --panel`: Toggle the quick switch panel
+- `qswitch apply --current`: Re-apply current flavour configuration
+- `qswitch --itrustmyself <command>`: Bypass setup check (use with caution)
+
+### Setup Check
+
+When you first run `qswitch`, it checks if `ii` is installed. If not, it will show a message asking you to contact `@dev_mannu` on Discord for proper setup help.
+
+If you know what you're doing, you can bypass this check with:
+
+```bash
+qswitch --itrustmyself caelestia
+```
 
 ### Examples
 

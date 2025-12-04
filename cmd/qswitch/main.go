@@ -74,7 +74,8 @@ Options:
   --list                 List available flavours
   --current              Show current flavour
   --panel                Toggle panel
-  apply --current        Apply current flavour configuration`)
+  apply --current        Apply current flavour configuration
+  --itrustmyself         Bypass setup check (use with caution)`)
 }
 
 func applyFlavour(flavour string, config Config) {
@@ -123,24 +124,49 @@ func readState() string {
 
 func writeState(f string) { os.WriteFile(stateFile, []byte(f), 0644) }
 
-// isFlavourInstalled checks if a flavour configuration exists
-// A flavour is installed if it has a directory in /etc/xdg/quickshell/ 
-// or if it's "ii" (treated as installed by default, uses ~/.config/quickshell)
-func isFlavourInstalled(flavour string) bool {
-	// "ii" is the default shell, always considered installed if default config exists
-	if flavour == "ii" {
-		defaultPath := filepath.Join(os.Getenv("HOME"), ".config", "quickshell")
-		if _, err := os.Stat(defaultPath); err == nil {
-			return true
-		}
+// checkFirstRun checks if ii is not installed and no state file exists
+// Returns true if setup is needed (ii not installed and never run before)
+func checkFirstRun() bool {
+	// Skip check if user has already run qswitch before (state file exists)
+	if _, err := os.Stat(stateFile); err == nil {
+		return false
 	}
-	
+	return !isFlavourInstalled("ii")
+}
+
+// showSetupMessage displays the setup requirement message
+func showSetupMessage() {
+	fmt.Println(`⚠️  qswitch Setup Required
+
+It looks like you don't have 'ii' (end-4 dots) installed as your default shell.
+
+This tool requires proper setup to work correctly.
+
+📧 Please contact @dev_mannu on Discord to get help setting it up completely.
+   Do NOT run random commands without proper guidance.
+
+💡 If you know what you're doing, you can bypass this check with:
+   qswitch --itrustmyself <command>
+
+   Example: qswitch --itrustmyself caelestia`)
+}
+
+// isFlavourInstalled checks if a flavour configuration exists
+// A flavour is installed if it has a directory in /etc/xdg/quickshell/<flavour>
+// or ~/.config/quickshell/<flavour>
+func isFlavourInstalled(flavour string) bool {
+	// Check in ~/.config/quickshell/<flavour>
+	userPath := filepath.Join(os.Getenv("HOME"), ".config", "quickshell", flavour)
+	if _, err := os.Stat(userPath); err == nil {
+		return true
+	}
+
 	// Check in /etc/xdg/quickshell/<flavour>
 	systemPath := filepath.Join("/etc/xdg/quickshell", flavour)
 	if _, err := os.Stat(systemPath); err == nil {
 		return true
 	}
-	
+
 	return false
 }
 
@@ -237,6 +263,30 @@ func main() {
 	config := loadConfig()
 
 	args := os.Args[1:]
+
+	// Check for --itrustmyself bypass flag
+	bypassCheck := false
+	if len(args) > 0 && args[0] == "--itrustmyself" {
+		bypassCheck = true
+		args = args[1:] // Remove the flag from args
+	}
+
+	// Check if first run without ii installed (unless bypassed or just asking for help/list)
+	if !bypassCheck && len(args) > 0 {
+		// Allow help and list without setup check
+		if args[0] != "--help" && args[0] != "-h" && args[0] != "--list" && args[0] != "--list-status" && args[0] != "--current" {
+			if checkFirstRun() {
+				showSetupMessage()
+				return
+			}
+		}
+	} else if !bypassCheck && len(args) == 0 {
+		// Cycling also needs setup
+		if checkFirstRun() {
+			showSetupMessage()
+			return
+		}
+	}
 
 	if len(args) == 1 && (args[0] == "--help" || args[0] == "-h") {
 		help(config)
