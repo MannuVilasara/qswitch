@@ -10,7 +10,7 @@ A utility for switching between QuickShell flavours in Hyprland.
 
 `qswitch` allows you to switch between different QuickShell configurations (flavours) seamlessly. It manages the QS process, updates Hyprland keybinds, and sources flavour-specific keybind files.
 
-**Important:** This tool works only with "end-4" dots installed first as the main dots. You must install the **"ii"** flavour as the default shell, and other shells should be installed at `/etc/xdg/quickshell`.
+**Important:** This tool is designed to work with QuickShell configurations. Ensure your shells are installed at `/etc/xdg/quickshell` or `~/.config/quickshell`.
 
 ## Installation
 
@@ -103,7 +103,7 @@ The tool generates `~/.config/qswitch/qswitch.conf` with the appropriate source 
 
 ### Setup Check
 
-When you first run `qswitch`, it checks if `ii` is installed. If not, it will show a message asking you to contact `@dev_mannu` on Discord for proper setup help.
+When you first run `qswitch`, it will show a message asking you to contact `@dev_mannu` on Discord for proper setup help.
 
 If you know what you're doing, you can bypass this check with:
 

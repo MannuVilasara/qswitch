@@ -38,12 +38,12 @@ func isFlavourInstalled(flavour string) bool {
 	return false
 }
 
-// checkFirstRun checks if ii is not installed and no state file exists
-// Returns true if setup is needed (ii not installed and never run before)
+// checkFirstRun checks if state file exists
+// Returns true if setup is needed (never run before)
 func checkFirstRun() bool {
 	// Skip check if user has already run qswitch before (state file exists)
 	if _, err := os.Stat(stateFile); err == nil {
 		return false
 	}
-	return !isFlavourInstalled("ii")
+	return true
 }

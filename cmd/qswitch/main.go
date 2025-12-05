@@ -30,17 +30,14 @@ Options:
 func showSetupMessage() {
 	fmt.Println(`⚠️  qswitch Setup Required
 
-	It looks like you don't have 'ii' (end-4 dots) installed as your default shell.
+	This appears to be your first time running qswitch.
 
 	This tool requires proper setup to work correctly.
+	please run qswitch exp-setup to set it up.
 
-	📧 Please contact @dev_mannu on Discord to get help setting it up completely.
-   	Do NOT run random commands without proper guidance.
+	After setup, you can run qswitch normally.
 
-	💡 If you know what you're doing, you can bypass this check with:
-   	qswitch --itrustmyself <command>
-
-   Example: qswitch --itrustmyself caelestia`)
+	To bypass this message (not recommended), use the --itrustmyself flag.`)
 }
 
 func main() {
@@ -142,8 +139,14 @@ func main() {
 		return
 	}
 
-	if len(args) == 1 && args[0] == "exp-setup" {
-		setup()
+	if len(args) >= 1 && args[0] == "exp-setup" {
+		force := bypassCheck
+		for _, arg := range args[1:] {
+			if arg == "--force" || arg == "--itrustmyself" {
+				force = true
+			}
+		}
+		setup(force)
 		return
 	}
 

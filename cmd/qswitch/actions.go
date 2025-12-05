@@ -128,13 +128,27 @@ func cycle(config Config) {
 	fmt.Println("No other installed flavours to switch to.")
 }
 
-func setup() {
-	qswitchDir := filepath.Join(os.Getenv("HOME"), ".config", "qswitch")
-	os.MkdirAll(qswitchDir, 0755)
-	keybindsFile := filepath.Join(qswitchDir, "qswitch.conf")
+func setup(force bool) {
+	// Check if state file exists
+	if _, err := os.Stat(stateFile); err == nil && !force {
+		fmt.Println("Setup already completed (state file exists).")
+		return
+	}
+
+	keybindsFile := filepath.Join(os.Getenv("HOME"), ".config", "qswitch", "qswitch.conf")
 	content := "bind=Super+Alt, P, exec, qswitch --panel"
 	os.WriteFile(keybindsFile, []byte(content), 0644)
 	hyprlandFile := filepath.Join(os.Getenv("HOME"), ".config", "hypr", "hyprland.conf")
+
+	// Check if already sourced
+	hyprContent, err := os.ReadFile(hyprlandFile)
+	if err == nil {
+		if strings.Contains(string(hyprContent), "source=~/.config/qswitch/qswitch.conf") {
+			fmt.Println("Setup completed (already sourced)")
+			return
+		}
+	}
+
 	f, err := os.OpenFile(hyprlandFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		fmt.Println("Error opening hyprland.conf:", err)
