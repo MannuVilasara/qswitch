@@ -181,4 +181,3 @@ func main() {
 	applyFlavour(flavour, config)
 	fmt.Println("Switched to", flavour)
 }
-
