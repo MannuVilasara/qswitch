@@ -10,7 +10,8 @@ A utility for switching between QuickShell flavours in Hyprland.
 
 `qswitch` allows you to switch between different QuickShell configurations (flavours) seamlessly. It manages the QS process, updates Hyprland keybinds, and sources flavour-specific keybind files.
 
-**Important:** This tool is designed to work with QuickShell configurations. Ensure your shells are installed at `/etc/xdg/quickshell` or `~/.config/quickshell`.
+It is designed to be flexible and work with any QuickShell configuration installed in standard locations.
+**Important:** Ensure your shells are installed at `/etc/xdg/quickshell` or `~/.config/quickshell`.
 
 ## Installation
 
@@ -44,6 +45,7 @@ You should use the configuration files provided here:
    ```
 
 3. Install system-wide (requires root):
+
    ```bash
    sudo make install
    ```
@@ -94,6 +96,8 @@ The tool generates `~/.config/qswitch/qswitch.conf` with the appropriate source 
 
 - `qswitch`: Cycle to the next flavour
 - `qswitch <flavour>`: Switch to a specific flavour
+- `qswitch exp-setup`: Run the initial setup (creates state file and updates hyprland.conf)
+- `qswitch --switch-keybinds <flavour>`: Switch only the keybinds for a specific flavour
 - `qswitch --help`: Show help
 - `qswitch --list`: List available flavours
 - `qswitch --current`: Show current flavour
@@ -101,14 +105,24 @@ The tool generates `~/.config/qswitch/qswitch.conf` with the appropriate source 
 - `qswitch apply --current`: Re-apply current flavour configuration
 - `qswitch --itrustmyself <command>`: Bypass setup check (use with caution)
 
-### Setup Check
+### Setup
 
-When you first run `qswitch`, it will show a message asking you to contact `@dev_mannu` on Discord for proper setup help.
-
-If you know what you're doing, you can bypass this check with:
+When you first run `qswitch`, it will ask you to run the setup command.
 
 ```bash
-qswitch --itrustmyself caelestia
+qswitch exp-setup
+```
+
+This will:
+
+1. Create the state file `~/.switch_state`.
+2. Create a default `qswitch.conf`.
+3. Append `source=~/.config/qswitch/qswitch.conf` to your `~/.config/hypr/hyprland.conf` (if not already present).
+
+You can force the setup (even if files exist) with:
+
+```bash
+qswitch exp-setup --force
 ```
 
 ### Examples
