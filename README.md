@@ -86,7 +86,7 @@ Configuration is stored in `~/.config/qswitch/config.json`:
 
 Keybind files (e.g., `caelestia.conf`) contain Hyprland keybind definitions.
 
-The tool generates `~/.config/hypr/custom/keybinds.conf` with the appropriate source and bind commands.
+The tool generates `~/.config/qswitch/qswitch.conf` with the appropriate source and bind commands.
 
 ## Usage
 
@@ -133,5 +133,5 @@ Install completions for bash, zsh, or fish by sourcing the files in `completions
 - `~/.switch_state`: Stores the current flavour
 - `~/.config/qswitch/config.json`: Configuration
 - `~/.config/qswitch/keybinds/`: Keybind files
-- `~/.config/hypr/custom/keybinds.conf`: Generated keybinds
+- `~/.config/qswitch/qswitch.conf`: Generated keybinds
 - `/etc/xdg/quickshell/qswitch/QuickSwitchPanel.qml`: Panel QML file

@@ -10,9 +10,9 @@ import (
 
 func applyKeybinds(flavour string, config Config) {
 	// Handle keybinds
-	hyprDir := filepath.Join(os.Getenv("HOME"), ".config", "hypr", "custom")
-	os.MkdirAll(hyprDir, 0755)
-	keybindsFile := filepath.Join(hyprDir, "keybinds.conf")
+	qswitchDir := filepath.Join(os.Getenv("HOME"), ".config", "qswitch")
+	os.MkdirAll(qswitchDir, 0755)
+	keybindsFile := filepath.Join(qswitchDir, "qswitch.conf")
 
 	var contentParts []string
 
@@ -129,9 +129,9 @@ func cycle(config Config) {
 }
 
 func setup() {
-	hyprDir := filepath.Join(os.Getenv("HOME"), ".config", "hypr", "custom")
-	os.MkdirAll(hyprDir, 0755)
-	keybindsFile := filepath.Join(hyprDir, "keybinds.conf")
+	qswitchDir := filepath.Join(os.Getenv("HOME"), ".config", "qswitch")
+	os.MkdirAll(qswitchDir, 0755)
+	keybindsFile := filepath.Join(qswitchDir, "qswitch.conf")
 	content := "bind=Super+Alt, P, exec, qswitch --panel"
 	os.WriteFile(keybindsFile, []byte(content), 0644)
 	hyprlandFile := filepath.Join(os.Getenv("HOME"), ".config", "hypr", "hyprland.conf")
@@ -141,6 +141,6 @@ func setup() {
 		return
 	}
 	defer f.Close()
-	f.WriteString("\nsource=custom/keybinds.conf\n")
+	f.WriteString("\nsource=~/.config/qswitch/qswitch.conf\n")
 	fmt.Println("Setup completed")
 }
