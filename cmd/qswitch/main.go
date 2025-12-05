@@ -28,7 +28,8 @@ Options:
 
 // showSetupMessage displays the setup requirement message
 func showSetupMessage() {
-	fmt.Println(`⚠️  qswitch Setup Required
+	fmt.Println(`
+	⚠️  qswitch Setup Required
 
 	This appears to be your first time running qswitch.
 
@@ -55,7 +56,7 @@ func main() {
 	// Check if first run without ii installed (unless bypassed or just asking for help/list)
 	if !bypassCheck && len(args) > 0 {
 		// Allow help and list without setup check
-		if args[0] != "--help" && args[0] != "-h" && args[0] != "--list" && args[0] != "--list-status" && args[0] != "--current" {
+		if args[0] != "--help" && args[0] != "-h" && args[0] != "--list" && args[0] != "--list-status" && args[0] != "--current" && args[0] != "exp-setup" {
 			if checkFirstRun() {
 				showSetupMessage()
 				return

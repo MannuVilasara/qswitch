@@ -135,6 +135,11 @@ func setup(force bool) {
 		return
 	}
 
+	// Create state file if it doesn't exist
+	if err := os.WriteFile(stateFile, []byte(""), 0644); err != nil {
+		fmt.Printf("Error creating state file: %v\n", err)
+	}
+
 	keybindsFile := filepath.Join(os.Getenv("HOME"), ".config", "qswitch", "qswitch.conf")
 	content := "bind=Super+Alt, P, exec, qswitch --panel"
 	os.WriteFile(keybindsFile, []byte(content), 0644)
