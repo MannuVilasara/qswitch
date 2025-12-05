@@ -23,7 +23,8 @@ It is designed to be flexible and work with any QuickShell configuration install
 
 ### Configuration Files
 
-You should use the configuration files provided here:
+You can find an example configuration in the `example/` directory of this repository.
+Also, you can check my personal configuration here:
 [https://github.com/MannuVilasara/commaflies/tree/main/qswitch/.config/qswitch](https://github.com/MannuVilasara/commaflies/tree/main/qswitch/.config/qswitch)
 
 ### Build and Install
