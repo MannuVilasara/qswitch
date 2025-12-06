@@ -4,18 +4,21 @@ import (
 	"encoding/json"
 	"os"
 	"path/filepath"
+	"slices"
 )
 
 type Config struct {
-	Flavours []string          `json:"flavours"`
-	Keybinds map[string]string `json:"keybinds"`
-	Unbinds  bool              `json:"unbinds"`
+	Flavours     []string          `json:"flavours"`
+	Keybinds     map[string]string `json:"keybinds"`
+	Unbinds      bool              `json:"unbinds"`
+	PanelKeybind string            `json:"panel_keybind"`
 }
 
 var defaultConfig = Config{
-	Flavours: []string{},
-	Keybinds: map[string]string{},
-	Unbinds: false,
+	Flavours:     []string{},
+	Keybinds:     map[string]string{},
+	Unbinds:      false,
+	PanelKeybind: "Super+Alt, P",
 }
 
 func loadConfig() Config {
@@ -46,14 +49,16 @@ func loadConfig() Config {
 		updatedData, _ := json.MarshalIndent(config, "", "  ")
 		os.WriteFile(configPath, updatedData, 0644)
 	}
+
+	if config.PanelKeybind == "" {
+		config.PanelKeybind = defaultConfig.PanelKeybind
+		// Write back updated config
+		updatedData, _ := json.MarshalIndent(config, "", "  ")
+		os.WriteFile(configPath, updatedData, 0644)
+	}
 	return config
 }
 
 func isValidFlavour(name string, config Config) bool {
-	for _, f := range config.Flavours {
-		if f == name {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(config.Flavours, name)
 }

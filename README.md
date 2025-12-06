@@ -79,13 +79,15 @@ Configuration is stored in `~/.config/qswitch/config.json`:
     "ii": "default",
     "caelestia": "caelestia.conf",
     "noctalia": "noctalia.conf"
-  }
+  },
+  "panel_keybind": "Super+Alt, P"
 }
 ```
 
 - **flavours**: List of available flavours.
 - **unbinds**: (Optional) Boolean. If true, sources `~/.config/qswitch/keybinds/unbinds.conf` before applying flavour-specific keybinds (except for "default" flavour). Useful for unbinding keys that might conflict.
 - **keybinds**: Maps each flavour to a keybind file in `~/.config/qswitch/keybinds/`. Use "default" for the base configuration.
+- **panel_keybind**: (Optional) The keybind to open the QuickSwitch panel. Defaults to "Super+Alt, P".
 
 Keybind files (e.g., `caelestia.conf`) contain Hyprland keybind definitions.
 

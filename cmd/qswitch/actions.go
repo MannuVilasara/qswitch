@@ -32,7 +32,7 @@ func applyKeybinds(flavour string, config Config) {
 	}
 
 	// Add QuickSwitchPanel keybind
-	contentParts = append(contentParts, "bind=Super+Alt, P, exec, qswitch --panel")
+	contentParts = append(contentParts, "bind="+config.PanelKeybind+", exec, qswitch --panel")
 
 	content := strings.Join(contentParts, "\n")
 	os.WriteFile(keybindsFile, []byte(content), 0644)
@@ -128,7 +128,7 @@ func cycle(config Config) {
 	fmt.Println("No other installed flavours to switch to.")
 }
 
-func setup(force bool) {
+func setup(config Config, force bool) {
 	// Check if state file exists
 	if _, err := os.Stat(stateFile); err == nil && !force {
 		fmt.Println("Setup already completed (state file exists).")
@@ -141,7 +141,7 @@ func setup(force bool) {
 	}
 
 	keybindsFile := filepath.Join(os.Getenv("HOME"), ".config", "qswitch", "qswitch.conf")
-	content := "bind=Super+Alt, P, exec, qswitch --panel"
+	content := "bind=" + config.PanelKeybind + ", exec, qswitch --panel"
 	os.WriteFile(keybindsFile, []byte(content), 0644)
 	hyprlandFile := filepath.Join(os.Getenv("HOME"), ".config", "hypr", "hyprland.conf")
 

@@ -56,7 +56,7 @@ func main() {
 	// Check if first run without ii installed (unless bypassed or just asking for help/list)
 	if !bypassCheck && len(args) > 0 {
 		// Allow help and list without setup check
-		if args[0] != "--help" && args[0] != "-h" && args[0] != "--list" && args[0] != "--list-status" && args[0] != "--current" && args[0] != "exp-setup" {
+		if args[0] != "--help" && args[0] != "-h" && args[0] != "--list" && args[0] != "--list-status" && args[0] != "--current" && args[0] != "exp-setup" && args[0] != "--reload" {
 			if checkFirstRun() {
 				showSetupMessage()
 				return
@@ -109,6 +109,13 @@ func main() {
 		return
 	}
 
+	if len(args) == 1 && args[0] == "--reload" {
+		current := readState()
+		applyKeybinds(current, config)
+		fmt.Println("Config Reloaded")
+		return
+	}
+
 	if len(args) == 2 && args[0] == "--switch-keybinds" {
 		flavour := args[1]
 		if !isValidFlavour(flavour, config) {
@@ -147,7 +154,7 @@ func main() {
 				force = true
 			}
 		}
-		setup(force)
+		setup(config, force)
 		return
 	}
 
