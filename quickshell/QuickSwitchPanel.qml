@@ -5,6 +5,7 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
 import QtQuick.Effects
+import Qt5Compat.GraphicalEffects
 
 // pragma ComponentBehavior: Bound
 
@@ -269,9 +270,10 @@ Scope {
                         
                         Text {
                             anchors.centerIn: parent
-                            text: "⎋"
+                            text: "×"
                             color: root.cSubtext0
-                            font.pixelSize: 16
+                            font.pixelSize: 18
+                            font.bold: true
                         }
                         
                         MouseArea {
