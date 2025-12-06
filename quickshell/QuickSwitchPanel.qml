@@ -5,7 +5,6 @@ import Quickshell
 import Quickshell.Io
 import Quickshell.Wayland
 import QtQuick.Effects
-import Qt5Compat.GraphicalEffects
 
 // pragma ComponentBehavior: Bound
 
@@ -34,17 +33,18 @@ Scope {
         "caelestia": "#a6e3a1", // Green
         "noctalia": "#a9aefe",  // Noctalia purple
         "aurora": "#fab387",    // Peach
-        "midnight": "#cba6f7",  // Mauve
+        "mannu": "#cba6f7",  // Mauve
         "ocean": "#94e2d5"      // Teal
     }
     property color defaultFlavourColor: "#b4befe"
     
     // Icons path for flavours (empty string means no icon, use color fallback)
-    property string iconsBasePath: "/etc/xdg/quickshell/qswitch/icons/"
+    property string iconsBasePath: Quickshell.shellPath("icons/")
     property var flavourIcons: {
         "ii": "ii.svg",
         "noctalia": "noctalia.svg",
-        "caelestia": "pacman.svg"
+        "caelestia": "pacman.svg",
+        "mannu": "mannu.svg"
     }
     
     // Current running flavour
@@ -168,20 +168,20 @@ Scope {
         WlrLayershell.layer: WlrLayershell.Overlay
 
         // Dim Background with blur-like gradient
-        Rectangle {
-            anchors.fill: parent
-            gradient: Gradient {
-                GradientStop { position: 0.0; color: Qt.alpha(root.cCrust, 0.7) }
-                GradientStop { position: 1.0; color: Qt.alpha(root.cCrust, 0.85) }
-            }
-            z: -2
-        }
+        // Rectangle {
+        //     anchors.fill: parent
+        //     gradient: Gradient {
+        //         GradientStop { position: 0.0; color: Qt.alpha(root.cCrust, 0.7) }
+        //         GradientStop { position: 1.0; color: Qt.alpha(root.cCrust, 0.85) }
+        //     }
+        //     z: -2
+        // }
 
-        MouseArea {
-            anchors.fill: parent
-            // onClicked: Qt.quit()
-            z: -1 
-        }
+        // MouseArea {
+        //     anchors.fill: parent
+        //     // onClicked: Qt.quit()
+        //     z: -1 
+        // }
 
         // 4. The Launcher Visuals
         Rectangle {
