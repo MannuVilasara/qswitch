@@ -13,12 +13,8 @@ type Config struct {
 }
 
 var defaultConfig = Config{
-	Flavours: []string{"ii", "caelestia", "noctalia"},
-	Keybinds: map[string]string{
-		"ii":        "default",
-		"caelestia": "caelestia.conf",
-		"noctalia":  "noctalia.conf",
-	},
+	Flavours: []string{},
+	Keybinds: map[string]string{},
 	Unbinds: false,
 }
 
