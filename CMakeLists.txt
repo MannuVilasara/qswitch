@@ -42,12 +42,27 @@ install(
 )
 
 # -------------------------------
-# Fish completions
+# Shell completions
 # -------------------------------
-# install(
-#     FILES ${CMAKE_SOURCE_DIR}/completions/qswitch.fish
-#     DESTINATION share/fish/vendor_completions.d
-# )
+# Bash
+install(
+    FILES ${CMAKE_SOURCE_DIR}/completions/qswitch.bash
+    DESTINATION share/bash-completion/completions
+    RENAME qswitch
+)
+
+# Zsh
+install(
+    FILES ${CMAKE_SOURCE_DIR}/completions/qswitch.zsh
+    DESTINATION share/zsh/site-functions
+    RENAME _qswitch
+)
+
+# Fish
+install(
+    FILES ${CMAKE_SOURCE_DIR}/completions/qswitch.fish
+    DESTINATION share/fish/vendor_completions.d
+)
 # -------------------------------
 # QuickSwitchPanel QML
 # -------------------------------

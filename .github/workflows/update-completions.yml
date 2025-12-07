@@ -1,0 +1,49 @@
+name: Update Completions
+
+on:
+    workflow_dispatch:
+
+permissions:
+    contents: write
+
+jobs:
+    update-completions:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+              with:
+                  token: ${{ secrets.GITHUB_TOKEN }}
+
+            - name: Set up Go
+              uses: actions/setup-go@v4
+              with:
+                  go-version: "1.21"
+
+            - name: Build qswitch
+              run: go build -o qswitch .
+
+            - name: Generate shell completions
+              run: |
+                  ./qswitch completion bash > completions/qswitch.bash
+                  ./qswitch completion zsh > completions/qswitch.zsh
+                  ./qswitch completion fish > completions/qswitch.fish
+
+            - name: Check for changes
+              id: verify-changed-files
+              run: |
+                  if [ -n "$(git status --porcelain completions/)" ]; then
+                    echo "changed=true" >> $GITHUB_OUTPUT
+                  else
+                    echo "changed=false" >> $GITHUB_OUTPUT
+                  fi
+
+            - name: Commit and push changes
+              if: steps.verify-changed-files.outputs.changed == 'true'
+              run: |
+                  git config --global user.name 'github-actions[bot]'
+                  git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+                  git add completions/
+                  git commit -m "Update shell completions [automated]"
+                  git push
