@@ -11,8 +11,13 @@ import (
 func ApplyKeybinds(flavour string, config Config) {
 	// Handle keybinds
 	qswitchDir := filepath.Join(os.Getenv("HOME"), ".config", "qswitch")
+	qswitchCacheDir := filepath.Join(os.Getenv("HOME"), ".cache", "qswitch")
 	os.MkdirAll(qswitchDir, 0755)
-	keybindsFile := filepath.Join(qswitchDir, "qswitch.conf")
+	if err := os.MkdirAll(qswitchCacheDir, 0755); err != nil {
+		fmt.Printf("Error creating cache directory: %v\n", err)
+		return
+	}
+	keybindsFile := filepath.Join(qswitchCacheDir, "qswitch.conf")
 
 	var contentParts []string
 
@@ -35,7 +40,9 @@ func ApplyKeybinds(flavour string, config Config) {
 	contentParts = append(contentParts, "bind="+config.PanelKeybind+", exec, qswitch panel")
 
 	content := strings.Join(contentParts, "\n")
-	os.WriteFile(keybindsFile, []byte(content), 0644)
+	if err := os.WriteFile(keybindsFile, []byte(content), 0644); err != nil {
+		fmt.Printf("Error writing keybinds file: %v\n", err)
+	}
 }
 
 func ApplyFlavour(flavour string, config Config) {
@@ -140,15 +147,26 @@ func Setup(config Config, force bool) {
 		fmt.Printf("Error creating state file: %v\n", err)
 	}
 
-	keybindsFile := filepath.Join(os.Getenv("HOME"), ".config", "qswitch", "qswitch.conf")
+	// Create cache directory
+	qswitchCacheDir := filepath.Join(os.Getenv("HOME"), ".cache", "qswitch")
+	if err := os.MkdirAll(qswitchCacheDir, 0755); err != nil {
+		fmt.Printf("Error creating cache directory: %v\n", err)
+		return
+	}
+
+	keybindsFile := filepath.Join(qswitchCacheDir, "qswitch.conf")
 	content := "bind=" + config.PanelKeybind + ", exec, qswitch panel"
-	os.WriteFile(keybindsFile, []byte(content), 0644)
+	if err := os.WriteFile(keybindsFile, []byte(content), 0644); err != nil {
+		fmt.Printf("Error creating keybinds file: %v\n", err)
+		return
+	}
 	hyprlandFile := filepath.Join(os.Getenv("HOME"), ".config", "hypr", "hyprland.conf")
 
 	// Check if already sourced
 	hyprContent, err := os.ReadFile(hyprlandFile)
 	if err == nil {
-		if strings.Contains(string(hyprContent), "source=~/.config/qswitch/qswitch.conf") {
+		sourceLine := "source=" + qswitchCacheDir + "/qswitch.conf"
+		if strings.Contains(string(hyprContent), sourceLine) {
 			fmt.Println("Setup completed (already sourced)")
 			return
 		}
@@ -160,6 +178,6 @@ func Setup(config Config, force bool) {
 		return
 	}
 	defer f.Close()
-	f.WriteString("\nsource=~/.config/qswitch/qswitch.conf\n")
+	f.WriteString("\nsource=" + qswitchCacheDir + "/qswitch.conf\n")
 	fmt.Println("Setup completed")
 }

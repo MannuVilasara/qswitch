@@ -14,6 +14,20 @@ add_custom_command(
     OUTPUT ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/qswitch
     COMMAND ${GO_EXECUTABLE} build -o ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/qswitch .
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    DEPENDS 
+        ${CMAKE_SOURCE_DIR}/main.go
+        ${CMAKE_SOURCE_DIR}/cmd/root.go
+        ${CMAKE_SOURCE_DIR}/cmd/list.go
+        ${CMAKE_SOURCE_DIR}/cmd/current.go
+        ${CMAKE_SOURCE_DIR}/cmd/panel.go
+        ${CMAKE_SOURCE_DIR}/cmd/reload.go
+        ${CMAKE_SOURCE_DIR}/cmd/switchKeybinds.go
+        ${CMAKE_SOURCE_DIR}/cmd/apply.go
+        ${CMAKE_SOURCE_DIR}/cmd/expSetup.go
+        ${CMAKE_SOURCE_DIR}/utils/config.go
+        ${CMAKE_SOURCE_DIR}/utils/state.go
+        ${CMAKE_SOURCE_DIR}/utils/actions.go
+        ${CMAKE_SOURCE_DIR}/utils/help.go
     COMMENT "Building qswitch Go binary"
 )
 
