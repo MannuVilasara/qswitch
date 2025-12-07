@@ -44,15 +44,15 @@ install(
 # -------------------------------
 # Fish completions
 # -------------------------------
-install(
-    FILES ${CMAKE_SOURCE_DIR}/completions/qswitch.fish
-    DESTINATION share/fish/vendor_completions.d
-)
+# install(
+#     FILES ${CMAKE_SOURCE_DIR}/completions/qswitch.fish
+#     DESTINATION share/fish/vendor_completions.d
+# )
 # -------------------------------
 # QuickSwitchPanel QML
 # -------------------------------
 install(
-    FILES ${CMAKE_SOURCE_DIR}/quickshell/QuickSwitchPanel.qml
+    FILES ${CMAKE_SOURCE_DIR}/quickshell/shell.qml
     DESTINATION /etc/xdg/quickshell/qswitch/
     PERMISSIONS
         OWNER_READ OWNER_WRITE

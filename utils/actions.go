@@ -65,7 +65,7 @@ func TogglePanel() {
 	}
 
 	// Panel not running, start it
-	cmd := exec.Command("qs", "-p", "/etc/xdg/quickshell/qswitch/QuickSwitchPanel.qml")
+	cmd := exec.Command("qs", "-c", "qswitch")
 	cmd.Start()
 	if cmd.Process != nil {
 		os.WriteFile(panelPidFile, []byte(fmt.Sprintf("%d", cmd.Process.Pid)), 0644)
