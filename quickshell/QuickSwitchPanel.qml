@@ -69,7 +69,7 @@ Scope {
     // Process to get current running flavour
     Process {
         id: currentFlavourLoader
-        command: ["qswitch", "--current"]
+        command: ["qswitch", "current"]
         stdout: SplitParser {
             onRead: data => {
                 root.currentFlavour = data.trim()
@@ -80,7 +80,7 @@ Scope {
     // Process to get flavours from config with install status
     Process {
         id: flavourLoader
-        command: ["qswitch", "--list-status"]
+        command: ["qswitch", "list", "--status"]
         stdout: SplitParser {
             onRead: data => {
                 var trimmed = data.trim()
@@ -117,7 +117,7 @@ Scope {
     }
 
     function setFlavour(flavour) {
-        switcher.command = ["qswitch", flavour]
+        switcher.command = ["qswitch", "apply", flavour]
         switcher.running = true
         // Qt.quit() 
     }
