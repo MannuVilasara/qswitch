@@ -1,0 +1,36 @@
+# Maintainer: Manpreet Singh <mannuvilasara@gmail.com>
+pkgname=qswitch-git
+pkgver=r43.2dd3549
+pkgrel=1
+pkgdesc="A utility for switching between QuickShell flavours in Hyprland"
+arch=('x86_64')
+url="https://github.com/MannuVilasara/qswitch"
+license=('GPL-3.0')
+depends=('glibc')
+makedepends=('go' 'git')
+optdepends=('quickshell: for the shell configurations')
+provides=('qswitch')
+conflicts=('qswitch')
+source=('git+https://github.com/MannuVilasara/qswitch.git')
+sha256sums=('SKIP')
+
+pkgver() {
+    cd "qswitch"
+    printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+    cd "qswitch"
+    go build -o qswitch .
+}
+
+package() {
+    cd "qswitch"
+    install -Dm755 qswitch "$pkgdir/usr/bin/qswitch"
+    install -Dm644 man/qswitch.1 "$pkgdir/usr/share/man/man1/qswitch.1"
+    install -Dm644 completions/qswitch.bash "$pkgdir/usr/share/bash-completion/completions/qswitch"
+    install -Dm644 completions/qswitch.zsh "$pkgdir/usr/share/zsh/site-functions/_qswitch"
+    install -Dm644 completions/qswitch.fish "$pkgdir/usr/share/fish/vendor_completions.d/qswitch.fish"
+    install -Dm644 example/config.json "$pkgdir/usr/share/doc/qswitch/config.json"
+    install -Dm644 README.md "$pkgdir/usr/share/doc/qswitch/README.md"
+}

@@ -2,3 +2,5 @@ build
 .qmlls.ini
 .archive
 qswitch
+AUR/qswitch*
+AUR/pkg
