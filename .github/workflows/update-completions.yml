@@ -31,9 +31,9 @@ jobs:
 
             - name: Generate shell completions
               run: |
-                  ./qswitch completion --itrusthmyself bash > completions/qswitch.bash
-                  ./qswitch completion --itrusthmyself zsh > completions/qswitch.zsh
-                  ./qswitch completion --itrusthmyself fish > completions/qswitch.fish
+                  ./qswitch completion --itrustmyself bash > completions/qswitch.bash
+                  ./qswitch completion --itrustmyself zsh > completions/qswitch.zsh
+                  ./qswitch completion --itrustmyself fish > completions/qswitch.fish
 
             - name: Check for changes
               id: verify-changed-files
