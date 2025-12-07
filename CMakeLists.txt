@@ -24,10 +24,12 @@ add_custom_command(
         ${CMAKE_SOURCE_DIR}/cmd/switchKeybinds.go
         ${CMAKE_SOURCE_DIR}/cmd/apply.go
         ${CMAKE_SOURCE_DIR}/cmd/expSetup.go
+        ${CMAKE_SOURCE_DIR}/cmd/autofix.go
         ${CMAKE_SOURCE_DIR}/utils/config.go
         ${CMAKE_SOURCE_DIR}/utils/state.go
         ${CMAKE_SOURCE_DIR}/utils/actions.go
         ${CMAKE_SOURCE_DIR}/utils/help.go
+        ${CMAKE_SOURCE_DIR}/utils/autofix.go
     COMMENT "Building qswitch Go binary"
 )
 
