@@ -1,6 +1,11 @@
 name: Update Completions
 
 on:
+    push:
+        branches:
+            - main
+        paths:
+            - "cmd/**"
     workflow_dispatch:
 
 permissions:
@@ -26,9 +31,9 @@ jobs:
 
             - name: Generate shell completions
               run: |
-                  ./qswitch completion bash > completions/qswitch.bash
-                  ./qswitch completion zsh > completions/qswitch.zsh
-                  ./qswitch completion fish > completions/qswitch.fish
+                  ./qswitch completion --itrusthmyself bash > completions/qswitch.bash
+                  ./qswitch completion --itrusthmyself zsh > completions/qswitch.zsh
+                  ./qswitch completion --itrusthmyself fish > completions/qswitch.fish
 
             - name: Check for changes
               id: verify-changed-files
