@@ -48,6 +48,7 @@ func ApplyKeybinds(flavour string, config Config) {
 func ApplyFlavour(flavour string, config Config) {
 	// kill old qs
 	exec.Command("pkill", "-x", "qs").Run()
+	exec.Command("caelestia", "shell", "-k").Run()
 
 	// start new one
 	exec.Command("hyprctl", "dispatch", "exec", "qs -c "+flavour).Run()
