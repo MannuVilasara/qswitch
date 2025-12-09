@@ -33,7 +33,9 @@ func ApplyAutofix() {
 
 	// Check if Hyprland config file exists
 	if !hyprlandExists {
-		fmt.Println("Hyprland configuration file not found. Please ensure Hyprland is installed and configured correctly.")
+		fmt.Println(
+			"Hyprland configuration file not found. Please ensure Hyprland is installed and configured correctly.",
+		)
 		return
 	} else {
 		fmt.Println("Hyprland configuration file found.")
@@ -94,7 +96,10 @@ func ApplyAutofix() {
 	updatedContent := string(hyprcontent)
 	for _, wrongLine := range wrongSourceLines {
 		if strings.Contains(updatedContent, wrongLine) {
-			fmt.Printf("Incorrect QSwitch source line found in Hyprland config: %s. Removing it now...\n", wrongLine)
+			fmt.Printf(
+				"Incorrect QSwitch source line found in Hyprland config: %s. Removing it now...\n",
+				wrongLine,
+			)
 			updatedContent = strings.ReplaceAll(updatedContent, wrongLine+"\n", "")
 			updatedContent = strings.ReplaceAll(updatedContent, wrongLine, "")
 		}

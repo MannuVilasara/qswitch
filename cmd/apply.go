@@ -21,16 +21,22 @@ var applyCmd = &cobra.Command{
 		currentFlag, _ := cmd.Flags().GetBool("current")
 		if currentFlag {
 			currentFlavour := utils.ReadState()
-			if utils.IsValidFlavour(currentFlavour, config) {
-				utils.ApplyFlavour(currentFlavour, config)
-				fmt.Println("Applied current flavour:", currentFlavour)
-			} else {
+			if !utils.IsValidFlavour(currentFlavour, config) {
 				fmt.Println("No valid current flavour set.")
+				return
 			}
+			if currentFlavour == "" {
+				fmt.Println("No flavour is currently set.")
+				return
+			}
+			utils.ApplyFlavour(currentFlavour, config)
+			fmt.Println("Applied current flavour:", currentFlavour)
 			return
 		}
 		if len(args) != 1 {
-			fmt.Println("Invalid usage. Use 'qswitch apply <flavour>' or 'qswitch apply --current'.")
+			fmt.Println(
+				"Invalid usage. Use 'qswitch apply <flavour>' or 'qswitch apply --current'.",
+			)
 			return
 		}
 		flavour := args[0]

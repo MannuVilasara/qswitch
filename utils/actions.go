@@ -23,7 +23,13 @@ func ApplyKeybinds(flavour string, config Config) {
 
 	// Check for unbinds if enabled
 	if config.Unbinds && config.Keybinds[flavour] != "default" {
-		unbindsPath := filepath.Join(os.Getenv("HOME"), ".config", "qswitch", "keybinds", "unbinds.conf")
+		unbindsPath := filepath.Join(
+			os.Getenv("HOME"),
+			".config",
+			"qswitch",
+			"keybinds",
+			"unbinds.conf",
+		)
 		if _, err := os.Stat(unbindsPath); err == nil {
 			contentParts = append(contentParts, "source="+unbindsPath)
 		}
