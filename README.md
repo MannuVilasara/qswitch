@@ -6,6 +6,8 @@ A utility for switching between QuickShell flavours in Hyprland.
 
 **First of all, DM me on Discord `@dev_mannu` if you want to use this and don't understand how to make it work.**
 
+> NOTE: So far I only suggest using them with ii, caelestia & noctalia. it might not work with all
+
 ## Description
 
 `qswitch` allows you to switch between different QuickShell configurations (flavours) seamlessly. It manages the QS process, updates Hyprland keybinds, and sources flavour-specific keybind files.
@@ -58,7 +60,7 @@ This installs:
 - The `qswitch` binary to `/usr/local/bin`
 - Man page to `/usr/local/share/man/man1`
 - Shell completions to appropriate directories
-- QuickSwitchPanel.qml to `/etc/xdg/quickshell/qswitch/`
+- shell.qml to `/etc/xdg/quickshell/qswitch/`
 
 #### Option 2: Go Build
 
@@ -191,4 +193,4 @@ Install completions for bash, zsh, or fish by sourcing the files in `completions
 - `~/.config/qswitch/config.json`: Configuration
 - `~/.config/qswitch/keybinds/`: Keybind files
 - `~/.cache/qswitch/qswitch.conf`: Generated keybinds (sourced in hyprland.conf)
-- `/etc/xdg/quickshell/qswitch/QuickSwitchPanel.qml`: Panel QML file
+- `/etc/xdg/quickshell/qswitch/shell.qml`: Panel QML file
