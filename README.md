@@ -18,7 +18,7 @@ It is designed to be flexible and work with any QuickShell configuration install
 ### Prerequisites
 
 - Go 1.25.4 or later
-- CMake 3.15 or later
+- CMake 3.15 or later (optional, for CMake build)
 - Hyprland and QuickShell installed
 
 ### Configuration Files
@@ -28,6 +28,8 @@ Also, you can check my personal configuration here:
 [https://github.com/MannuVilasara/commaflies/tree/main/qswitch/.config/qswitch](https://github.com/MannuVilasara/commaflies/tree/main/qswitch/.config/qswitch)
 
 ### Build and Install
+
+#### Option 1: CMake Build (Recommended)
 
 1. Clone the repository:
 
@@ -58,7 +60,29 @@ This installs:
 - Shell completions to appropriate directories
 - QuickSwitchPanel.qml to `/etc/xdg/quickshell/qswitch/`
 
-### Uninstall
+#### Option 2: Go Build
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/MannuVilasara/qswitch.git
+   cd qswitch
+   ```
+
+2. Build and install:
+
+   ```bash
+   go build -o qswitch .
+   sudo cp qswitch /usr/local/bin/
+   sudo cp man/qswitch.1 /usr/local/share/man/man1/
+   sudo cp completions/qswitch.bash /usr/share/bash-completion/completions/qswitch
+   sudo cp completions/qswitch.zsh /usr/share/zsh/site-functions/_qswitch
+   sudo cp completions/qswitch.fish /usr/share/fish/vendor_completions.d/qswitch.fish
+   sudo mkdir -p /etc/xdg/quickshell/qswitch
+   sudo cp  -r quickshell/* /etc/xdg/quickshell/qswitch
+   ```
+
+### Uninstall (CMake)
 
 To uninstall the project:
 
@@ -91,26 +115,26 @@ Configuration is stored in `~/.config/qswitch/config.json`:
 
 Keybind files (e.g., `caelestia.conf`) contain Hyprland keybind definitions.
 
-The tool generates `~/.config/qswitch/qswitch.conf` with the appropriate source and bind commands.
+The tool generates `~/.cache/qswitch/qswitch.conf` with the appropriate source and bind commands, and sources it in `~/.config/hypr/hyprland.conf`.
 
 ## Usage
 
 ### Commands
 
-- `qswitch`: Cycle to the next flavour
-- `qswitch <flavour>`: Switch to a specific flavour
-- `qswitch exp-setup`: Run the initial setup (creates state file and updates hyprland.conf)
-- `qswitch --switch-keybinds <flavour>`: Switch only the keybinds for a specific flavour
-- `qswitch --help`: Show help
-- `qswitch --list`: List available flavours
-- `qswitch --current`: Show current flavour
-- `qswitch --panel`: Toggle the quick switch panel
+- `qswitch`: Cycle to the next flavour (runs autofix if needed)
+- `qswitch apply <flavour>`: Switch to a specific flavour
 - `qswitch apply --current`: Re-apply current flavour configuration
-- `qswitch --itrustmyself <command>`: Bypass setup check (use with caution)
+- `qswitch list`: List available flavours (use `--status` for JSON output)
+- `qswitch current`: Show current flavour
+- `qswitch panel`: Toggle the quick switch panel
+- `qswitch reload`: Reload keybinds
+- `qswitch switch-keybinds <flavour>`: Switch only the keybinds for a specific flavour
+- `qswitch exp-setup`: Run the initial setup (creates directories, state file, and updates hyprland.conf with autofix)
+- `qswitch --help`: Show help
 
 ### Setup
 
-When you first run `qswitch`, it will ask you to run the setup command.
+When you first run `qswitch`, it will check for setup and run autofix if needed.
 
 ```bash
 qswitch exp-setup
@@ -118,15 +142,19 @@ qswitch exp-setup
 
 This will:
 
-1. Create the state file `~/.switch_state`.
-2. Create a default `qswitch.conf`.
-3. Append `source=~/.config/qswitch/qswitch.conf` to your `~/.config/hypr/hyprland.conf` (if not already present).
+1. Create necessary directories (`~/.config/qswitch`, `~/.cache/qswitch`)
+2. Create the state file `~/.switch_state`
+3. Generate a default `~/.config/qswitch/qswitch.conf`
+4. Append `source=~/.cache/qswitch/qswitch.conf` to your `~/.config/hypr/hyprland.conf` (if not already present)
+5. Remove any incorrect source lines (e.g., from old cache paths)
 
 You can force the setup (even if files exist) with:
 
 ```bash
 qswitch exp-setup --force
 ```
+
+The autofix feature automatically detects and fixes common configuration issues.
 
 ### Examples
 
@@ -135,10 +163,22 @@ qswitch exp-setup --force
 qswitch
 
 # Switch to caelestia
-qswitch caelestia
+qswitch apply caelestia
+
+# Re-apply current flavour
+qswitch apply --current
 
 # List flavours
-qswitch --list
+qswitch list
+
+# Show current flavour
+qswitch current
+
+# Toggle panel
+qswitch panel
+
+# Reload keybinds
+qswitch reload
 ```
 
 ### Shell Completions
@@ -150,5 +190,5 @@ Install completions for bash, zsh, or fish by sourcing the files in `completions
 - `~/.switch_state`: Stores the current flavour
 - `~/.config/qswitch/config.json`: Configuration
 - `~/.config/qswitch/keybinds/`: Keybind files
-- `~/.config/qswitch/qswitch.conf`: Generated keybinds
+- `~/.cache/qswitch/qswitch.conf`: Generated keybinds (sourced in hyprland.conf)
 - `/etc/xdg/quickshell/qswitch/QuickSwitchPanel.qml`: Panel QML file
