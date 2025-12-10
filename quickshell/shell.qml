@@ -29,40 +29,46 @@ Scope {
 
     // Default colors for flavours (can be extended)
     property var flavourColors: {
-        "ii": "#51debd",        // II green
-        "caelestia": "#a6e3a1", // Green
-        "noctalia": "#a9aefe",  // Noctalia purple
-        "aurora": "#fab387",    // Peach
-        "mannu": "#cba6f7",  // Mauve
+        "ii": "#51debd"        // II green
+        ,
+        "caelestia": "#a6e3a1" // Green
+        ,
+        "noctalia-shell": "#a9aefe"  // Noctalia purple
+        ,
+        "aurora": "#fab387"    // Peach
+        ,
+        "mannu": "#cba6f7"  // Mauve
+        ,
         "ocean": "#94e2d5"      // Teal
     }
     property color defaultFlavourColor: "#b4befe"
-    
+
     // Icons path for flavours (empty string means no icon, use color fallback)
     property string iconsBasePath: Quickshell.shellPath("icons/")
     property var flavourIcons: {
         "ii": "ii.svg",
-        "noctalia": "noctalia.svg",
+        "noctalia-shell": "noctalia.svg",
         "caelestia": "pacman.svg",
         "mannu": "mannu.svg"
     }
-    
+
     // Current running flavour
     property string currentFlavour: ""
-    
+
     // Map of flavour install status
     property var flavourInstallStatus: ({})
 
     // 1. Process Handler (Logic Unchanged)
     Process {
         id: switcher
-        command: [] 
+        command: []
         onRunningChanged: {
-            if (running) console.log("Executing switch command...")
+            if (running)
+                console.log("Executing switch command...");
         }
         onExited: {
             // Refresh current flavour after switching
-            currentFlavourLoader.running = true
+            currentFlavourLoader.running = true;
         }
     }
 
@@ -72,7 +78,7 @@ Scope {
         command: ["qswitch", "current"]
         stdout: SplitParser {
             onRead: data => {
-                root.currentFlavour = data.trim()
+                root.currentFlavour = data.trim();
             }
         }
     }
@@ -83,59 +89,59 @@ Scope {
         command: ["qswitch", "list", "--status"]
         stdout: SplitParser {
             onRead: data => {
-                var trimmed = data.trim()
+                var trimmed = data.trim();
                 if (trimmed !== "" && trimmed.startsWith("[")) {
                     try {
-                        var flavours = JSON.parse(trimmed)
+                        var flavours = JSON.parse(trimmed);
                         for (var i = 0; i < flavours.length; i++) {
-                            var f = flavours[i]
-                            var flavourId = f.name
-                            var installed = f.installed
-                            var color = root.flavourColors[flavourId] || root.defaultFlavourColor
-                            var name = flavourId.charAt(0).toUpperCase() + flavourId.slice(1)
-                            
+                            var f = flavours[i];
+                            var flavourId = f.name;
+                            var installed = f.installed;
+                            var color = root.flavourColors[flavourId] || root.defaultFlavourColor;
+                            var name = flavourId.charAt(0).toUpperCase() + flavourId.slice(1);
+
                             // Store install status
-                            root.flavourInstallStatus[flavourId] = installed
-                            
+                            root.flavourInstallStatus[flavourId] = installed;
+
                             masterModel.append({
                                 "name": name,
                                 "flavourId": flavourId,
                                 "color": color,
                                 "desc": name + " Theme",
                                 "installed": installed
-                            })
+                            });
                         }
                     } catch (e) {
-                        console.log("Failed to parse flavour status JSON:", e)
+                        console.log("Failed to parse flavour status JSON:", e);
                     }
                 }
             }
         }
         onExited: {
-            root.updateFilter()
+            root.updateFilter();
         }
     }
 
     function setFlavour(flavour) {
-        switcher.command = ["qswitch", "apply", flavour]
-        switcher.running = true
-        // Qt.quit() 
+        switcher.command = ["qswitch", "apply", flavour];
+        switcher.running = true;
+    // Qt.quit()
     }
 
     // --- FILTER LOGIC (Logic Unchanged) ---
     function updateFilter() {
-        var searchTerm = searchField.text.toLowerCase()
-        displayModel.clear()
+        var searchTerm = searchField.text.toLowerCase();
+        displayModel.clear();
 
         for (var i = 0; i < masterModel.count; i++) {
-            var item = masterModel.get(i)
+            var item = masterModel.get(i);
             if (searchTerm === "" || item.name.toLowerCase().includes(searchTerm) || item.desc.toLowerCase().includes(searchTerm)) {
-                displayModel.append(item)
+                displayModel.append(item);
             }
         }
-        
+
         if (displayModel.count > 0) {
-            flavorList.currentIndex = 0
+            flavorList.currentIndex = 0;
         }
     }
 
@@ -150,8 +156,8 @@ Scope {
     }
 
     Component.onCompleted: {
-        currentFlavourLoader.running = true
-        flavourLoader.running = true
+        currentFlavourLoader.running = true;
+        flavourLoader.running = true;
     }
 
     // 3. Window Setup
@@ -180,7 +186,7 @@ Scope {
         // MouseArea {
         //     anchors.fill: parent
         //     // onClicked: Qt.quit()
-        //     z: -1 
+        //     z: -1
         // }
 
         // 4. The Launcher Visuals
@@ -209,8 +215,23 @@ Scope {
             // Enhanced Entry Animation
             ParallelAnimation {
                 running: true
-                NumberAnimation { target: menuRoot; property: "scale"; from: 0.92; to: 1.0; duration: 300; easing.type: Easing.OutBack; easing.overshoot: 1.2 }
-                NumberAnimation { target: menuRoot; property: "opacity"; from: 0; to: 1.0; duration: 250; easing.type: Easing.OutQuart }
+                NumberAnimation {
+                    target: menuRoot
+                    property: "scale"
+                    from: 0.92
+                    to: 1.0
+                    duration: 300
+                    easing.type: Easing.OutBack
+                    easing.overshoot: 1.2
+                }
+                NumberAnimation {
+                    target: menuRoot
+                    property: "opacity"
+                    from: 0
+                    to: 1.0
+                    duration: 250
+                    easing.type: Easing.OutQuart
+                }
             }
 
             ColumnLayout {
@@ -223,14 +244,14 @@ Scope {
                     Layout.fillWidth: true
                     Layout.preferredHeight: 48
                     spacing: 14
-                    
+
                     // Arch Linux Logo
                     Rectangle {
                         Layout.preferredWidth: 42
                         Layout.preferredHeight: 42
                         radius: 12
                         color: Qt.alpha(root.cSurface0, 0.5)
-                        
+
                         Image {
                             anchors.centerIn: parent
                             width: 32
@@ -240,11 +261,11 @@ Scope {
                             smooth: true
                         }
                     }
-                    
+
                     Column {
                         spacing: 4
                         Layout.alignment: Qt.AlignVCenter
-                        
+
                         Text {
                             text: "QuickSwitch"
                             color: root.cText
@@ -259,7 +280,9 @@ Scope {
                         }
                     }
 
-                    Item { Layout.fillWidth: true }
+                    Item {
+                        Layout.fillWidth: true
+                    }
 
                     // Close hint
                     Rectangle {
@@ -267,7 +290,7 @@ Scope {
                         Layout.preferredHeight: 32
                         radius: 8
                         color: root.cSurface0
-                        
+
                         Text {
                             anchors.centerIn: parent
                             text: "×"
@@ -275,7 +298,7 @@ Scope {
                             font.pixelSize: 18
                             font.bold: true
                         }
-                        
+
                         MouseArea {
                             anchors.fill: parent
                             hoverEnabled: true
@@ -301,7 +324,7 @@ Scope {
                     Layout.minimumHeight: 200
                     clip: true
                     spacing: 10
-                    currentIndex: 0 
+                    currentIndex: 0
 
                     model: displayModel
 
@@ -324,12 +347,28 @@ Scope {
 
                     add: Transition {
                         ParallelAnimation {
-                            NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 250; easing.type: Easing.OutQuart }
-                            NumberAnimation { property: "x"; from: -30; to: 0; duration: 300; easing.type: Easing.OutBack }
+                            NumberAnimation {
+                                property: "opacity"
+                                from: 0
+                                to: 1.0
+                                duration: 250
+                                easing.type: Easing.OutQuart
+                            }
+                            NumberAnimation {
+                                property: "x"
+                                from: -30
+                                to: 0
+                                duration: 300
+                                easing.type: Easing.OutBack
+                            }
                         }
                     }
                     displaced: Transition {
-                        NumberAnimation { properties: "y"; duration: 200; easing.type: Easing.OutQuart }
+                        NumberAnimation {
+                            properties: "y"
+                            duration: 200
+                            easing.type: Easing.OutQuart
+                        }
                     }
 
                     delegate: Rectangle {
@@ -337,7 +376,7 @@ Scope {
                         width: ListView.view.width
                         height: 72
                         radius: 14
-                        
+
                         property bool isSelected: ListView.isCurrentItem
                         property bool isHovered: mouseArea.containsMouse
                         property color itemColor: model.color
@@ -347,19 +386,32 @@ Scope {
                         property bool isInstalled: model.installed !== undefined ? model.installed : true
 
                         color: {
-                            if (!isInstalled) return Qt.alpha("#f38ba8", 0.1)  // Red tint for not installed
-                            if (isActive) return Qt.alpha(itemColor, 0.25)
-                            if (isSelected) return Qt.alpha(itemColor, 0.15)
-                            if (isHovered) return Qt.alpha(root.cSurface0, 0.6)
-                            return "transparent"
+                            if (!isInstalled)
+                                return Qt.alpha("#f38ba8", 0.1);  // Red tint for not installed
+                            if (isActive)
+                                return Qt.alpha(itemColor, 0.25);
+                            if (isSelected)
+                                return Qt.alpha(itemColor, 0.15);
+                            if (isHovered)
+                                return Qt.alpha(root.cSurface0, 0.6);
+                            return "transparent";
                         }
-                        
-                        Behavior on color { ColorAnimation { duration: 180; easing.type: Easing.OutQuart } }
+
+                        Behavior on color {
+                            ColorAnimation {
+                                duration: 180
+                                easing.type: Easing.OutQuart
+                            }
+                        }
 
                         border.color: isActive ? Qt.alpha(itemColor, 0.6) : (isSelected ? Qt.alpha(itemColor, 0.4) : "transparent")
                         border.width: isActive ? 2 : (isSelected ? 2 : 0)
-                        
-                        Behavior on border.width { NumberAnimation { duration: 150 } }
+
+                        Behavior on border.width {
+                            NumberAnimation {
+                                duration: 150
+                            }
+                        }
 
                         // Glow effect for selected item
                         Rectangle {
@@ -371,8 +423,12 @@ Scope {
                             border.color: Qt.alpha(listDelegate.itemColor, listDelegate.isActive ? 0.3 : 0.2)
                             border.width: 4
                             z: -1
-                            
-                            Behavior on opacity { NumberAnimation { duration: 200 } }
+
+                            Behavior on opacity {
+                                NumberAnimation {
+                                    duration: 200
+                                }
+                            }
                         }
 
                         RowLayout {
@@ -400,8 +456,13 @@ Scope {
                                     visible: listDelegate.hasIcon
                                     fillMode: Image.PreserveAspectFit
                                     smooth: true
-                                    
-                                    Behavior on width { NumberAnimation { duration: 200; easing.type: Easing.OutBack } }
+
+                                    Behavior on width {
+                                        NumberAnimation {
+                                            duration: 200
+                                            easing.type: Easing.OutBack
+                                        }
+                                    }
                                 }
 
                                 // Color fallback (shown when no icon)
@@ -411,30 +472,57 @@ Scope {
                                     height: width
                                     radius: 8
                                     visible: !listDelegate.hasIcon
-                                    
+
                                     gradient: Gradient {
                                         orientation: Gradient.Vertical
-                                        GradientStop { position: 0.0; color: Qt.lighter(listDelegate.itemColor, 1.2) }
-                                        GradientStop { position: 1.0; color: listDelegate.itemColor }
+                                        GradientStop {
+                                            position: 0.0
+                                            color: Qt.lighter(listDelegate.itemColor, 1.2)
+                                        }
+                                        GradientStop {
+                                            position: 1.0
+                                            color: listDelegate.itemColor
+                                        }
                                     }
-                                    
-                                    Behavior on width { NumberAnimation { duration: 200; easing.type: Easing.OutBack } }
-                                    
+
+                                    Behavior on width {
+                                        NumberAnimation {
+                                            duration: 200
+                                            easing.type: Easing.OutBack
+                                        }
+                                    }
+
                                     // Pulse animation for selected
                                     SequentialAnimation on scale {
                                         running: listDelegate.isSelected && !listDelegate.hasIcon
                                         loops: Animation.Infinite
-                                        NumberAnimation { to: 1.1; duration: 800; easing.type: Easing.InOutQuad }
-                                        NumberAnimation { to: 1.0; duration: 800; easing.type: Easing.InOutQuad }
+                                        NumberAnimation {
+                                            to: 1.1
+                                            duration: 800
+                                            easing.type: Easing.InOutQuad
+                                        }
+                                        NumberAnimation {
+                                            to: 1.0
+                                            duration: 800
+                                            easing.type: Easing.InOutQuad
+                                        }
                                     }
                                 }
-                                
+
                                 // Pulse animation for icon
                                 SequentialAnimation on scale {
                                     running: listDelegate.isSelected && listDelegate.hasIcon
                                     loops: Animation.Infinite
-                                    NumberAnimation { to: 1.05; duration: 800; easing.type: Easing.InOutQuad }
-                                    NumberAnimation { to: 1.0; duration: 800; easing.type: Easing.InOutQuad }
+                                    NumberAnimation {
+                                        to: 1.05
+                                        duration: 800
+                                        easing.type: Easing.InOutQuad
+                                    }
+                                    NumberAnimation {
+                                        to: 1.0
+                                        duration: 800
+                                        easing.type: Easing.InOutQuad
+                                    }
                                 }
                             }
 
@@ -443,20 +531,24 @@ Scope {
                                 Layout.fillWidth: true
                                 Layout.alignment: Qt.AlignVCenter
                                 spacing: 6
-                                
+
                                 RowLayout {
                                     spacing: 8
-                                    
+
                                     Text {
                                         text: model.name
                                         color: listDelegate.isActive ? root.cText : (listDelegate.isSelected ? root.cText : root.cSubtext1)
                                         font.pixelSize: 16
                                         font.bold: true
                                         font.letterSpacing: 0.3
-                                        
-                                        Behavior on color { ColorAnimation { duration: 150 } }
+
+                                        Behavior on color {
+                                            ColorAnimation {
+                                                duration: 150
+                                            }
+                                        }
                                     }
-                                    
+
                                     // Active badge
                                     Rectangle {
                                         visible: listDelegate.isActive && listDelegate.isInstalled
@@ -466,7 +558,7 @@ Scope {
                                         color: Qt.alpha(listDelegate.itemColor, 0.3)
                                         border.color: Qt.alpha(listDelegate.itemColor, 0.5)
                                         border.width: 1
-                                        
+
                                         Text {
                                             id: activeLabel
                                             anchors.centerIn: parent
@@ -477,7 +569,7 @@ Scope {
                                             font.letterSpacing: 0.5
                                         }
                                     }
-                                    
+
                                     // Not Installed badge (red)
                                     Rectangle {
                                         visible: !listDelegate.isInstalled
@@ -487,7 +579,7 @@ Scope {
                                         color: Qt.alpha("#f38ba8", 0.3)
                                         border.color: Qt.alpha("#f38ba8", 0.5)
                                         border.width: 1
-                                        
+
                                         Text {
                                             id: notInstalledLabel
                                             anchors.centerIn: parent
@@ -499,14 +591,18 @@ Scope {
                                         }
                                     }
                                 }
-                                
+
                                 Text {
                                     text: model.desc
                                     color: root.cSubtext0
                                     font.pixelSize: 13
                                     opacity: listDelegate.isSelected || listDelegate.isActive ? 0.9 : 0.7
-                                    
-                                    Behavior on opacity { NumberAnimation { duration: 150 } }
+
+                                    Behavior on opacity {
+                                        NumberAnimation {
+                                            duration: 150
+                                        }
+                                    }
                                 }
                             }
 
@@ -517,18 +613,30 @@ Scope {
                                 radius: 10
                                 color: listDelegate.isActive ? Qt.alpha(listDelegate.itemColor, 0.3) : (listDelegate.isSelected ? Qt.alpha(listDelegate.itemColor, 0.2) : "transparent")
                                 opacity: listDelegate.isSelected || listDelegate.isHovered || listDelegate.isActive ? 1 : 0
-                                
-                                Behavior on opacity { NumberAnimation { duration: 150 } }
-                                Behavior on color { ColorAnimation { duration: 150 } }
-                                
+
+                                Behavior on opacity {
+                                    NumberAnimation {
+                                        duration: 150
+                                    }
+                                }
+                                Behavior on color {
+                                    ColorAnimation {
+                                        duration: 150
+                                    }
+                                }
+
                                 Text {
                                     anchors.centerIn: parent
                                     text: listDelegate.isActive ? "✓" : "→"
                                     color: listDelegate.isActive ? listDelegate.itemColor : (listDelegate.isSelected ? listDelegate.itemColor : root.cSubtext0)
                                     font.pixelSize: listDelegate.isActive ? 16 : 18
                                     font.bold: true
-                                    
-                                    Behavior on color { ColorAnimation { duration: 150 } }
+
+                                    Behavior on color {
+                                        ColorAnimation {
+                                            duration: 150
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -539,9 +647,10 @@ Scope {
                             hoverEnabled: true
                             cursorShape: listDelegate.isInstalled ? Qt.PointingHandCursor : Qt.ForbiddenCursor
                             onClicked: {
-                                if (!listDelegate.isInstalled) return
-                                flavorList.currentIndex = index
-                                root.setFlavour(model.flavourId)
+                                if (!listDelegate.isInstalled)
+                                    return;
+                                flavorList.currentIndex = index;
+                                root.setFlavour(model.flavourId);
                             }
                         }
                     }
@@ -553,12 +662,20 @@ Scope {
                     Layout.preferredHeight: 52
                     color: root.cMantle
                     radius: 14
-                    
+
                     border.color: searchField.activeFocus ? root.cLavender : root.cSurface0
                     border.width: searchField.activeFocus ? 2 : 1
-                    
-                    Behavior on border.color { ColorAnimation { duration: 200 } }
-                    Behavior on border.width { NumberAnimation { duration: 150 } }
+
+                    Behavior on border.color {
+                        ColorAnimation {
+                            duration: 200
+                        }
+                    }
+                    Behavior on border.width {
+                        NumberAnimation {
+                            duration: 150
+                        }
+                    }
 
                     RowLayout {
                         anchors.fill: parent
@@ -571,8 +688,12 @@ Scope {
                             color: searchField.activeFocus ? root.cLavender : root.cOverlay0
                             font.pixelSize: 20
                             font.bold: true
-                            
-                            Behavior on color { ColorAnimation { duration: 200 } }
+
+                            Behavior on color {
+                                ColorAnimation {
+                                    duration: 200
+                                }
+                            }
                         }
 
                         TextField {
@@ -586,21 +707,23 @@ Scope {
                             selectionColor: root.cLavender
                             placeholderText: 'Search themes...'
                             placeholderTextColor: root.cOverlay0
-                            focus: true 
+                            focus: true
                             topPadding: 0
                             bottomPadding: 0
 
                             onTextChanged: root.updateFilter()
 
                             Component.onCompleted: {
-                                Qt.callLater(function() { forceActiveFocus() })
+                                Qt.callLater(function () {
+                                    forceActiveFocus();
+                                });
                             }
 
                             Keys.onDownPressed: {
-                                flavorList.currentIndex = Math.min(flavorList.currentIndex + 1, flavorList.count - 1)
+                                flavorList.currentIndex = Math.min(flavorList.currentIndex + 1, flavorList.count - 1);
                             }
                             Keys.onUpPressed: {
-                                flavorList.currentIndex = Math.max(flavorList.currentIndex - 1, 0)
+                                flavorList.currentIndex = Math.max(flavorList.currentIndex - 1, 0);
                             }
                             Keys.onEnterPressed: triggerSelection()
                             Keys.onReturnPressed: triggerSelection()
@@ -608,17 +731,18 @@ Scope {
 
                             function triggerSelection() {
                                 if (displayModel.count > 0) {
-                                    var item = displayModel.get(flavorList.currentIndex)
-                                    if (item) root.setFlavour(item.flavourId)
+                                    var item = displayModel.get(flavorList.currentIndex);
+                                    if (item)
+                                        root.setFlavour(item.flavourId);
                                 }
                             }
                         }
-                        
+
                         // Keyboard shortcut hints
                         Row {
                             spacing: 8
                             visible: !searchField.text
-                            
+
                             Rectangle {
                                 width: 26
                                 height: 26

@@ -99,12 +99,12 @@ Configuration is stored in `~/.config/qswitch/config.json`:
 
 ```json
 {
-  "flavours": ["ii", "caelestia", "noctalia"],
+  "flavours": ["ii", "caelestia", "noctalia-shell"],
   "unbinds": true,
   "keybinds": {
     "ii": "default",
     "caelestia": "caelestia.conf",
-    "noctalia": "noctalia.conf"
+    "noctalia-shell": "noctalia.conf"
   },
   "panel_keybind": "Super+Alt, P"
 }
