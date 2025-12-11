@@ -97,7 +97,9 @@ install(
 install(
     DIRECTORY ${CMAKE_SOURCE_DIR}/quickshell/icons/
     DESTINATION /etc/xdg/quickshell/qswitch/icons/
-    FILES_MATCHING PATTERN "*.svg"
+    FILES_MATCHING 
+        PATTERN "*.svg"
+        PATTERN "*.png"
     PERMISSIONS
         OWNER_READ OWNER_WRITE
         GROUP_READ
