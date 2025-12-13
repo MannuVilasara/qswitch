@@ -1,9 +1,10 @@
 {
-  "flavours": ["ii", "noctalia-shell", "caelestia"],
+  "flavours": ["ii", "noctalia-shell", "caelestia", "dms"],
   "keybinds": {
     "caelestia": "caelestia.conf",
     "ii": "default",
-    "noctalia-shell": "noctalia.conf"
+    "noctalia-shell": "noctalia.conf",
+    "dms": "dms.conf"
   },
   "unbinds": true,
   "panel_keybind": "Super+Alt, P"
