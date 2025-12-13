@@ -34,7 +34,7 @@ Scope {
         "ii": "#51debd",
         "caelestia": "#a6e3a1",
         "noctalia-shell": "#a9aefe",
-        "aurora": "#fab387",
+        "dms": "#D0BCFF",
         "mannu": "#cba6f7",
         "ocean": "#94e2d5"
     }
@@ -46,7 +46,8 @@ Scope {
         "ii": "ii.svg",
         "noctalia-shell": "noctalia.svg",
         "caelestia": "pacman.svg",
-        "mannu": "mannu.svg"
+        "mannu": "mannu.svg",
+        "dms": "dms.svg"
     }
 
     property string currentFlavour: ""

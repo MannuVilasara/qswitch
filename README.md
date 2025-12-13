@@ -6,14 +6,17 @@ A utility for switching between QuickShell flavours in Hyprland.
 
 **First of all, DM me on Discord `@dev_mannu` if you want to use this and don't understand how to make it work.**
 
-> NOTE: So far I only suggest using them with ii, caelestia & noctalia. it might not work with all
+> NOTE: So far I only suggest using them with ii, caelestia & noctalia. it might not work with all.
+> if you're using it after 13th of December 2025, dms is now supported as well. but it might not be stable.
+> This code written here is fucking weird and I won't even suggest anyone writing it like I did. but if it works, it works.
+> I'll refactor it after my exams probably
 
 ## Description
 
 `qswitch` allows you to switch between different QuickShell configurations (flavours) seamlessly. It manages the QS process, updates Hyprland keybinds, and sources flavour-specific keybind files.
 
 It is designed to be flexible and work with any QuickShell configuration installed in standard locations.
-**Important:** Ensure your shells are installed at `/etc/xdg/quickshell` or `~/.config/quickshell`.
+**Important:** Ensure your shells are installed at `/etc/xdg/quickshell` or `~/.config/quickshell`. (except dms)
 
 ## Installation
 

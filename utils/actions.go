@@ -57,7 +57,11 @@ func ApplyFlavour(flavour string, config Config) {
 	exec.Command("caelestia", "shell", "-k").Run()
 
 	// start new one
-	exec.Command("hyprctl", "dispatch", "exec", "qs -c "+flavour).Run()
+	if flavour == "dms" {
+		exec.Command("dms", "run", "-d").Run()
+	} else {
+		exec.Command("hyprctl", "dispatch", "exec", "qs -c "+flavour).Run()
+	}
 
 	ApplyKeybinds(flavour, config)
 }

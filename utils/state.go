@@ -2,6 +2,7 @@ package utils
 
 import (
 	"os"
+	"os/exec"
 	"path/filepath"
 	"strings"
 )
@@ -21,8 +22,18 @@ func WriteState(f string) { os.WriteFile(stateFile, []byte(f), 0644) }
 
 // IsFlavourInstalled checks if a flavour configuration exists
 // A flavour is installed if it has a directory in /etc/xdg/quickshell/<flavour>
-// or ~/.config/quickshell/<flavour>
+// or ~/.config/quickshell/<flavour>, and the required command is available
 func IsFlavourInstalled(flavour string) bool {
+
+	if flavour == "dms" {
+		// Check if dms command is available
+		_, err := exec.LookPath("dms")
+		if err != nil {
+			return false
+		}
+		return true
+	}
+
 	// Check in ~/.config/quickshell/<flavour>
 	userPath := filepath.Join(os.Getenv("HOME"), ".config", "quickshell", flavour)
 	if _, err := os.Stat(userPath); err == nil {
