@@ -32,6 +32,8 @@ func ApplyKeybinds(flavour string, config Config) {
 		)
 		if _, err := os.Stat(unbindsPath); err == nil {
 			contentParts = append(contentParts, "source="+unbindsPath)
+		} else {
+			fmt.Printf("Warning: unbinds.conf not found at %s\n", unbindsPath)
 		}
 	}
 
@@ -39,7 +41,12 @@ func ApplyKeybinds(flavour string, config Config) {
 	if config.Keybinds[flavour] == "default" {
 		contentParts = append(contentParts, "# Default")
 	} else {
-		contentParts = append(contentParts, "source="+filepath.Join(os.Getenv("HOME"), ".config", "qswitch", "keybinds", config.Keybinds[flavour]))
+		keybindPath := filepath.Join(os.Getenv("HOME"), ".config", "qswitch", "keybinds", config.Keybinds[flavour])
+		if _, err := os.Stat(keybindPath); err == nil {
+			contentParts = append(contentParts, "source="+keybindPath)
+		} else {
+			fmt.Printf("Warning: keybind file %s not found for flavour %s\n", config.Keybinds[flavour], flavour)
+		}
 	}
 
 	// Add QuickSwitchPanel keybind
