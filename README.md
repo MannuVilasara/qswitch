@@ -3,32 +3,18 @@
 <h1 align="center">Qswitch</h1>
 
 <p align="center">
-  <img src="https://readme-typing-svg.herokuapp.com
-?font=Lexend+Giga
-&size=30
-&pause=1200
-&color=B4BEFE
-&center=true
-&vCenter=true
-&width=900
-&lines=Switch+between+multiple+QuickShell+configs;
-QuickShell+flavours%2C+made+easy" />
+  <img src="https://readme-typing-svg.herokuapp.com?font=Lexend+Giga&size=30&pause=1200&color=B4BEFE&center=true&vCenter=true&width=900&lines=Switch+between+multiple+QuickShell+configs;QuickShell+flavours%2C+made+easy" />
 </p>
 
 <p align="center">
   <a href="https://github.com/MannuVilasara/qswitch/stargazers">
-    <img
-      src="https://img.shields.io/github/stars/MannuVilasara/qswitch?style=for-the-badge&logo=github&color=CBA6F7&logoColor=D9E0EE&labelColor=1E1E2E"
-      alt="GitHub Stars"
-    />
+    <img src="https://img.shields.io/github/stars/MannuVilasara/qswitch?style=for-the-badge&logo=github&color=CBA6F7&logoColor=D9E0EE&labelColor=1E1E2E" alt="GitHub Stars" />
   </a>
   <a href="https://github.com/MannuVilasara/qswitch/blob/main/LICENSE">
-    <img
-      src="https://img.shields.io/github/license/MannuVilasara/qswitch?style=for-the-badge&logo=gnu&color=CBA6F7&logoColor=D9E0EE&labelColor=1E1E2E"
-      alt="License"
-    />
+    <img src="https://img.shields.io/github/license/MannuVilasara/qswitch?style=for-the-badge&logo=gnu&color=CBA6F7&logoColor=D9E0EE&labelColor=1E1E2E" alt="License" />
   </a>
 </p>
+
 </div>
 
 ---
@@ -321,20 +307,34 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for det
 
 ---
 
-## Support
+<h2>
+  <img src="https://github.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/blob/main/Symbols/Speech%20Balloon.webp?raw=true" width="25" height="25" style="vertical-align: middle;" />
+  Support
+</h2>
 
-<a href="https://discord.com/users/dev_mannu" target="_blank">
-  <img src="https://raw.githubusercontent.com/CLorant/readme-social-icons/refs/heads/main/large/colored/discord.svg" width="75px" height="75px" alt="Discord" />
-</a>
+<!-- Discord Icon -->
+<div align="center">
+  <a href="https://discord.com/users/dev_mannu" target="_blank">
+    <img src="https://raw.githubusercontent.com/CLorant/readme-social-icons/refs/heads/main/large/colored/discord.svg" width="75" height="75" alt="Discord" />
+  </a>
+</div>
 
-<a href="https://github.com/MannuVilasara/qswitch&Timeline">
- <picture>
-   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=MannuVilasara/qswitch&type=Timeline&theme=dark" />
-   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=MannuVilasara/qswitch&type=Timeline" />
-   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=MannuVilasara/qswitch&type=Timeline" />
- </picture>
-</a>
+<br/>
 
-<p align="center">
-	<img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/footers/gray0_ctp_on_line.svg?sanitize=true" />
-</p>
+<!-- Star History Timeline -->
+<div align="center">
+  <a href="https://star-history.com/#MannuVilasara/qswitch" target="_blank">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=MannuVilasara/qswitch&type=Timeline&theme=dark" />
+      <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=MannuVilasara/qswitch&type=Timeline" />
+      <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=MannuVilasara/qswitch&type=Timeline" />
+    </picture>
+  </a>
+</div>
+
+<br/>
+
+<!-- Footer -->
+<div align="center">
+  <img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/footers/gray0_ctp_on_line.svg?sanitize=true" />
+</div>
