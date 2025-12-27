@@ -1,6 +1,9 @@
+
+
 <div align="center">
 
-# 🚀 Qswitch  
+# Qswitch
+
 ### A lightweight utility to switch between **QuickShell flavours** in **Hyprland**
 
 <br/>
@@ -33,13 +36,49 @@
       alt="GitHub Stars"
     />
   </a>
+  <a href="https://github.com/MannuVilasara/qswitch/blob/main/LICENSE">
+    <img
+      src="https://img.shields.io/github/license/MannuVilasara/qswitch?style=for-the-badge&logo=gnu&color=7B68EE&logoColor=D9E0EE&labelColor=000000"
+      alt="License"
+    />
+  </a>
+  <a href="https://github.com/MannuVilasara/qswitch/releases">
+    <img
+      src="https://img.shields.io/github/v/release/MannuVilasara/qswitch?style=for-the-badge&logo=github&color=FF6B6B&logoColor=D9E0EE&labelColor=000000"
+      alt="GitHub Release"
+    />
+  </a>
 </p>
 
 </div>
 
 ---
 
-<h2><sub><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Package.png" alt="Package" width="25" height="25" /></sub> Installation</h1>
+## 📋 Table of Contents
+
+- [✨ Features](#-features)
+- [📦 Installation](#-installation)
+- [🚀 Usage](#-usage)
+- [⚙️ Configuration](#️-configuration)
+- [🛠️ Shell Completions](#️-shell-completions)
+- [🗑️ Uninstall](#️-uninstall)
+- [🤝 Contributing](#-contributing)
+- [📁 Files](#-files)
+
+---
+
+## ✨ Features
+
+- **Seamless Flavour Switching**: Easily switch between different QuickShell configurations
+- **Keybind Management**: Automatic keybind switching with conflict resolution
+- **Interactive Panel**: Toggle a quick switch panel for visual selection
+- **Autofix**: Automatically detects and fixes common configuration issues
+- **Shell Completions**: Supports bash, zsh, and fish completions
+- **Lightweight**: Minimal dependencies, fast and efficient
+
+---
+
+## 📦 Installation
 
 ### Prerequisites
 
@@ -47,17 +86,37 @@
 - CMake 3.15 or later (optional, for CMake build)
 - Hyprland and QuickShell installed
 
-### Build and Install
-<details>
-<summary>Option 1: CMake Build (Recommended)</summary>
+### Quick Setup (Recommended)
 
-1. Clone the repository:
+1. **Clone the repository**:
 
    ```bash
    git clone https://github.com/MannuVilasara/qswitch.git
    cd qswitch
    ```
-2. Build the project:
+2. **Make setup script executable and run**:
+
+   ```bash
+   chmod +x setup.sh
+   ./setup.sh
+   ```
+
+This will build and install qswitch using CMake, and run the initial setup.
+
+### Manual Installation
+
+<details>
+<summary>Click to expand manual installation options</summary>
+
+#### CMake Build
+
+1. **Clone the repository**:
+
+   ```bash
+   git clone https://github.com/MannuVilasara/qswitch.git
+   cd qswitch
+   ```
+2. **Build the project**:
 
    ```bash
    mkdir build
@@ -65,28 +124,28 @@
    cmake ..
    make
    ```
-3. Install system-wide (requires root):
+3. **Install system-wide** (requires root):
 
    ```bash
    sudo make install
    ```
 
-This installs:
+   This installs:
 
-- The `qswitch` binary to `/usr/local/bin`
-- Man page to `/usr/local/share/man/man1`
-- Shell completions to appropriate directories
-- shell.qml to `/etc/xdg/quickshell/qswitch/`
-</details>
-#### Option 2: Go Build
+   - The `qswitch` binary to `/usr/local/bin`
+   - Man page to `/usr/local/share/man/man1`
+   - Shell completions to appropriate directories
+   - `shell.qml` to `/etc/xdg/quickshell/qswitch/`
 
-1. Clone the repository:
+#### Go Build
+
+1. **Clone the repository**:
 
    ```bash
    git clone https://github.com/MannuVilasara/qswitch.git
    cd qswitch
    ```
-2. Build and install:
+2. **Build and install**:
 
    ```bash
    go build -o qswitch .
@@ -96,47 +155,14 @@ This installs:
    sudo cp completions/qswitch.zsh /usr/share/zsh/site-functions/_qswitch
    sudo cp completions/qswitch.fish /usr/share/fish/vendor_completions.d/qswitch.fish
    sudo mkdir -p /etc/xdg/quickshell/qswitch
-   sudo cp  -r quickshell/* /etc/xdg/quickshell/qswitch
+   sudo cp -r quickshell/* /etc/xdg/quickshell/qswitch
    ```
 
-### Uninstall (CMake)
+</details>
 
-To uninstall the project:
+### Initial Setup
 
-```bash
-cd build
-sudo make uninstall
-```
-
-<h2><sub><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Rocket.png" alt="Rocket" width="25" height="25" /></sub> Features</h2>
-
-- [X] Switch between QuickShell flavours
-- [X] Manage Hyprland keybinds
-- [X] Quick switch panel
-- [X] Autofix configuration
-- [X] Shell completions (bash, zsh, fish)
-- [X] Man page
-
----
-
-<h2><sub><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Symbols/Check%20Mark%20Button.png" alt="Check Mark Button" width="25" height="25" /></sub> Usage</h2>
-
-### Commands
-
-- `qswitch`: Cycle to the next flavour (runs autofix if needed)
-- `qswitch apply <flavour>`: Switch to a specific flavour
-- `qswitch apply --current`: Re-apply current flavour configuration
-- `qswitch list`: List available flavours (use `--status` for JSON output)
-- `qswitch current`: Show current flavour
-- `qswitch panel`: Toggle the quick switch panel
-- `qswitch reload`: Reload keybinds
-- `qswitch switch-keybinds <flavour>`: Switch only the keybinds for a specific flavour
-- `qswitch exp-setup`: Run the initial setup (creates directories, state file, and updates hyprland.conf with autofix)
-- `qswitch --help`: Show help
-
-### Setup
-
-When you first run `qswitch`, it will check for setup and run autofix if needed.
+When you first run `qswitch`, it will check for setup and run autofix if needed:
 
 ```bash
 qswitch exp-setup
@@ -146,7 +172,7 @@ This will:
 
 1. Create necessary directories (`~/.config/qswitch`, `~/.cache/qswitch`)
 2. Create the state file `~/.switch_state`
-3. Generate a default `~/.config/qswitch/qswitch.conf`
+3. Generate a default `~/.config/qswitch/config.json`
 4. Append `source=~/.cache/qswitch/qswitch.conf` to your `~/.config/hypr/hyprland.conf` (if not already present)
 5. Remove any incorrect source lines (e.g., from old cache paths)
 
@@ -158,72 +184,128 @@ qswitch exp-setup --force
 
 The autofix feature automatically detects and fixes common configuration issues.
 
-### Configuration
+---
 
-Configuration is stored in `~/.config/qswitch/config.json`:
+## 🚀 Usage
+
+### Command Examples
+
+| Command                               | Description                                        |
+| ------------------------------------- | -------------------------------------------------- |
+| `qswitch`                           | Cycle to the next flavour (runs autofix if needed) |
+| `qswitch apply <flavour>`           | Switch to a specific flavour                       |
+| `qswitch apply --current`           | Re-apply current flavour                           |
+| `qswitch list`                      | List all available flavours                        |
+| `qswitch current`                   | Show current active flavour                        |
+| `qswitch panel`                     | Toggle the quick switch panel                      |
+| `qswitch reload`                    | Reload keybinds                                    |
+| `qswitch switch-keybinds <flavour>` | Switch only the keybinds for a specific flavour    |
+| `qswitch exp-setup`                 | Run the initial setup                              |
+| `qswitch --help`                    | Show help information                              |
+
+### Example Usage
+
+```bash
+# Switch to the 'caelestia' flavour
+qswitch apply caelestia
+
+# List all flavours
+qswitch list
+# Output: ii, caelestia, noctalia-shell, dms
+
+# Check current flavour
+qswitch current
+# Output: caelestia
+```
+
+---
+
+## ⚙️ Configuration
+
+Configuration is stored in `~/.config/qswitch/config.json`. Here's an example:
 
 ```json
 {
-  "flavours": ["ii", "caelestia", "noctalia-shell"],
+  "flavours": ["ii", "caelestia", "noctalia-shell", "dms"],
   "unbinds": true,
   "keybinds": {
     "ii": "default",
     "caelestia": "caelestia.conf",
-    "noctalia-shell": "noctalia.conf"
+    "noctalia-shell": "noctalia.conf",
+    "dms": "dms.conf"
   },
   "panel_keybind": "Super+Alt, P"
 }
 ```
 
-- **flavours**: List of available flavours.
-- **unbinds**: (Optional) Boolean. If true, sources `~/.config/qswitch/keybinds/unbinds.conf` before applying flavour-specific keybinds (except for "default" flavour). Useful for unbinding keys that might conflict.
-- **keybinds**: Maps each flavour to a keybind file in `~/.config/qswitch/keybinds/`. Use "default" for the base configuration.
-- **panel_keybind**: (Optional) The keybind to open the QuickSwitch panel. Defaults to "Super+Alt, P".
+### Configuration Options
+
+- **`flavours`**: Array of available QuickShell flavours
+- **`unbinds`** *(Optional)*: Boolean. If `true`, sources `~/.config/qswitch/keybinds/unbinds.conf` before applying flavour-specific keybinds (except for "default" flavour). Useful for unbinding conflicting keys
+- **`keybinds`**: Object mapping each flavour to a keybind file in `~/.config/qswitch/keybinds/`. Use `"default"` for the base configuration
+- **`panel_keybind`** *(Optional)*: The keybind to open the QuickSwitch panel. Defaults to `"Super+Alt, P"`
 
 Keybind files (e.g., `caelestia.conf`) contain Hyprland keybind definitions.
 
-The tool generates `~/.cache/qswitch/qswitch.conf` with the appropriate source and bind commands, and sources it in `~/.config/hypr/hyprland.conf`.
+The tool generates `~/.cache/qswitch/qswitch.conf` with the appropriate `source` and `bind` commands, which is then sourced in `~/.config/hypr/hyprland.conf`.
 
-### Examples
+---
+
+## 🛠️ Shell Completions
+
+Qswitch supports shell completions for bash, zsh, and fish. The setup script installs them automatically, or you can install them manually:
+
+- **Bash**: Source `completions/qswitch.bash` or copy to `/usr/share/bash-completion/completions/`
+- **Zsh**: Source `completions/qswitch.zsh` or copy to `/usr/share/zsh/site-functions/`
+- **Fish**: Source `completions/qswitch.fish` or copy to `/usr/share/fish/vendor_completions.d/`
+
+---
+
+## 🗑️ Uninstall
+
+### CMake Uninstall
+
+If installed via CMake:
 
 ```bash
-# Cycle flavours
-qswitch
-
-# Switch to caelestia
-qswitch apply caelestia
-
-# Re-apply current flavour
-qswitch apply --current
-
-# List flavours
-qswitch list
-
-# Show current flavour
-qswitch current
-
-# Toggle panel
-qswitch panel
-
-# Reload keybinds
-qswitch reload
+cd build
+sudo make uninstall
 ```
 
-### Shell Completions
+This will remove the binary, man page, completions, and QML files.
 
-Install completions for bash, zsh, or fish by sourcing the files in `completions/` or using the installed versions.
+### Manual Uninstall
 
-## Contributing
+Remove the following files manually:
+
+- `/usr/local/bin/qswitch`
+- `/usr/local/share/man/man1/qswitch.1`
+- Shell completion files in their respective directories
+- `/etc/xdg/quickshell/qswitch/`
+
+Also remove user configuration:
+
+- `~/.config/qswitch/`
+- `~/.cache/qswitch/`
+- `~/.switch_state`
+
+---
+
+## 🤝 Contributing
 
 Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
-## Files
+---
 
-- `~/.switch_state`: Stores the current flavour
-- `~/.config/qswitch/config.json`: Configuration
-- `~/.config/qswitch/keybinds/`: Keybind files
-- `~/.cache/qswitch/qswitch.conf`: Generated keybinds (sourced in hyprland.conf)
-- `/etc/xdg/quickshell/qswitch/shell.qml`: Panel QML file
+## 📁 Files
+
+| File/Directory                            | Description                                             |
+| ----------------------------------------- | ------------------------------------------------------- |
+| `~/.switch_state`                       | Stores the current active flavour                       |
+| `~/.config/qswitch/config.json`         | Main configuration file                                 |
+| `~/.config/qswitch/keybinds/`           | Directory containing keybind configuration files        |
+| `~/.cache/qswitch/qswitch.conf`         | Generated configuration file (sourced in hyprland.conf) |
+| `/etc/xdg/quickshell/qswitch/shell.qml` | Panel QML file for the QuickSwitch interface            |
 
 ---
 
