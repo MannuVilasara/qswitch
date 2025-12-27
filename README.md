@@ -32,7 +32,7 @@ QuickShell+flavours%2C+made+easy" />
 </div>
 
 ---
-<h2 align="center">
+<h2>
   <img src="https://github.com/microsoft/fluentui-emoji/blob/main/assets/Film%20projector/3D/film_projector_3d.png?raw=true"
        width="50"
        height="50"
@@ -40,7 +40,7 @@ QuickShell+flavours%2C+made+easy" />
   Showcase Video
 </h2>
 
-https://github.com/user-attachments/assets/c37f7e44-16a4-47cf-ba25-525d6d334aff
+https://github.com/user-attachments/assets/04aad5cf-09d5-4e38-acca-23ad67d91969
 
 
 ## 📋 Table of Contents
@@ -57,7 +57,7 @@ https://github.com/user-attachments/assets/c37f7e44-16a4-47cf-ba25-525d6d334aff
 ---
 
 <h2>
-  <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Activity/Sparkles.webp" width="50" height="50" style="vertical-align: middle;" />
+  <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Activity/Sparkles.webp" width="25" height="25" style="vertical-align: middle;" />
   Features
 </h2>
 
@@ -71,7 +71,7 @@ https://github.com/user-attachments/assets/c37f7e44-16a4-47cf-ba25-525d6d334aff
 ---
 
 <h2>
-  <img src="https://github.com/microsoft/fluentui-emoji/blob/main/assets/Package/3D/package_3d.png?raw=true" width="50" height="50" style="vertical-align: middle;" />
+  <img src="https://github.com/microsoft/fluentui-emoji/blob/main/assets/Package/3D/package_3d.png?raw=true" width="25" height="25" style="vertical-align: middle;" />
   Installation
 </h2>
 
@@ -182,7 +182,7 @@ The autofix feature automatically detects and fixes common configuration issues.
 ---
 
 <h2>
-  <img src="https://github.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/blob/main/Objects/Open%20Book.webp?raw=true" width="50" height="50" style="vertical-align: middle;" />
+  <img src="https://github.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/blob/main/Objects/Open%20Book.webp?raw=true" width="25" height="25" style="vertical-align: middle;" />
   Usage
 </h2>
 
@@ -219,7 +219,7 @@ qswitch current
 ---
 
 <h2>
-  <img src="https://github.com/microsoft/fluentui-emoji/blob/main/assets/Gear/3D/gear_3d.png?raw=true" width="50" height="50" style="vertical-align: middle;" />
+  <img src="https://github.com/microsoft/fluentui-emoji/blob/main/assets/Gear/3D/gear_3d.png?raw=true" width="25" height="25" style="vertical-align: middle;" />
   Configuration
 </h2>
 Configuration is stored in `~/.config/qswitch/config.json`. Here's an example:
@@ -252,7 +252,7 @@ The tool generates `~/.cache/qswitch/qswitch.conf` with the appropriate `source`
 ---
 
 <h2>
-  <img src="https://github.com/microsoft/fluentui-emoji/blob/main/assets/Gear/3D/gear_3d.png?raw=true" width="50" height="50" style="vertical-align: middle;" />
+  <img src="https://github.com/microsoft/fluentui-emoji/blob/main/assets/Gear/3D/gear_3d.png?raw=true" width="25" height="25" style="vertical-align: middle;" />
   Shell Completions
 </h2>
 
@@ -265,7 +265,7 @@ Qswitch supports shell completions for bash, zsh, and fish. The setup script ins
 ---
 
 <h2>
-  <img src="https://github.com/microsoft/fluentui-emoji/blob/main/assets/Wastebasket/3D/wastebasket_3d.png?raw=true" width="50" height="50" style="vertical-align: middle;" />
+  <img src="https://github.com/microsoft/fluentui-emoji/blob/main/assets/Wastebasket/3D/wastebasket_3d.png?raw=true" width="25" height="25" style="vertical-align: middle;" />
   Uninstall
 </h2>
 
@@ -298,7 +298,7 @@ Also remove user configuration:
 ---
 
 <h2>
-  <img src="https://github.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/blob/main/People/Handshake.webp?raw=true" width="50" height="50" style="vertical-align: middle;" />
+  <img src="https://github.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/blob/main/People/Handshake.webp?raw=true" width="25" height="25" style="vertical-align: middle;" />
   Contribution
 </h2>
 
@@ -307,7 +307,7 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for det
 ---
 
 <h2>
-  <img src="https://github.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/blob/main/Objects/File%20Folder.webp?raw=true" width="50" height="50" style="vertical-align: middle;" />
+  <img src="https://github.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/blob/main/Objects/File%20Folder.webp?raw=true" width="25" height="25" style="vertical-align: middle;" />
   Files
 </h2>
 
