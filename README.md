@@ -1,24 +1,45 @@
-# qswitch
+<div align="center">
 
-A utility for switching between QuickShell flavours in Hyprland.
+# 🚀 Qswitch  
+### A lightweight utility to switch between **QuickShell flavours** in **Hyprland**
 
-## Support
+<br/>
 
-**First of all, DM me on Discord `@dev_mannu` if you want to use this and don't understand how to make it work.**
+<p align="center">
+  <img
+    src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Activity/Sparkles.webp"
+    width="22"
+    height="22"
+    alt="Sparkles"
+  />
+  <a href="https://github.com/MannuVilasara/qswitch">
+    <img
+      src="https://img.shields.io/badge/QuickShell-Flavour%20Switcher-0092CD?style=for-the-badge&logo=linux&logoColor=D9E0EE&labelColor=000000"
+      alt="QuickShell Flavour Switcher"
+    />
+  </a>
+  <img
+    src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Activity/Sparkles.webp"
+    width="22"
+    height="22"
+    alt="Sparkles"
+  />
+</p>
 
-> NOTE: So far I only suggest using them with ii, caelestia & noctalia. it might not work with all.
-> if you're using it after 13th of December 2025, dms is now supported as well. but it might not be stable.
-> This code written here is fucking weird and I won't even suggest anyone writing it like I did. but if it works, it works.
-> I'll refactor it after my exams probably
+<p align="center">
+  <a href="https://github.com/MannuVilasara/qswitch/stargazers">
+    <img
+      src="https://img.shields.io/github/stars/MannuVilasara/qswitch?style=for-the-badge&logo=github&color=E3B341&logoColor=D9E0EE&labelColor=000000"
+      alt="GitHub Stars"
+    />
+  </a>
+</p>
 
-## Description
+</div>
 
-`qswitch` allows you to switch between different QuickShell configurations (flavours) seamlessly. It manages the QS process, updates Hyprland keybinds, and sources flavour-specific keybind files.
+---
 
-It is designed to be flexible and work with any QuickShell configuration installed in standard locations.
-**Important:** Ensure your shells are installed at `/etc/xdg/quickshell` or `~/.config/quickshell`. (except dms)
-
-## Installation
+<h2><sub><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Package.png" alt="Package" width="25" height="25" /></sub> Installation</h1>
 
 ### Prerequisites
 
@@ -26,15 +47,9 @@ It is designed to be flexible and work with any QuickShell configuration install
 - CMake 3.15 or later (optional, for CMake build)
 - Hyprland and QuickShell installed
 
-### Configuration Files
-
-You can find an example configuration in the `example/` directory of this repository.
-Also, you can check my personal configuration here:
-[https://github.com/MannuVilasara/commaflies/tree/main/qswitch/.config/qswitch](https://github.com/MannuVilasara/commaflies/tree/main/qswitch/.config/qswitch)
-
 ### Build and Install
-
-#### Option 1: CMake Build (Recommended)
+<details>
+<summary>Option 1: CMake Build (Recommended)</summary>
 
 1. Clone the repository:
 
@@ -42,7 +57,6 @@ Also, you can check my personal configuration here:
    git clone https://github.com/MannuVilasara/qswitch.git
    cd qswitch
    ```
-
 2. Build the project:
 
    ```bash
@@ -51,7 +65,6 @@ Also, you can check my personal configuration here:
    cmake ..
    make
    ```
-
 3. Install system-wide (requires root):
 
    ```bash
@@ -64,7 +77,7 @@ This installs:
 - Man page to `/usr/local/share/man/man1`
 - Shell completions to appropriate directories
 - shell.qml to `/etc/xdg/quickshell/qswitch/`
-
+</details>
 #### Option 2: Go Build
 
 1. Clone the repository:
@@ -73,7 +86,6 @@ This installs:
    git clone https://github.com/MannuVilasara/qswitch.git
    cd qswitch
    ```
-
 2. Build and install:
 
    ```bash
@@ -96,33 +108,18 @@ cd build
 sudo make uninstall
 ```
 
-## Configuration
+<h2><sub><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Rocket.png" alt="Rocket" width="25" height="25" /></sub> Features</h2>
 
-Configuration is stored in `~/.config/qswitch/config.json`:
+- [X] Switch between QuickShell flavours
+- [X] Manage Hyprland keybinds
+- [X] Quick switch panel
+- [X] Autofix configuration
+- [X] Shell completions (bash, zsh, fish)
+- [X] Man page
 
-```json
-{
-  "flavours": ["ii", "caelestia", "noctalia-shell"],
-  "unbinds": true,
-  "keybinds": {
-    "ii": "default",
-    "caelestia": "caelestia.conf",
-    "noctalia-shell": "noctalia.conf"
-  },
-  "panel_keybind": "Super+Alt, P"
-}
-```
+---
 
-- **flavours**: List of available flavours.
-- **unbinds**: (Optional) Boolean. If true, sources `~/.config/qswitch/keybinds/unbinds.conf` before applying flavour-specific keybinds (except for "default" flavour). Useful for unbinding keys that might conflict.
-- **keybinds**: Maps each flavour to a keybind file in `~/.config/qswitch/keybinds/`. Use "default" for the base configuration.
-- **panel_keybind**: (Optional) The keybind to open the QuickSwitch panel. Defaults to "Super+Alt, P".
-
-Keybind files (e.g., `caelestia.conf`) contain Hyprland keybind definitions.
-
-The tool generates `~/.cache/qswitch/qswitch.conf` with the appropriate source and bind commands, and sources it in `~/.config/hypr/hyprland.conf`.
-
-## Usage
+<h2><sub><img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Symbols/Check%20Mark%20Button.png" alt="Check Mark Button" width="25" height="25" /></sub> Usage</h2>
 
 ### Commands
 
@@ -161,6 +158,32 @@ qswitch exp-setup --force
 
 The autofix feature automatically detects and fixes common configuration issues.
 
+### Configuration
+
+Configuration is stored in `~/.config/qswitch/config.json`:
+
+```json
+{
+  "flavours": ["ii", "caelestia", "noctalia-shell"],
+  "unbinds": true,
+  "keybinds": {
+    "ii": "default",
+    "caelestia": "caelestia.conf",
+    "noctalia-shell": "noctalia.conf"
+  },
+  "panel_keybind": "Super+Alt, P"
+}
+```
+
+- **flavours**: List of available flavours.
+- **unbinds**: (Optional) Boolean. If true, sources `~/.config/qswitch/keybinds/unbinds.conf` before applying flavour-specific keybinds (except for "default" flavour). Useful for unbinding keys that might conflict.
+- **keybinds**: Maps each flavour to a keybind file in `~/.config/qswitch/keybinds/`. Use "default" for the base configuration.
+- **panel_keybind**: (Optional) The keybind to open the QuickSwitch panel. Defaults to "Super+Alt, P".
+
+Keybind files (e.g., `caelestia.conf`) contain Hyprland keybind definitions.
+
+The tool generates `~/.cache/qswitch/qswitch.conf` with the appropriate source and bind commands, and sources it in `~/.config/hypr/hyprland.conf`.
+
 ### Examples
 
 ```bash
@@ -190,6 +213,10 @@ qswitch reload
 
 Install completions for bash, zsh, or fish by sourcing the files in `completions/` or using the installed versions.
 
+## Contributing
+
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+
 ## Files
 
 - `~/.switch_state`: Stores the current flavour
@@ -197,3 +224,17 @@ Install completions for bash, zsh, or fish by sourcing the files in `completions
 - `~/.config/qswitch/keybinds/`: Keybind files
 - `~/.cache/qswitch/qswitch.conf`: Generated keybinds (sourced in hyprland.conf)
 - `/etc/xdg/quickshell/qswitch/shell.qml`: Panel QML file
+
+---
+
+<a href="https://github.com/MannuVilasara/qswitch&Timeline">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=MannuVilasara/qswitch&type=Timeline&theme=dark" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=MannuVilasara/qswitch&type=Timeline" />
+   <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=MannuVilasara/qswitch&type=Timeline" />
+ </picture>
+</a>
+
+<p align="center">
+	<img src="https://raw.githubusercontent.com/catppuccin/catppuccin/main/assets/footers/gray0_ctp_on_line.svg?sanitize=true" />
+</p>
