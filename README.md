@@ -31,7 +31,7 @@ https://github.com/user-attachments/assets/04aad5cf-09d5-4e38-acca-23ad67d91969
 
 ## 📋 Table of Contents
 
-- [Features](#-features)
+- [Features](#----features)
 - [Installation](#-installation)
 - [Usage](#-usage)
 - [Configuration](#️-configuration)
