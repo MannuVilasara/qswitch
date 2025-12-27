@@ -1,73 +1,65 @@
-
-
 <div align="center">
 
-# Qswitch
-
-### A lightweight utility to switch between **QuickShell flavours** in **Hyprland**
-
-<br/>
+<h1 align="center">Qswitch</h1>
 
 <p align="center">
-  <img
-    src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Activity/Sparkles.webp"
-    width="22"
-    height="22"
-    alt="Sparkles"
-  />
-  <a href="https://github.com/MannuVilasara/qswitch">
-    <img
-      src="https://img.shields.io/badge/QuickShell-Flavour%20Switcher-0092CD?style=for-the-badge&logo=linux&logoColor=D9E0EE&labelColor=000000"
-      alt="QuickShell Flavour Switcher"
-    />
-  </a>
-  <img
-    src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Activity/Sparkles.webp"
-    width="22"
-    height="22"
-    alt="Sparkles"
-  />
+  <img src="https://readme-typing-svg.herokuapp.com
+?font=Lexend+Giga
+&size=30
+&pause=1200
+&color=B4BEFE
+&center=true
+&vCenter=true
+&width=900
+&lines=Switch+between+multiple+QuickShell+configs;
+QuickShell+flavours%2C+made+easy" />
 </p>
 
 <p align="center">
   <a href="https://github.com/MannuVilasara/qswitch/stargazers">
     <img
-      src="https://img.shields.io/github/stars/MannuVilasara/qswitch?style=for-the-badge&logo=github&color=E3B341&logoColor=D9E0EE&labelColor=000000"
+      src="https://img.shields.io/github/stars/MannuVilasara/qswitch?style=for-the-badge&logo=github&color=CBA6F7&logoColor=D9E0EE&labelColor=1E1E2E"
       alt="GitHub Stars"
     />
   </a>
   <a href="https://github.com/MannuVilasara/qswitch/blob/main/LICENSE">
     <img
-      src="https://img.shields.io/github/license/MannuVilasara/qswitch?style=for-the-badge&logo=gnu&color=7B68EE&logoColor=D9E0EE&labelColor=000000"
+      src="https://img.shields.io/github/license/MannuVilasara/qswitch?style=for-the-badge&logo=gnu&color=CBA6F7&logoColor=D9E0EE&labelColor=1E1E2E"
       alt="License"
     />
   </a>
-  <a href="https://github.com/MannuVilasara/qswitch/releases">
-    <img
-      src="https://img.shields.io/github/v/release/MannuVilasara/qswitch?style=for-the-badge&logo=github&color=FF6B6B&logoColor=D9E0EE&labelColor=000000"
-      alt="GitHub Release"
-    />
-  </a>
 </p>
-
 </div>
 
 ---
+<h2 align="center">
+  <img src="https://github.com/microsoft/fluentui-emoji/blob/main/assets/Film%20projector/3D/film_projector_3d.png?raw=true"
+       width="50"
+       height="50"
+       style="vertical-align: middle;" />
+  Showcase Video
+</h2>
+
+<https://github.com/user-attachments/assets/c37f7e44-16a4-47cf-ba25-525d6d334aff/demo.mp4>
+
 
 ## 📋 Table of Contents
 
-- [✨ Features](#-features)
-- [📦 Installation](#-installation)
-- [🚀 Usage](#-usage)
-- [⚙️ Configuration](#️-configuration)
-- [🛠️ Shell Completions](#️-shell-completions)
-- [🗑️ Uninstall](#️-uninstall)
-- [🤝 Contributing](#-contributing)
-- [📁 Files](#-files)
+- [Features](#-features)
+- [Installation](#-installation)
+- [Usage](#-usage)
+- [Configuration](#️-configuration)
+- [Shell Completions](#️-shell-completions)
+- [Uninstall](#️-uninstall)
+- [Contributing](#-contributing)
+- [Files](#-files)
 
 ---
 
-## ✨ Features
+<h2>
+  <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Activity/Sparkles.webp" width="50" height="50" style="vertical-align: middle;" />
+  Features
+</h2>
 
 - **Seamless Flavour Switching**: Easily switch between different QuickShell configurations
 - **Keybind Management**: Automatic keybind switching with conflict resolution
@@ -78,7 +70,10 @@
 
 ---
 
-## 📦 Installation
+<h2>
+  <img src="https://github.com/microsoft/fluentui-emoji/blob/main/assets/Package/3D/package_3d.png?raw=true" width="50" height="50" style="vertical-align: middle;" />
+  Installation
+</h2>
 
 ### Prerequisites
 
@@ -186,7 +181,10 @@ The autofix feature automatically detects and fixes common configuration issues.
 
 ---
 
-## 🚀 Usage
+<h2>
+  <img src="https://github.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/blob/main/Objects/Open%20Book.webp?raw=true" width="50" height="50" style="vertical-align: middle;" />
+  Usage
+</h2>
 
 ### Command Examples
 
@@ -220,8 +218,10 @@ qswitch current
 
 ---
 
-## ⚙️ Configuration
-
+<h2>
+  <img src="https://github.com/microsoft/fluentui-emoji/blob/main/assets/Gear/3D/gear_3d.png?raw=true" width="50" height="50" style="vertical-align: middle;" />
+  Configuration
+</h2>
 Configuration is stored in `~/.config/qswitch/config.json`. Here's an example:
 
 ```json
@@ -251,7 +251,10 @@ The tool generates `~/.cache/qswitch/qswitch.conf` with the appropriate `source`
 
 ---
 
-## 🛠️ Shell Completions
+<h2>
+  <img src="https://github.com/microsoft/fluentui-emoji/blob/main/assets/Gear/3D/gear_3d.png?raw=true" width="50" height="50" style="vertical-align: middle;" />
+  Shell Completions
+</h2>
 
 Qswitch supports shell completions for bash, zsh, and fish. The setup script installs them automatically, or you can install them manually:
 
@@ -261,7 +264,10 @@ Qswitch supports shell completions for bash, zsh, and fish. The setup script ins
 
 ---
 
-## 🗑️ Uninstall
+<h2>
+  <img src="https://github.com/microsoft/fluentui-emoji/blob/main/assets/Wastebasket/3D/wastebasket_3d.png?raw=true" width="50" height="50" style="vertical-align: middle;" />
+  Uninstall
+</h2>
 
 ### CMake Uninstall
 
@@ -291,13 +297,19 @@ Also remove user configuration:
 
 ---
 
-## 🤝 Contributing
+<h2>
+  <img src="https://github.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/blob/main/People/Handshake.webp?raw=true" width="50" height="50" style="vertical-align: middle;" />
+  Contribution
+</h2>
 
 Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
 
 ---
 
-## 📁 Files
+<h2>
+  <img src="https://github.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/blob/main/Objects/File%20Folder.webp?raw=true" width="50" height="50" style="vertical-align: middle;" />
+  Files
+</h2>
 
 | File/Directory                            | Description                                             |
 | ----------------------------------------- | ------------------------------------------------------- |
@@ -308,6 +320,12 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for det
 | `/etc/xdg/quickshell/qswitch/shell.qml` | Panel QML file for the QuickSwitch interface            |
 
 ---
+
+## Support
+
+<a href="https://discord.com/users/dev_mannu" target="_blank">
+  <img src="https://raw.githubusercontent.com/CLorant/readme-social-icons/refs/heads/main/large/colored/discord.svg" width="75px" height="75px" alt="Discord" />
+</a>
 
 <a href="https://github.com/MannuVilasara/qswitch&Timeline">
  <picture>
