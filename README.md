@@ -40,7 +40,7 @@ QuickShell+flavours%2C+made+easy" />
   Showcase Video
 </h2>
 
-<https://github.com/user-attachments/assets/c37f7e44-16a4-47cf-ba25-525d6d334aff/demo.mp4>
+https://github.com/user-attachments/assets/c37f7e44-16a4-47cf-ba25-525d6d334aff/demo.mp4
 
 
 ## 📋 Table of Contents
