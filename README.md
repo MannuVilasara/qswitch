@@ -18,6 +18,7 @@
 </div>
 
 ---
+
 <h2>
   <img src="https://github.com/microsoft/fluentui-emoji/blob/main/assets/Film%20projector/3D/film_projector_3d.png?raw=true"
        width="50"
@@ -27,7 +28,6 @@
 </h2>
 
 https://github.com/user-attachments/assets/04aad5cf-09d5-4e38-acca-23ad67d91969
-
 
 ## 📋 Table of Contents
 
@@ -75,6 +75,7 @@ https://github.com/user-attachments/assets/04aad5cf-09d5-4e38-acca-23ad67d91969
    git clone https://github.com/MannuVilasara/qswitch.git
    cd qswitch
    ```
+
 2. **Make setup script executable and run**:
 
    ```bash
@@ -97,6 +98,7 @@ This will build and install qswitch using CMake, and run the initial setup.
    git clone https://github.com/MannuVilasara/qswitch.git
    cd qswitch
    ```
+
 2. **Build the project**:
 
    ```bash
@@ -105,6 +107,7 @@ This will build and install qswitch using CMake, and run the initial setup.
    cmake ..
    make
    ```
+
 3. **Install system-wide** (requires root):
 
    ```bash
@@ -112,7 +115,6 @@ This will build and install qswitch using CMake, and run the initial setup.
    ```
 
    This installs:
-
    - The `qswitch` binary to `/usr/local/bin`
    - Man page to `/usr/local/share/man/man1`
    - Shell completions to appropriate directories
@@ -126,6 +128,7 @@ This will build and install qswitch using CMake, and run the initial setup.
    git clone https://github.com/MannuVilasara/qswitch.git
    cd qswitch
    ```
+
 2. **Build and install**:
 
    ```bash
@@ -174,8 +177,8 @@ The autofix feature automatically detects and fixes common configuration issues.
 
 ### Command Examples
 
-| Command                               | Description                                        |
-| ------------------------------------- | -------------------------------------------------- |
+| Command                             | Description                                        |
+| ----------------------------------- | -------------------------------------------------- |
 | `qswitch`                           | Cycle to the next flavour (runs autofix if needed) |
 | `qswitch apply <flavour>`           | Switch to a specific flavour                       |
 | `qswitch apply --current`           | Re-apply current flavour                           |
@@ -227,9 +230,9 @@ Configuration is stored in `~/.config/qswitch/config.json`. Here's an example:
 ### Configuration Options
 
 - **`flavours`**: Array of available QuickShell flavours
-- **`unbinds`** *(Optional)*: Boolean. If `true`, sources `~/.config/qswitch/keybinds/unbinds.conf` before applying flavour-specific keybinds (except for "default" flavour). Useful for unbinding conflicting keys
+- **`unbinds`** _(Optional)_: Boolean. If `true`, sources `~/.config/qswitch/keybinds/unbinds.conf` before applying flavour-specific keybinds (except for "default" flavour). Useful for unbinding conflicting keys
 - **`keybinds`**: Object mapping each flavour to a keybind file in `~/.config/qswitch/keybinds/`. Use `"default"` for the base configuration
-- **`panel_keybind`** *(Optional)*: The keybind to open the QuickSwitch panel. Defaults to `"Super+Alt, P"`
+- **`panel_keybind`** _(Optional)_: The keybind to open the QuickSwitch panel. Defaults to `"Super+Alt, P"`
 
 Keybind files (e.g., `caelestia.conf`) contain Hyprland keybind definitions.
 
@@ -297,8 +300,8 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for det
   Files
 </h2>
 
-| File/Directory                            | Description                                             |
-| ----------------------------------------- | ------------------------------------------------------- |
+| File/Directory                          | Description                                             |
+| --------------------------------------- | ------------------------------------------------------- |
 | `~/.switch_state`                       | Stores the current active flavour                       |
 | `~/.config/qswitch/config.json`         | Main configuration file                                 |
 | `~/.config/qswitch/keybinds/`           | Directory containing keybind configuration files        |
@@ -314,7 +317,7 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for det
 
 <!-- Discord Icon -->
 <div align="center">
-  <a href="https://discord.com/users/dev_mannu" target="_blank">
+  <a href="https://discord.com/users/786926252811485186" target="_blank">
     <img src="https://raw.githubusercontent.com/CLorant/readme-social-icons/refs/heads/main/large/colored/discord.svg" width="75" height="75" alt="Discord" />
   </a>
 </div>
