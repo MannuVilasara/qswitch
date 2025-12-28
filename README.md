@@ -31,14 +31,14 @@ https://github.com/user-attachments/assets/04aad5cf-09d5-4e38-acca-23ad67d91969
 
 ## 📋 Table of Contents
 
-- [Features](#-features)
-- [Installation](#-installation)
-- [Usage](#-usage)
-- [Configuration](#️-configuration)
-- [Shell Completions](#️-shell-completions)
-- [Uninstall](#️-uninstall)
-- [Contributing](#-contributing)
-- [Files](#-files)
+- [Features](#----features)
+- [Installation](#----installation)
+- [Usage](#----usage)
+- [Configuration](#----configuration)
+- [Shell Completions](#----shell-completions)
+- [Uninstall](#----uninstall)
+- [Contribution](#----contribution)
+- [Files](#----files)
 
 ---
 
