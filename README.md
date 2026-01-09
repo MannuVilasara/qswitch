@@ -27,7 +27,10 @@
   Showcase Video
 </h2>
 
-https://github.com/user-attachments/assets/04aad5cf-09d5-4e38-acca-23ad67d91969
+
+https://github.com/user-attachments/assets/343a18a2-d90f-4001-9f3a-5bf6fa130c6c
+
+
 
 ## 📋 Table of Contents
 
