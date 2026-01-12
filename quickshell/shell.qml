@@ -628,8 +628,14 @@ Scope {
                                 forceActiveFocus();
                             })
 
-                            Keys.onDownPressed: flavorList.currentIndex = Math.min(flavorList.currentIndex + 1, flavorList.count - 1)
-                            Keys.onUpPressed: flavorList.currentIndex = Math.max(flavorList.currentIndex - 1, 0)
+                            Keys.onDownPressed: {
+                                if (flavorList.count > 0)
+                                    flavorList.currentIndex = (flavorList.currentIndex + 1) % flavorList.count;
+                            }
+                            Keys.onUpPressed: {
+                                if (flavorList.count > 0)
+                                    flavorList.currentIndex = (flavorList.currentIndex - 1 + flavorList.count) % flavorList.count;
+                            }
                             Keys.onEnterPressed: triggerSelection()
                             Keys.onReturnPressed: triggerSelection()
                             Keys.onEscapePressed: Qt.quit()
