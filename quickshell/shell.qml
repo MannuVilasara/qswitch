@@ -35,7 +35,7 @@ Scope {
         "caelestia": "#a6e3a1",
         "noctalia-shell": "#a9aefe",
         "dms": "#D0BCFF",
-        "mannu": "#cba6f7",
+        "xenon": "#cba6f7",
         "ocean": "#94e2d5"
     }
     property color defaultFlavourColor: "#b4befe"
@@ -46,7 +46,7 @@ Scope {
         "ii": "ii.svg",
         "noctalia-shell": "noctalia.svg",
         "caelestia": "pacman.svg",
-        "mannu": "mannu.svg",
+        "xenon": "xenon.svg",
         "dms": "dms.svg"
     }
 
@@ -59,16 +59,17 @@ Scope {
         id: switcher
         command: []
         onRunningChanged: {
-            if (running) console.log("Executing switch command...");
+            if (running)
+                console.log("Executing switch command...");
         }
-        onExited: currentFlavourLoader.running = true;
+        onExited: currentFlavourLoader.running = true
     }
 
     Process {
         id: currentFlavourLoader
         command: ["qswitch", "current"]
         stdout: SplitParser {
-            onRead: data => root.currentFlavour = data.trim();
+            onRead: data => root.currentFlavour = data.trim()
         }
     }
 
@@ -104,7 +105,7 @@ Scope {
                 }
             }
         }
-        onExited: root.updateFilter();
+        onExited: root.updateFilter()
     }
 
     function setFlavour(flavour) {
@@ -122,11 +123,16 @@ Scope {
                 displayModel.append(item);
             }
         }
-        if (displayModel.count > 0) flavorList.currentIndex = 0;
+        if (displayModel.count > 0)
+            flavorList.currentIndex = 0;
     }
 
-    ListModel { id: masterModel }
-    ListModel { id: displayModel }
+    ListModel {
+        id: masterModel
+    }
+    ListModel {
+        id: displayModel
+    }
 
     Component.onCompleted: {
         currentFlavourLoader.running = true;
@@ -159,14 +165,33 @@ Scope {
             clip: true
 
             Rectangle {
-                anchors.fill: parent; anchors.margins: 1; radius: 19
-                color: "transparent"; border.color: Qt.alpha(root.cLavender, 0.05); border.width: 1
+                anchors.fill: parent
+                anchors.margins: 1
+                radius: 19
+                color: "transparent"
+                border.color: Qt.alpha(root.cLavender, 0.05)
+                border.width: 1
             }
 
             ParallelAnimation {
                 running: true
-                NumberAnimation { target: menuRoot; property: "scale"; from: 0.92; to: 1.0; duration: 300; easing.type: Easing.OutBack; easing.overshoot: 1.2 }
-                NumberAnimation { target: menuRoot; property: "opacity"; from: 0; to: 1.0; duration: 250; easing.type: Easing.OutQuart }
+                NumberAnimation {
+                    target: menuRoot
+                    property: "scale"
+                    from: 0.92
+                    to: 1.0
+                    duration: 300
+                    easing.type: Easing.OutBack
+                    easing.overshoot: 1.2
+                }
+                NumberAnimation {
+                    target: menuRoot
+                    property: "opacity"
+                    from: 0
+                    to: 1.0
+                    duration: 250
+                    easing.type: Easing.OutQuart
+                }
             }
 
             ColumnLayout {
@@ -181,55 +206,90 @@ Scope {
                     spacing: 14
 
                     Rectangle {
-                        Layout.preferredWidth: 42; Layout.preferredHeight: 42; radius: 12
+                        Layout.preferredWidth: 42
+                        Layout.preferredHeight: 42
+                        radius: 12
                         color: Qt.alpha(root.cSurface0, 0.5)
                         Image {
-                            anchors.centerIn: parent; width: 32; height: 32
+                            anchors.centerIn: parent
+                            width: 32
+                            height: 32
                             source: "file://" + root.iconsBasePath + "arch.svg"
-                            fillMode: Image.PreserveAspectFit; smooth: true
+                            fillMode: Image.PreserveAspectFit
+                            smooth: true
                         }
                     }
 
                     Column {
-                        spacing: 4; Layout.alignment: Qt.AlignVCenter
-                        Text { text: "QuickSwitch"; color: root.cText; font.pixelSize: 18; font.bold: true; font.letterSpacing: 0.5 }
-                        Text { text: "Select a theme to apply"; color: root.cSubtext0; font.pixelSize: 12 }
+                        spacing: 4
+                        Layout.alignment: Qt.AlignVCenter
+                        Text {
+                            text: "QuickSwitch"
+                            color: root.cText
+                            font.pixelSize: 18
+                            font.bold: true
+                            font.letterSpacing: 0.5
+                        }
+                        Text {
+                            text: "Select a theme to apply"
+                            color: root.cSubtext0
+                            font.pixelSize: 12
+                        }
                     }
 
-                    Item { Layout.fillWidth: true }
+                    Item {
+                        Layout.fillWidth: true
+                    }
 
                     // Info Button
                     Rectangle {
-                        Layout.preferredWidth: 32; Layout.preferredHeight: 32; radius: 8
+                        Layout.preferredWidth: 32
+                        Layout.preferredHeight: 32
+                        radius: 8
                         color: infoBtnArea.containsMouse ? root.cSurface1 : root.cSurface0
                         Text {
-                            anchors.centerIn: parent; text: "i"
-                            color: root.cLavender; font.pixelSize: 18; font.bold: true; font.family: "Monospace"
+                            anchors.centerIn: parent
+                            text: "i"
+                            color: root.cLavender
+                            font.pixelSize: 18
+                            font.bold: true
+                            font.family: "Monospace"
                         }
                         MouseArea {
                             id: infoBtnArea
-                            anchors.fill: parent; hoverEnabled: true
+                            anchors.fill: parent
+                            hoverEnabled: true
                             onClicked: root.showInfoPopup = true
                         }
                     }
 
                     // Close Button
                     Rectangle {
-                        Layout.preferredWidth: 32; Layout.preferredHeight: 32; radius: 8
+                        Layout.preferredWidth: 32
+                        Layout.preferredHeight: 32
+                        radius: 8
                         color: closeBtnArea.containsMouse ? root.cSurface1 : root.cSurface0
                         Text {
-                            anchors.centerIn: parent; text: "×"
-                            color: root.cSubtext0; font.pixelSize: 18; font.bold: true
+                            anchors.centerIn: parent
+                            text: "×"
+                            color: root.cSubtext0
+                            font.pixelSize: 18
+                            font.bold: true
                         }
                         MouseArea {
                             id: closeBtnArea
-                            anchors.fill: parent; hoverEnabled: true
+                            anchors.fill: parent
+                            hoverEnabled: true
                             onClicked: Qt.quit()
                         }
                     }
                 }
 
-                Rectangle { Layout.fillWidth: true; Layout.preferredHeight: 1; color: root.cSurface0 }
+                Rectangle {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 1
+                    color: root.cSurface0
+                }
 
                 // --- CONTENT AREA ---
                 Item {
@@ -250,16 +310,51 @@ Scope {
                         ScrollBar.vertical: ScrollBar {
                             width: 6
                             policy: ScrollBar.AsNeeded
-                            contentItem: Rectangle { implicitWidth: 6; radius: 3; color: root.cSurface2; opacity: 0.6 }
-                            background: Rectangle { implicitWidth: 6; radius: 3; color: root.cSurface0; opacity: 0.3 }
+                            contentItem: Rectangle {
+                                implicitWidth: 6
+                                radius: 3
+                                color: root.cSurface2
+                                opacity: 0.6
+                            }
+                            background: Rectangle {
+                                implicitWidth: 6
+                                radius: 3
+                                color: root.cSurface0
+                                opacity: 0.3
+                            }
                         }
 
-                        add: Transition { ParallelAnimation { NumberAnimation { property: "opacity"; from: 0; to: 1.0; duration: 250; easing.type: Easing.OutQuart } NumberAnimation { property: "x"; from: -30; to: 0; duration: 300; easing.type: Easing.OutBack } } }
-                        displaced: Transition { NumberAnimation { properties: "y"; duration: 200; easing.type: Easing.OutQuart } }
+                        add: Transition {
+                            ParallelAnimation {
+                                NumberAnimation {
+                                    property: "opacity"
+                                    from: 0
+                                    to: 1.0
+                                    duration: 250
+                                    easing.type: Easing.OutQuart
+                                }
+                                NumberAnimation {
+                                    property: "x"
+                                    from: -30
+                                    to: 0
+                                    duration: 300
+                                    easing.type: Easing.OutBack
+                                }
+                            }
+                        }
+                        displaced: Transition {
+                            NumberAnimation {
+                                properties: "y"
+                                duration: 200
+                                easing.type: Easing.OutQuart
+                            }
+                        }
 
                         delegate: Rectangle {
                             id: listDelegate
-                            width: ListView.view.width; height: 72; radius: 14
+                            width: ListView.view.width
+                            height: 72
+                            radius: 14
                             property bool isSelected: ListView.isCurrentItem
                             property bool isHovered: mouseArea.containsMouse
                             property color itemColor: model.color
@@ -269,52 +364,142 @@ Scope {
                             property bool isInstalled: model.installed !== undefined ? model.installed : true
 
                             color: {
-                                if (!isInstalled) return Qt.alpha(root.cRed, 0.1);
-                                if (isActive) return Qt.alpha(itemColor, 0.25);
-                                if (isSelected) return Qt.alpha(itemColor, 0.15);
-                                if (isHovered) return Qt.alpha(root.cSurface0, 0.6);
+                                if (!isInstalled)
+                                    return Qt.alpha(root.cRed, 0.1);
+                                if (isActive)
+                                    return Qt.alpha(itemColor, 0.25);
+                                if (isSelected)
+                                    return Qt.alpha(itemColor, 0.15);
+                                if (isHovered)
+                                    return Qt.alpha(root.cSurface0, 0.6);
                                 return "transparent";
                             }
-                            
-                            Behavior on color { ColorAnimation { duration: 180; easing.type: Easing.OutQuart } }
+
+                            Behavior on color {
+                                ColorAnimation {
+                                    duration: 180
+                                    easing.type: Easing.OutQuart
+                                }
+                            }
                             border.color: isActive ? Qt.alpha(itemColor, 0.6) : (isSelected ? Qt.alpha(itemColor, 0.4) : "transparent")
                             border.width: isActive ? 2 : (isSelected ? 2 : 0)
-                            Behavior on border.width { NumberAnimation { duration: 150 } }
+                            Behavior on border.width {
+                                NumberAnimation {
+                                    duration: 150
+                                }
+                            }
 
                             RowLayout {
-                                anchors.fill: parent; anchors.leftMargin: 16; anchors.rightMargin: 16; spacing: 16
+                                anchors.fill: parent
+                                anchors.leftMargin: 16
+                                anchors.rightMargin: 16
+                                spacing: 16
                                 Rectangle {
-                                    Layout.preferredWidth: 48; Layout.preferredHeight: 48; radius: 12
-                                    color: Qt.alpha(listDelegate.itemColor, 0.15); border.color: Qt.alpha(listDelegate.itemColor, 0.3); border.width: 1
+                                    Layout.preferredWidth: 48
+                                    Layout.preferredHeight: 48
+                                    radius: 12
+                                    color: Qt.alpha(listDelegate.itemColor, 0.15)
+                                    border.color: Qt.alpha(listDelegate.itemColor, 0.3)
+                                    border.width: 1
                                     Image {
                                         visible: listDelegate.hasIcon
-                                        anchors.centerIn: parent; width: listDelegate.isSelected ? 40 : 36; height: width
+                                        anchors.centerIn: parent
+                                        width: listDelegate.isSelected ? 40 : 36
+                                        height: width
                                         source: listDelegate.hasIcon ? "file://" + root.iconsBasePath + listDelegate.flavourIcon : ""
-                                        fillMode: Image.PreserveAspectFit; smooth: true
-                                        Behavior on width { NumberAnimation { duration: 200; easing.type: Easing.OutBack } }
+                                        fillMode: Image.PreserveAspectFit
+                                        smooth: true
+                                        Behavior on width {
+                                            NumberAnimation {
+                                                duration: 200
+                                                easing.type: Easing.OutBack
+                                            }
+                                        }
                                     }
                                     Rectangle {
                                         visible: !listDelegate.hasIcon
-                                        anchors.centerIn: parent; width: listDelegate.isSelected ? 28 : 24; height: width; radius: 8
+                                        anchors.centerIn: parent
+                                        width: listDelegate.isSelected ? 28 : 24
+                                        height: width
+                                        radius: 8
                                         color: listDelegate.itemColor
-                                        Behavior on width { NumberAnimation { duration: 200; easing.type: Easing.OutBack } }
+                                        Behavior on width {
+                                            NumberAnimation {
+                                                duration: 200
+                                                easing.type: Easing.OutBack
+                                            }
+                                        }
                                     }
                                 }
                                 ColumnLayout {
-                                    Layout.fillWidth: true; Layout.alignment: Qt.AlignVCenter; spacing: 6
+                                    Layout.fillWidth: true
+                                    Layout.alignment: Qt.AlignVCenter
+                                    spacing: 6
                                     RowLayout {
                                         spacing: 8
-                                        Text { text: model.name; color: listDelegate.isActive ? root.cText : (listDelegate.isSelected ? root.cText : root.cSubtext1); font.pixelSize: 16; font.bold: true }
-                                        Rectangle { visible: listDelegate.isActive && listDelegate.isInstalled; width: 50; height: 20; radius: 10; color: Qt.alpha(listDelegate.itemColor, 0.3); Text { anchors.centerIn: parent; text: "Active"; color: listDelegate.itemColor; font.pixelSize: 10; font.bold: true } }
-                                        Rectangle { visible: !listDelegate.isInstalled; width: 85; height: 20; radius: 10; color: Qt.alpha(root.cRed, 0.3); Text { anchors.centerIn: parent; text: "Not Installed"; color: root.cRed; font.pixelSize: 10; font.bold: true } }
+                                        Text {
+                                            text: model.name
+                                            color: listDelegate.isActive ? root.cText : (listDelegate.isSelected ? root.cText : root.cSubtext1)
+                                            font.pixelSize: 16
+                                            font.bold: true
+                                        }
+                                        Rectangle {
+                                            visible: listDelegate.isActive && listDelegate.isInstalled
+                                            width: 50
+                                            height: 20
+                                            radius: 10
+                                            color: Qt.alpha(listDelegate.itemColor, 0.3)
+                                            Text {
+                                                anchors.centerIn: parent
+                                                text: "Active"
+                                                color: listDelegate.itemColor
+                                                font.pixelSize: 10
+                                                font.bold: true
+                                            }
+                                        }
+                                        Rectangle {
+                                            visible: !listDelegate.isInstalled
+                                            width: 85
+                                            height: 20
+                                            radius: 10
+                                            color: Qt.alpha(root.cRed, 0.3)
+                                            Text {
+                                                anchors.centerIn: parent
+                                                text: "Not Installed"
+                                                color: root.cRed
+                                                font.pixelSize: 10
+                                                font.bold: true
+                                            }
+                                        }
                                     }
-                                    Text { text: model.desc; color: root.cSubtext0; font.pixelSize: 13; opacity: listDelegate.isSelected ? 0.9 : 0.7 }
+                                    Text {
+                                        text: model.desc
+                                        color: root.cSubtext0
+                                        font.pixelSize: 13
+                                        opacity: listDelegate.isSelected ? 0.9 : 0.7
+                                    }
                                 }
-                                Text { Layout.preferredWidth: 36; text: listDelegate.isActive ? "✓" : "→"; color: listDelegate.itemColor; font.pixelSize: 18; font.bold: true; horizontalAlignment: Text.AlignHCenter; opacity: listDelegate.isSelected || listDelegate.isHovered || listDelegate.isActive ? 1 : 0 }
+                                Text {
+                                    Layout.preferredWidth: 36
+                                    text: listDelegate.isActive ? "✓" : "→"
+                                    color: listDelegate.itemColor
+                                    font.pixelSize: 18
+                                    font.bold: true
+                                    horizontalAlignment: Text.AlignHCenter
+                                    opacity: listDelegate.isSelected || listDelegate.isHovered || listDelegate.isActive ? 1 : 0
+                                }
                             }
                             MouseArea {
-                                id: mouseArea; anchors.fill: parent; hoverEnabled: true; cursorShape: listDelegate.isInstalled ? Qt.PointingHandCursor : Qt.ForbiddenCursor
-                                onClicked: { if (listDelegate.isInstalled) { flavorList.currentIndex = index; root.setFlavour(model.flavourId); } }
+                                id: mouseArea
+                                anchors.fill: parent
+                                hoverEnabled: true
+                                cursorShape: listDelegate.isInstalled ? Qt.PointingHandCursor : Qt.ForbiddenCursor
+                                onClicked: {
+                                    if (listDelegate.isInstalled) {
+                                        flavorList.currentIndex = index;
+                                        root.setFlavour(model.flavourId);
+                                    }
+                                }
                             }
                         }
                     }
@@ -326,7 +511,7 @@ Scope {
                         spacing: 15
 
                         Text {
-                            text: "🤔" 
+                            text: "🤔"
                             font.pixelSize: 48
                             Layout.alignment: Qt.AlignHCenter
                         }
@@ -349,7 +534,7 @@ Scope {
                     ColumnLayout {
                         anchors.centerIn: parent
                         // Only show if masterModel is empty and we aren't currently loading data
-                        visible: masterModel.count === 0 && !flavourLoader.running 
+                        visible: masterModel.count === 0 && !flavourLoader.running
                         spacing: 20
 
                         AnimatedImage {
@@ -406,7 +591,11 @@ Scope {
                     radius: 14
                     border.color: searchField.activeFocus ? root.cLavender : root.cSurface0
                     border.width: searchField.activeFocus ? 2 : 1
-                    Behavior on border.color { ColorAnimation { duration: 200 } }
+                    Behavior on border.color {
+                        ColorAnimation {
+                            duration: 200
+                        }
+                    }
 
                     RowLayout {
                         anchors.fill: parent
@@ -414,7 +603,12 @@ Scope {
                         anchors.rightMargin: 16
                         spacing: 12
 
-                        Text { text: "⌕"; color: searchField.activeFocus ? root.cLavender : root.cOverlay0; font.pixelSize: 20; font.bold: true }
+                        Text {
+                            text: "⌕"
+                            color: searchField.activeFocus ? root.cLavender : root.cOverlay0
+                            font.pixelSize: 20
+                            font.bold: true
+                        }
 
                         TextField {
                             id: searchField
@@ -428,12 +622,14 @@ Scope {
                             placeholderText: 'Search themes...'
                             placeholderTextColor: root.cOverlay0
                             focus: true
-                            
-                            onTextChanged: root.updateFilter()
-                            Component.onCompleted: Qt.callLater(function () { forceActiveFocus(); });
 
-                            Keys.onDownPressed: flavorList.currentIndex = Math.min(flavorList.currentIndex + 1, flavorList.count - 1);
-                            Keys.onUpPressed: flavorList.currentIndex = Math.max(flavorList.currentIndex - 1, 0);
+                            onTextChanged: root.updateFilter()
+                            Component.onCompleted: Qt.callLater(function () {
+                                forceActiveFocus();
+                            })
+
+                            Keys.onDownPressed: flavorList.currentIndex = Math.min(flavorList.currentIndex + 1, flavorList.count - 1)
+                            Keys.onUpPressed: flavorList.currentIndex = Math.max(flavorList.currentIndex - 1, 0)
                             Keys.onEnterPressed: triggerSelection()
                             Keys.onReturnPressed: triggerSelection()
                             Keys.onEscapePressed: Qt.quit()
@@ -441,7 +637,8 @@ Scope {
                             function triggerSelection() {
                                 if (displayModel.count > 0) {
                                     var item = displayModel.get(flavorList.currentIndex);
-                                    if (item) root.setFlavour(item.flavourId);
+                                    if (item)
+                                        root.setFlavour(item.flavourId);
                                 }
                             }
                         }
@@ -458,8 +655,12 @@ Scope {
                 z: 100
                 visible: root.showInfoPopup
                 opacity: visible ? 1 : 0
-                
-                Behavior on opacity { NumberAnimation { duration: 200 } }
+
+                Behavior on opacity {
+                    NumberAnimation {
+                        duration: 200
+                    }
+                }
 
                 MouseArea {
                     anchors.fill: parent
@@ -507,11 +708,11 @@ Scope {
                         Layout.alignment: Qt.AlignHCenter
                         radius: 12
                         color: starBtn.containsMouse ? root.cLavender : root.cSurface0
-                        
+
                         RowLayout {
                             anchors.centerIn: parent
                             spacing: 10
-                            
+
                             Text {
                                 text: "★"
                                 color: starBtn.containsMouse ? root.cBase : root.cYellow
@@ -534,7 +735,9 @@ Scope {
                         }
                     }
 
-                    Item { Layout.preferredHeight: 10 }
+                    Item {
+                        Layout.preferredHeight: 10
+                    }
 
                     // Close Info Button
                     Rectangle {

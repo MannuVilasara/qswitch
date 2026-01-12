@@ -1,8 +1,9 @@
 {
-  "flavours": ["ii", "noctalia-shell", "caelestia", "dms"],
+  "flavours": ["ii", "xenon", "noctalia-shell", "caelestia", "dms"],
   "keybinds": {
     "caelestia": "caelestia.conf",
     "ii": "default",
+    "xenon": "xenon.conf",
     "noctalia-shell": "noctalia.conf",
     "dms": "dms.conf"
   },
