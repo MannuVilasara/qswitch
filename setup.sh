@@ -25,11 +25,12 @@ print_error() {
 
 select_flavors() {
     echo "Select flavors to install (enter numbers separated by space, or 'none' to skip):"
-    echo "1. caelestia (Caelestia Shell)"
-    echo "2. noctalia (Noctalia Shell)"
-    echo "3. dms-shell (DMS)"
-    echo "4. ii (Illogical Impulse)"
+    echo "1. Caelestia Shell"
+    echo "2. Noctalia Shell"
+    echo "3. Dank Material Shell"
+    echo "4. Illogical Impulse"
     echo "5. Xenon"
+    echo "6. Ambxst"
     read -p "Enter numbers: " choices
 
     install_caelestia=false
@@ -37,6 +38,7 @@ select_flavors() {
     install_dms_shell=false
     install_ii=false
     install_xenon=false
+    install_ambxst=false
 
     if [[ "$choices" != "none" ]]; then
         for num in $choices; do
@@ -46,6 +48,7 @@ select_flavors() {
                 3) install_dms_shell=true ;;
                 4) install_ii=true ;;
                 5) install_xenon=true ;;
+                6) install_ambxst=true ;;
                 *) print_warning "Invalid option: $num" ;;
             esac
         done
@@ -156,6 +159,12 @@ if $install_ii; then
     print_info "Installing Illogical Impulse..."
     bash <(curl -s https://ii.clsty.link/get)
     print_success "Illogical Impulse installed."
+fi
+
+if $install_ambxst; then
+    print_info "Installing Ambxst..."
+    bash <(curl -L get.axeni.de/ambxst)
+    print_success "Ambxst installed."
 fi
 
 echo

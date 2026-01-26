@@ -1,5 +1,5 @@
 {
-  "flavours": ["ii", "xenon", "noctalia-shell", "caelestia", "dms"],
+  "flavours": ["ii", "xenon", "Ambxst", "noctalia-shell", "caelestia", "dms"],
   "keybinds": {
     "caelestia": "caelestia.conf",
     "ii": "default",
