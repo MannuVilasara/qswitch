@@ -31,7 +31,7 @@ Scope {
         "noctalia-shell": "#a9aefe",
         "dms": "#D0BCFF",
         "xenon": "#cba6f7",
-        "ambxst": "#f38ba8",
+        "Ambxst": "#f38ba8",
         "ocean": "#94e2d5"
     }
     property color defaultFlavourColor: "#b4befe"
@@ -42,7 +42,7 @@ Scope {
         "caelestia": "pacman.svg",
         "xenon": "xenon.svg",
         "dms": "dms.svg",
-        "ambxst": "ambxst-logo.svg"
+        "Ambxst": "ambxst.png"
     }
     property string currentFlavour: ""
     property var flavourInstallStatus: ({
