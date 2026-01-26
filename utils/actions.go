@@ -66,7 +66,7 @@ func ApplyFlavour(flavour string, config Config) {
 	// start new one
 	if flavour == "dms" {
 		exec.Command("dms", "run", "-d").Run()
-	} else if flavour == "ambxst" {
+	} else if flavour == "Ambxst" {
 		exec.Command("ambxst").Run()
 	} else {
 		exec.Command("hyprctl", "dispatch", "exec", "qs -c "+flavour).Run()
