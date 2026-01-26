@@ -29,12 +29,14 @@ select_flavors() {
     echo "2. noctalia (Noctalia Shell)"
     echo "3. dms-shell (DMS)"
     echo "4. ii (Illogical Impulse)"
+    echo "5. Xenon"
     read -p "Enter numbers: " choices
 
     install_caelestia=false
     install_noctalia=false
     install_dms_shell=false
     install_ii=false
+    install_xenon=false
 
     if [[ "$choices" != "none" ]]; then
         for num in $choices; do
@@ -43,6 +45,7 @@ select_flavors() {
                 2) install_noctalia=true ;;
                 3) install_dms_shell=true ;;
                 4) install_ii=true ;;
+                5) install_xenon=true ;;
                 *) print_warning "Invalid option: $num" ;;
             esac
         done
@@ -106,8 +109,10 @@ fi
 QSHELL_DIR="/etc/xdg/quickshell"
 NOCTALIA_REPO="https://github.com/noctalia-dev/noctalia-shell"
 NOCTALIA_DIR="$QSHELL_DIR/noctalia-shell"
+XENON_DIR="$QSHELL_DIR/xenon"
+XENON_REPO="https://github.com/MannuVilasara/xenon-shell"
 QS_CONFIG_DIR="$HOME/.config/qswitch"
-EXAMPLE_DIR="$(pwd)/../example"
+EXAMPLE_DIR="$(pwd)/..//example"
 
 echo
 
@@ -127,6 +132,17 @@ if $install_noctalia; then
         print_success "Noctalia Shell cloned."
     else
         print_warning "Noctalia Shell already exists, skipping."
+    fi
+fi
+
+if $install_xenon; then
+    print_info "Installing Xenon Shell..."
+    sudo mkdir -p "$QSHELL_DIR"
+    if [ ! -d "$XENON_DIR" ]; then
+        sudo git clone "$XENON_REPO" "$XENON_DIR"
+        print_success "XENON Shell cloned."
+    else
+        print_warning "XENON Shell already exists, skipping."
     fi
 fi
 
