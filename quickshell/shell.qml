@@ -31,7 +31,7 @@ Scope {
         "noctalia-shell": "#a9aefe",
         "dms": "#D0BCFF",
         "xenon": "#cba6f7",
-        "Ambxst": "#f38ba8",
+        "Ambxst": "#E37363",
         "ocean": "#94e2d5"
     }
     property color defaultFlavourColor: "#b4befe"
