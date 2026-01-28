@@ -25,16 +25,22 @@ print_error() {
 
 select_flavors() {
     echo "Select flavors to install (enter numbers separated by space, or 'none' to skip):"
-    echo "1. caelestia (Caelestia Shell)"
-    echo "2. noctalia (Noctalia Shell)"
-    echo "3. dms-shell (DMS)"
-    echo "4. ii (Illogical Impulse)"
+    echo "1. Caelestia Shell"
+    echo "2. Noctalia Shell"
+    echo "3. Dank Material Shell"
+    echo "4. Illogical Impulse"
+    echo "5. Xenon"
+    echo "6. Ambxst"
+    echo "7. Whisker"
     read -p "Enter numbers: " choices
 
     install_caelestia=false
     install_noctalia=false
     install_dms_shell=false
     install_ii=false
+    install_xenon=false
+    install_ambxst=false
+    install_whisker=false
 
     if [[ "$choices" != "none" ]]; then
         for num in $choices; do
@@ -43,6 +49,9 @@ select_flavors() {
                 2) install_noctalia=true ;;
                 3) install_dms_shell=true ;;
                 4) install_ii=true ;;
+                5) install_xenon=true ;;
+                6) install_ambxst=true ;;
+                7) install_whisker=true ;;
                 *) print_warning "Invalid option: $num" ;;
             esac
         done
@@ -106,8 +115,12 @@ fi
 QSHELL_DIR="/etc/xdg/quickshell"
 NOCTALIA_REPO="https://github.com/noctalia-dev/noctalia-shell"
 NOCTALIA_DIR="$QSHELL_DIR/noctalia-shell"
+XENON_DIR="$QSHELL_DIR/xenon"
+XENON_REPO="https://github.com/MannuVilasara/xenon-shell"
+WHISKER_REPO="https://github.com/corecathx/whisker"
+WHISKER_DIR="$QSHELL_DIR/whisker"
 QS_CONFIG_DIR="$HOME/.config/qswitch"
-EXAMPLE_DIR="$(pwd)/../example"
+EXAMPLE_DIR="$(pwd)/..//example"
 
 echo
 
@@ -117,6 +130,17 @@ if $install_caelestia; then
     print_info "Installing Caelestia Shell..."
     yay -S --needed caelestia-shell
     print_success "Caelestia Shell installed."
+fi
+
+if $install_whisker; then
+    print_info "Installing Whisker Shell..."
+    sudo mkdir -p "$QSHELL_DIR"
+    if [ ! -d "$WHISKER_DIR" ]; then
+        sudo git clone "$WHISKER_REPO" "$WHISKER_DIR"
+        print_success "Whisker Shell cloned."
+    else
+        print_warning "Whisker Shell already exists, skipping."
+    fi
 fi
 
 if $install_noctalia; then
@@ -130,6 +154,17 @@ if $install_noctalia; then
     fi
 fi
 
+if $install_xenon; then
+    print_info "Installing Xenon Shell..."
+    sudo mkdir -p "$QSHELL_DIR"
+    if [ ! -d "$XENON_DIR" ]; then
+        sudo git clone "$XENON_REPO" "$XENON_DIR"
+        print_success "XENON Shell cloned."
+    else
+        print_warning "XENON Shell already exists, skipping."
+    fi
+fi
+
 if $install_dms_shell; then
     print_info "Installing DMS..."
     yay -S --needed dms-shell
@@ -140,6 +175,12 @@ if $install_ii; then
     print_info "Installing Illogical Impulse..."
     bash <(curl -s https://ii.clsty.link/get)
     print_success "Illogical Impulse installed."
+fi
+
+if $install_ambxst; then
+    print_info "Installing Ambxst..."
+    bash <(curl -L get.axeni.de/ambxst)
+    print_success "Ambxst installed."
 fi
 
 echo

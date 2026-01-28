@@ -31,6 +31,8 @@ Scope {
         "noctalia-shell": "#a9aefe",
         "dms": "#D0BCFF",
         "xenon": "#cba6f7",
+        "Ambxst": "#E37363",
+        "whisker": "#ffffff",
         "ocean": "#94e2d5"
     }
     property color defaultFlavourColor: "#b4befe"
@@ -40,13 +42,15 @@ Scope {
         "noctalia-shell": "noctalia.svg",
         "caelestia": "pacman.svg",
         "xenon": "xenon.svg",
-        "dms": "dms.svg"
+        "dms": "dms.svg",
+        "Ambxst": "ambxst.png",
+        "whisker": "whisker.png"
     }
     property string currentFlavour: ""
     property var flavourInstallStatus: ({
     })
     property bool showInfoPopup: false
-    property bool useGrid: false
+    property bool useGrid: true
 
     function setFlavour(flavour) {
         switcher.command = ["qswitch", "apply", flavour];
