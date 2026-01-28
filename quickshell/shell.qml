@@ -32,7 +32,7 @@ Scope {
         "dms": "#D0BCFF",
         "xenon": "#cba6f7",
         "Ambxst": "#E37363",
-        "whisker": "#ffff",
+        "whisker": "#ffffff",
         "ocean": "#94e2d5"
     }
     property color defaultFlavourColor: "#b4befe"
