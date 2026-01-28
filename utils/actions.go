@@ -62,12 +62,15 @@ func ApplyFlavour(flavour string, config Config) {
 	// kill old qs
 	exec.Command("pkill", "-x", "qs").Run()
 	exec.Command("caelestia", "shell", "-k").Run()
+	exec.Command("whisker", "shell", "stop").Run()
 
 	// start new one
 	if flavour == "dms" {
 		exec.Command("dms", "run", "-d").Run()
 	} else if flavour == "Ambxst" {
 		exec.Command("ambxst").Run()
+	} else if flavour == "whisker" {
+		exec.Command("whisker","shell").Run()
 	} else {
 		exec.Command("hyprctl", "dispatch", "exec", "qs -c "+flavour).Run()
 	}
