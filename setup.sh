@@ -31,6 +31,7 @@ select_flavors() {
     echo "4. Illogical Impulse"
     echo "5. Xenon"
     echo "6. Ambxst"
+    echo "7. Whisker"
     read -p "Enter numbers: " choices
 
     install_caelestia=false
@@ -39,6 +40,7 @@ select_flavors() {
     install_ii=false
     install_xenon=false
     install_ambxst=false
+    install_whisker=false
 
     if [[ "$choices" != "none" ]]; then
         for num in $choices; do
@@ -49,6 +51,7 @@ select_flavors() {
                 4) install_ii=true ;;
                 5) install_xenon=true ;;
                 6) install_ambxst=true ;;
+                7) install_whisker=true ;;
                 *) print_warning "Invalid option: $num" ;;
             esac
         done
@@ -114,6 +117,8 @@ NOCTALIA_REPO="https://github.com/noctalia-dev/noctalia-shell"
 NOCTALIA_DIR="$QSHELL_DIR/noctalia-shell"
 XENON_DIR="$QSHELL_DIR/xenon"
 XENON_REPO="https://github.com/MannuVilasara/xenon-shell"
+WHISKER_REPO="https://github.com/corecathx/whisker"
+WHISKER_DIR="$QSHELL_DIR/whisker"
 QS_CONFIG_DIR="$HOME/.config/qswitch"
 EXAMPLE_DIR="$(pwd)/..//example"
 
@@ -125,6 +130,17 @@ if $install_caelestia; then
     print_info "Installing Caelestia Shell..."
     yay -S --needed caelestia-shell
     print_success "Caelestia Shell installed."
+fi
+
+if $install_whisker; then
+    print_info "Installing Whisker Shell..."
+    sudo mkdir -p "$QSHELL_DIR"
+    if [ ! -d "$WHISKER_DIR" ]; then
+        sudo git clone "$WHISKER_REPO" "$WHISKER_DIR"
+        print_success "Whisker Shell cloned."
+    else
+        print_warning "Whisker Shell already exists, skipping."
+    fi
 fi
 
 if $install_noctalia; then
