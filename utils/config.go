@@ -18,7 +18,7 @@ var defaultConfig = Config{
 	Flavours:     []string{},
 	Keybinds:     map[string]string{},
 	Unbinds:      false,
-	PanelKeybind: "Super+Alt, P",
+	PanelKeybind: "SUPER + ALT + P",
 }
 
 func LoadConfig() Config {

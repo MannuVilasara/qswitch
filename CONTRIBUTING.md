@@ -23,8 +23,8 @@ The project is written in Go and uses CMake for building.
 3. **Switching**: When switching flavours:
    - It kills the current `qs` process.
    - It starts a new `qs` instance with the selected configuration (`qs -c <flavour>`).
-   - It generates `~/.config/qswitch/qswitch.conf`. This file contains `source` directives to load flavour-specific keybinds into Hyprland.
-   - Hyprland automatically picks up these changes because `hyprland.conf` sources `qswitch.conf`.
+   - It generates `~/.config/qswitch/qswitch.lua`. This file contains `source` directives to load flavour-specific keybinds into Hyprland.
+   - Hyprland automatically picks up these changes because `hyprland.lua` sources `qswitch.lua`.
 
 ## Development
 

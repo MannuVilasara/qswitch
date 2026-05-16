@@ -6,9 +6,9 @@ This directory contains an example configuration that I use in my personal setup
 
 - `config.json`: The main configuration file defining available flavours and their keybind mappings.
 - `keybinds/`: Directory containing flavour-specific keybind files.
-  - `unbinds.conf`: Keybinds to unbind before applying new ones (if `unbinds: true` is set).
-  - `caelestia.conf`: Keybinds for the "caelestia" flavour.
-  - `noctalia.conf`: Keybinds for the "noctalia" flavour.
+  - `unbinds.lua`: Keybinds to unbind before applying new ones (if `unbinds: true` is set).
+  - `caelestia.lua`: Keybinds for the "caelestia" flavour.
+  - `noctalia.lua`: Keybinds for the "noctalia" flavour.
 
 ## Usage
 

@@ -160,7 +160,7 @@ This will:
 1. Create necessary directories (`~/.config/qswitch`, `~/.cache/qswitch`)
 2. Create the state file `~/.switch_state`
 3. Generate a default `~/.config/qswitch/config.json`
-4. Append `source=~/.cache/qswitch/qswitch.conf` to your `~/.config/hypr/hyprland.conf` (if not already present)
+4. Append `source=~/.cache/qswitch/qswitch.lua` to your `~/.config/hypr/hyprland.lua` (if not already present)
 5. Remove any incorrect source lines (e.g., from old cache paths)
 
 You can force the setup (even if files exist) with:
@@ -222,9 +222,9 @@ Configuration is stored in `~/.config/qswitch/config.json`. Here's an example:
   "unbinds": true,
   "keybinds": {
     "ii": "default",
-    "caelestia": "caelestia.conf",
-    "noctalia-shell": "noctalia.conf",
-    "dms": "dms.conf"
+    "caelestia": "caelestia.lua",
+    "noctalia-shell": "noctalia.lua",
+    "dms": "dms.lua"
   },
   "panel_keybind": "Super+Alt, P"
 }
@@ -233,13 +233,13 @@ Configuration is stored in `~/.config/qswitch/config.json`. Here's an example:
 ### Configuration Options
 
 - **`flavours`**: Array of available QuickShell flavours
-- **`unbinds`** _(Optional)_: Boolean. If `true`, sources `~/.config/qswitch/keybinds/unbinds.conf` before applying flavour-specific keybinds (except for "default" flavour). Useful for unbinding conflicting keys
+- **`unbinds`** _(Optional)_: Boolean. If `true`, sources `~/.config/qswitch/keybinds/unbinds.lua` before applying flavour-specific keybinds (except for "default" flavour). Useful for unbinding conflicting keys
 - **`keybinds`**: Object mapping each flavour to a keybind file in `~/.config/qswitch/keybinds/`. Use `"default"` for the base configuration
 - **`panel_keybind`** _(Optional)_: The keybind to open the QuickSwitch panel. Defaults to `"Super+Alt, P"`
 
-Keybind files (e.g., `caelestia.conf`) contain Hyprland keybind definitions.
+Keybind files (e.g., `caelestia.lua`) contain Hyprland keybind definitions.
 
-The tool generates `~/.cache/qswitch/qswitch.conf` with the appropriate `source` and `bind` commands, which is then sourced in `~/.config/hypr/hyprland.conf`.
+The tool generates `~/.cache/qswitch/qswitch.lua` with the appropriate `source` and `bind` commands, which is then sourced in `~/.config/hypr/hyprland.lua`.
 
 ---
 
@@ -308,7 +308,7 @@ Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for det
 | `~/.switch_state`                       | Stores the current active flavour                       |
 | `~/.config/qswitch/config.json`         | Main configuration file                                 |
 | `~/.config/qswitch/keybinds/`           | Directory containing keybind configuration files        |
-| `~/.cache/qswitch/qswitch.conf`         | Generated configuration file (sourced in hyprland.conf) |
+| `~/.cache/qswitch/qswitch.lua`         | Generated configuration file (sourced in hyprland.lua) |
 | `/etc/xdg/quickshell/qswitch/shell.qml` | Panel QML file for the QuickSwitch interface            |
 
 ---

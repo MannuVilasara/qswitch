@@ -17,7 +17,7 @@ func ApplyKeybinds(flavour string, config Config) {
 		fmt.Printf("Error creating cache directory: %v\n", err)
 		return
 	}
-	keybindsFile := filepath.Join(qswitchCacheDir, "qswitch.conf")
+	keybindsFile := filepath.Join(qswitchCacheDir, "qswitch.lua")
 
 	var contentParts []string
 
@@ -28,12 +28,12 @@ func ApplyKeybinds(flavour string, config Config) {
 			".config",
 			"qswitch",
 			"keybinds",
-			"unbinds.conf",
+			"unbinds.lua",
 		)
 		if _, err := os.Stat(unbindsPath); err == nil {
-			contentParts = append(contentParts, "source="+unbindsPath)
+			contentParts = append(contentParts, "dofile(\""+unbindsPath+"\")")
 		} else {
-			fmt.Printf("Warning: unbinds.conf not found at %s\n", unbindsPath)
+			fmt.Printf("Warning: unbinds.lua not found at %s\n", unbindsPath)
 		}
 	}
 
@@ -43,14 +43,14 @@ func ApplyKeybinds(flavour string, config Config) {
 	} else {
 		keybindPath := filepath.Join(os.Getenv("HOME"), ".config", "qswitch", "keybinds", config.Keybinds[flavour])
 		if _, err := os.Stat(keybindPath); err == nil {
-			contentParts = append(contentParts, "source="+keybindPath)
+			contentParts = append(contentParts, "dofile(\""+keybindPath+"\")")
 		} else {
 			fmt.Printf("Warning: keybind file %s not found for flavour %s\n", config.Keybinds[flavour], flavour)
 		}
 	}
 
 	// Add QuickSwitchPanel keybind
-	contentParts = append(contentParts, "bind="+config.PanelKeybind+", exec, qswitch panel")
+	contentParts = append(contentParts, "hl.bind(\"" + config.PanelKeybind + "\", hl.dsp.exec_cmd(\"qswitch panel\"))")
 
 	content := strings.Join(contentParts, "\n")
 	if err := os.WriteFile(keybindsFile, []byte(content), 0644); err != nil {
@@ -65,12 +65,15 @@ func ApplyFlavour(flavour string, config Config) {
 
 	// start new one
 	if flavour == "dms" {
-		exec.Command("dms", "run", "-d").Run()
+		cmd := exec.Command("dms", "run", "-d")
+		cmd.Start()
 	} else {
-		exec.Command("hyprctl", "dispatch", "exec", "qs -c "+flavour).Run()
+		cmd := exec.Command("qs", "-c", flavour)
+		cmd.Start()
 	}
 
 	ApplyKeybinds(flavour, config)
+	exec.Command("hyprctl", "reload").Run()
 }
 
 // TogglePanel opens the panel if not running, closes it if running
@@ -172,18 +175,18 @@ func Setup(config Config, force bool) {
 		return
 	}
 
-	keybindsFile := filepath.Join(qswitchCacheDir, "qswitch.conf")
-	content := "bind=" + config.PanelKeybind + ", exec, qswitch panel"
+	keybindsFile := filepath.Join(qswitchCacheDir, "qswitch.lua")
+	content := "hl.bind(\"" + config.PanelKeybind + "\", hl.dsp.exec_cmd(\"qswitch panel\"))"
 	if err := os.WriteFile(keybindsFile, []byte(content), 0644); err != nil {
 		fmt.Printf("Error creating keybinds file: %v\n", err)
 		return
 	}
-	hyprlandFile := filepath.Join(os.Getenv("HOME"), ".config", "hypr", "hyprland.conf")
+	hyprlandFile := filepath.Join(os.Getenv("HOME"), ".config", "hypr", "hyprland.lua")
 
 	// Check if already sourced
 	hyprContent, err := os.ReadFile(hyprlandFile)
 	if err == nil {
-		sourceLine := "source=" + qswitchCacheDir + "/qswitch.conf"
+		sourceLine := "dofile(\"" + qswitchCacheDir + "/qswitch.lua\")"
 		if strings.Contains(string(hyprContent), sourceLine) {
 			fmt.Println("Setup completed (already sourced)")
 			return
@@ -192,10 +195,10 @@ func Setup(config Config, force bool) {
 
 	f, err := os.OpenFile(hyprlandFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
-		fmt.Println("Error opening hyprland.conf:", err)
+		fmt.Println("Error opening hyprland.lua:", err)
 		return
 	}
 	defer f.Close()
-	f.WriteString("\nsource=" + qswitchCacheDir + "/qswitch.conf\n")
+	f.WriteString("\ndofile(\"" + qswitchCacheDir + "/qswitch.lua\")\n")
 	fmt.Println("Setup completed")
 }

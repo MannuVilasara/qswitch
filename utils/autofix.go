@@ -9,13 +9,24 @@ import (
 )
 
 var qswitchCacheDir = filepath.Join(os.Getenv("HOME"), ".cache", "qswitch")
-var hyprlandFile = filepath.Join(os.Getenv("HOME"), ".config", "hypr", "hyprland.conf")
+var hyprlandFile = filepath.Join(os.Getenv("HOME"), ".config", "hypr", "hyprland.lua")
 var qswitchDir = filepath.Join(os.Getenv("HOME"), ".config", "qswitch")
-var sourceLine = "source=" + qswitchCacheDir + "/qswitch.conf"
+var sourceLine = "dofile(\"" + qswitchCacheDir + "/qswitch.lua\")"
 var wrongSourceLines = []string{
-	"source=" + qswitchDir + "/qswitch.conf",
-	"source=" + "~/.config/qswitch/qswitch.conf",
-	"source=" + "~/.cache/qswitch/qswitch.conf",
+        "source=" + qswitchCacheDir + "/qswitch.lua",
+        "source=" + qswitchCacheDir + "/qswitch.conf",
+        "source=" + qswitchDir + "/qswitch.lua",
+        "source=" + "~/.config/qswitch/qswitch.lua",
+        "source=" + "~/.cache/qswitch/qswitch.lua",
+        "source=" + qswitchDir + "/qswitch.conf",
+        "source=" + "~/.config/qswitch/qswitch.conf",
+        "source=" + "~/.cache/qswitch/qswitch.conf",
+        "dofile(\"" + qswitchDir + "/qswitch.lua\")",
+        "dofile(\"~/.config/qswitch/qswitch.lua\")",
+        "dofile(\"~/.cache/qswitch/qswitch.lua\")",
+		"dofile(\"" + qswitchDir + "/qswitch.conf\")",
+		"dofile(\"~/.config/qswitch/qswitch.conf\")",
+		"dofile(\"~/.cache/qswitch/qswitch.conf\")",
 }
 
 func dirExists(path string) bool {

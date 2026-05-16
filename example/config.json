@@ -1,12 +1,11 @@
 {
-  "flavours": ["ii", "xenon", "noctalia-shell", "caelestia", "dms"],
+  "flavours": ["ii", "xenon", "caelestia", "dms"],
   "keybinds": {
-    "caelestia": "caelestia.conf",
+    "caelestia": "caelestia.lua",
     "ii": "default",
-    "xenon": "xenon.conf",
-    "noctalia-shell": "noctalia.conf",
-    "dms": "dms.conf"
+    "xenon": "xenon.lua",
+    "dms": "dms.lua"
   },
   "unbinds": true,
-  "panel_keybind": "Super+Alt, P"
+  "panel_keybind": "SUPER + ALT + P"
 }
